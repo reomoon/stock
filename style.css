@@ -10,7 +10,7 @@ body {
 header {
     background: #2d3e50;
     color: #fff;
-    padding: 20px 0;
+    padding: 5px 0;
     text-align: center;
     letter-spacing: 1px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
@@ -86,7 +86,8 @@ h2 {
 }
 
 .news-header {
-    font-size: 24px;     /* 혹은 px 단위로 예: 20px */
+    display: block;
+    font-size: 30px;     /* 혹은 px 단위로 예: 20px */
     font-weight: bold;
     margin-top: 20px;
     margin-bottom: 12px;
