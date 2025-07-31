@@ -10,7 +10,7 @@ def economy():
     response = requests.get(url, headers=headers)
     soup = BeautifulSoup(response.text, "html.parser")
 
-    html = f"<div class='news-header'>[{today}] 주요 경제 뉴스 (네이버 기준)</div>\n<ul class='news-list'>"
+    html = f"<span class='news-header'>[{today}] 주요 경제 뉴스 (네이버 기준)</span>\n<ul class='news-list'>"
     count = 0
     for item in soup.select("ul.sa_list > li"):
         link_tag = item.select_one("a.sa_text_title")
@@ -30,7 +30,7 @@ def realestate():
     response = requests.get(url, headers=headers)
     soup = BeautifulSoup(response.text, "html.parser")
 
-    html = f"<div class='news-header'>[{today}] 주요 부동산 뉴스 (네이버 기준)</div>\n<ul class='news-list'>"
+    html = f"<span class='news-header'>[{today}] 주요 부동산 뉴스 (네이버 기준)</span>\n<ul class='news-list'>"
     count = 0
     for item in soup.select("ul.sa_list > li"):
         link_tag = item.select_one("a.sa_text_title")
