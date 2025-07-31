@@ -1,91 +1,53 @@
-/* style.css */
-
+/* 기본 글자 크기 */
 body {
-    font-family: 'Apple SD Gothic Neo', sans-serif;
-    margin: 0;
-    padding: 0;
+    font-size: 18px;
     line-height: 1.6;
-    background: #f5f5f5;
-    color: #333;
-    font-size: 18px; /* 본문 기본 글자 크게 */
+    padding: 12px;
 }
 
-header {
-    background: #222;
-    color: #fff;
-    padding: 20px 0;
-    text-align: center;
-}
-
+/* 제목 크기 */
 h1 {
     font-size: 28px;
-    margin: 0;
+    margin-bottom: 12px;
 }
 
 h2 {
     font-size: 24px;
-    margin-top: 20px;
-    margin-bottom: 10px;
+    margin-top: 24px;
+    margin-bottom: 12px;
 }
 
-section {
-    padding: 20px;
-    background: #fff;
-    margin: 10px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.news-header, .stock-header {
-    font-size: 22px;
+/* 뉴스 날짜 텍스트 */
+.news-header {
+    font-size: 20px;
     font-weight: bold;
     margin-bottom: 10px;
-    color: #2d3e50;
     display: block;
+    color: #333;
 }
 
-.news-list, .stock-table {
-    list-style: none;
-    padding: 0;
-}
-
+/* 뉴스 항목 */
 .news-list li {
     margin-bottom: 8px;
 }
 
-.news-list a {
-    text-decoration: none;
-    color: #0077cc;
+/* 반응형 테이블 감싸기 */
+.stock-table-wrap {
+    overflow-x: auto;
 }
 
-.news-list a:hover {
-    text-decoration: underline;
-}
-
+/* 테이블 스타일 */
 .stock-table {
     width: 100%;
-    border-collapse: collapse;
     font-size: 16px;
+    border-collapse: collapse;
 }
-
 .stock-table th, .stock-table td {
+    padding: 8px;
     border: 1px solid #ccc;
-    padding: 10px;
-    text-align: center;
 }
 
-.stock-table th {
-    background-color: #eee;
-}
-
-.up {
-    color: green;
-}
-
-.down {
-    color: red;
-}
-
+/* 모바일 대응 */
 @media (max-width: 600px) {
     body {
         font-size: 17px;
@@ -99,12 +61,7 @@ section {
         font-size: 20px;
     }
 
-    .stock-table td, .stock-table th {
-        padding: 6px;
+    .stock-table th, .stock-table td {
         font-size: 14px;
-    }
-
-    .news-header, .stock-header {
-        font-size: 20px;
     }
 }
