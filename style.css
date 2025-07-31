@@ -1,8 +1,9 @@
 body {
     font-family: 'Segoe UI', Arial, sans-serif;
     background: #f4f6fa;
-    margin: 0;
-    padding: 0;
+    margin: 0 auto;          /* auto로 중앙 정렬 */
+    max-width: 400px;        /* 최대 너비 제한 */
+    padding: 0 10px;         /* 좌우 10px 패딩 */
     font-size: 18px;
 }
 
@@ -100,8 +101,9 @@ h2 {
     }
 
     section {
+        max-width: 360px;  /* 여기서도 모바일 최적화 */
         padding: 16px 12px;
-        margin: 16px 8px;
+        margin: 16px auto;
     }
 
     h2 {
@@ -126,6 +128,16 @@ h2 {
         display: block;
     }
 }
+
+section {
+    background: #fff;
+    margin: 32px auto;
+    max-width: 360px;   /* 800px → 360px으로 축소 */
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    padding: 20px 15px 24px 15px;  /* 패딩 좌우를 40px → 15px으로 줄임 */
+}
+
 
 /* 모바일 최적화 + 테이블 가로 스크롤 */
 /* @media (max-width: 768px) {
