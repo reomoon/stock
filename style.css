@@ -37,6 +37,7 @@ section {
 
 /* 뉴스 항목 */
 .news-list {
+    padding-top: 0px;
     padding: 30px 0;
 }
 
@@ -70,6 +71,12 @@ section#economy {
 
 section#realestate {
     background-color: #f4f4f5;
+}
+
+/* ul, li 태그 불릿 제거 */
+ul {
+  list-style-type: none;
+  padding-left: 0; /* 불릿 없앴으면 들여쓰기 제거도 보통 같이 함 */
 }
 
 /* 주가 이모티콘 */
