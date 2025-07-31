@@ -94,7 +94,7 @@ h2 {
 }
 
 /* 반응형 - 화면이 좁아지면 세로 정렬 */
-@media (max-width: 600px) {
+@media (max-width: 400px) {
     body {
         font-size: 19px;
     }
@@ -128,7 +128,7 @@ h2 {
 }
 
 /* 모바일 최적화 + 테이블 가로 스크롤 */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
     .table-container {
         width: 100%;
         overflow-x: auto;
@@ -137,4 +137,4 @@ h2 {
     table {
         width: 100%;
     }
-}
+} */
