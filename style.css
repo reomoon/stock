@@ -1,10 +1,12 @@
 body {
+    /* 전체 페이지 기본 폰트와 배경, 여백 설정 */
     font-family: 'Segoe UI', Arial, sans-serif;
     background: #f4f6fa;
     margin: 0;
     padding: 0;
 }
 header {
+    /* 상단 헤더 스타일 (배경, 글자색, 정렬 등) */
     background: #2d3e50;
     color: #fff;
     padding: 24px 0 16px 0;
@@ -13,6 +15,7 @@ header {
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 section {
+    /* 각 섹션(박스) 스타일: 배경, 그림자, 여백, 패딩 등 */
     background: #fff;
     margin: 32px auto;
     max-width: 800px;
@@ -21,6 +24,7 @@ section {
     padding: 32px 40px 24px 40px;
 }
 h2 {
+    /* 섹션 제목 스타일 */
     color: #2d3e50;
     border-bottom: 2px solid #e0e6ed;
     padding-bottom: 8px;
@@ -28,35 +32,65 @@ h2 {
     font-size: 1.6em;
 }
 .stock-table {
+    /* 주식 테이블 전체 스타일 */
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 16px;
 }
+
+.stock-table th {
+    /* 테이블 헤더 스타일 */
+    background: #f0f4f8;
+    color: #2d3e50;
+    border-bottom: 2px solid #e0e6ed;
+    font-size: 1.75em;   /* ← 헤더 글자 크기 키우기 */
+    font-weight: bold;
+}
+
 .stock-table th, .stock-table td {
+    /* 테이블 셀(헤더/데이터) 공통 스타일 */
     padding: 10px 8px;
     text-align: left;
 }
 .stock-table th {
+    /* 테이블 헤더 스타일 */
     background: #f0f4f8;
     color: #2d3e50;
     border-bottom: 2px solid #e0e6ed;
 }
 .stock-table tr:nth-child(even) {
+    /* 테이블 짝수 행 배경색 */
     background: #f8fafc;
 }
-.up { color: #1abc9c; font-weight: bold; }
-.down { color: #e74c3c; font-weight: bold; }
-.neutral { color: #888; }
+.up { color: #1abc9c; font-weight: bold; }      /* 상승(초록) */
+.down { color: #e74c3c; font-weight: bold; }    /* 하락(빨강) */
+.neutral { color: #888; }                       /* 변동 없음(회색) */
 .news-list {
+    /* 뉴스 리스트(ul) 스타일 */
     list-style: none;
     padding: 0;
 }
 .news-list li {
+    /* 뉴스 항목(li) 스타일 */
     margin-bottom: 12px;
     padding-bottom: 10px;
     border-bottom: 1px solid #f0f0f0;
 }
+/* 반응형: 화면이 600px 이하일 때 섹션 패딩 조정 */
 @media (max-width: 600px) {
     section {
         padding: 18px 8px 12px 8px;
     }
+}
+
+/* 주식 정보 테이블 모든 셀(종목명, 종가, 변동) 글자 크게 */
+.stock-table td {
+    font-size: 1.6em;
+    /* font-weight: bold; */
+    letter-spacing: 1px;
+}
+
+/* 뉴스 링크 글자 작게 */
+.news-list a {
+    font-size: 0.80em;
+}
