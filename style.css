@@ -31,11 +31,11 @@ h2 {
     border-bottom: 2px solid #e0e6ed;
     padding-bottom: 6px;
     margin-bottom: 16px;
-    font-size: 35px;
+    font-size: 45px;
 }
 
 .stock-table-wrap{
-    font-size: 30px;     /* 혹은 px 단위로 예: 20px */
+    font-size: 45px;     /* 혹은 px 단위로 예: 20px */
     font-weight: bold;
     margin-top: 20px;
     margin-bottom: 12px;
@@ -87,7 +87,7 @@ h2 {
 
 .news-header {
     display: block;
-    font-size: 30px;     /* 혹은 px 단위로 예: 20px */
+    font-size: 45px;     /* 혹은 px 단위로 예: 20px */
     font-weight: bold;
     margin-top: 30px;
     margin-bottom: 12px;
@@ -106,7 +106,7 @@ h2 {
 }
 
 .news-list a {
-    font-size: 2.2em;
+    font-size: 45px;
     word-break: break-word;
     text-decoration: none;
     color: #333;
@@ -116,11 +116,11 @@ h2 {
 /* 반응형 대응 */
 @media (max-width: 480px) {
     body {
-        font-size: 16px;
+        font-size: 45px;
     }
 
     header {
-        font-size: 1em;
+        font-size: 45px;
         padding: 16px 0;
     }
 
@@ -129,7 +129,7 @@ h2 {
     }
 
     h2 {
-        font-size: 1em;
+        font-size: 45px;
     }
 
     .stock-table {
@@ -140,10 +140,10 @@ h2 {
 
     .stock-table th,
     .stock-table td {
-        font-size: 0.9em;
+        font-size: 45px;
     }
 
     .news-list a {
-        font-size: 0.95em;
+        font-size: 45px;
     }
 }
