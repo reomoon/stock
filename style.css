@@ -1,55 +1,59 @@
 body {
     font-family: 'Segoe UI', Arial, sans-serif;
     background: #f4f6fa;
-    margin: 0 auto;          /* auto로 중앙 정렬 */
-    max-width: 600px;        /* 최대 너비 제한 */
-    padding: 0 10px;         /* 좌우 10px 패딩 */
-    font-size: 30px;
+    margin: 0 auto;
+    max-width: 600px;
+    padding: 0 10px;
+    font-size: 18px; /* 상대적으로 작은 기본 크기 */
 }
 
 header {
     background: #2d3e50;
     color: #fff;
-    padding: 24px 0 16px 0;
+    padding: 20px 0;
     text-align: center;
-    letter-spacing: 2px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    letter-spacing: 1px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    font-size: 1.2em;
 }
 
 section {
     background: #fff;
-    margin: 32px auto;
-    max-width: 800px;
+    margin: 24px auto;
+    max-width: 100%;
     border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-    padding: 32px 40px 24px 40px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    padding: 16px;
 }
 
 h2 {
     color: #2d3e50;
     border-bottom: 2px solid #e0e6ed;
-    padding-bottom: 8px;
-    margin-bottom: 24px;
-    font-size: 1.4em;
+    padding-bottom: 6px;
+    margin-bottom: 16px;
+    font-size: 1.2em;
 }
 
 .stock-table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 16px;
+    overflow-x: auto;
 }
 
 .stock-table th {
     background: #f0f4f8;
     color: #2d3e50;
     border-bottom: 2px solid #e0e6ed;
-    font-size: 1.2em;
+    font-size: 1em;
     font-weight: bold;
 }
 
-.stock-table th, .stock-table td {
-    padding: 14px 8px;
+.stock-table th,
+.stock-table td {
+    padding: 10px 6px;
     text-align: left;
+    font-size: 0.95em;
 }
 
 .stock-table tr:nth-child(even) {
@@ -57,19 +61,16 @@ h2 {
 }
 
 .stock-table td {
-    font-size: 1.1em;
     font-weight: bold;
     letter-spacing: 0.5px;
 }
 
 .up {
     color: #1abc9c;
-    font-weight: bold;
 }
 
 .down {
     color: #e74c3c;
-    font-weight: bold;
 }
 
 .neutral {
@@ -82,36 +83,39 @@ h2 {
 }
 
 .news-list li {
-    margin-bottom: 16px;
-    padding-bottom: 12px;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
     border-bottom: 1px solid #f0f0f0;
 }
 
 .news-list a {
-    font-size: 2em;
+    font-size: 1em;
     word-break: break-word;
     text-decoration: none;
     color: #333;
+    display: block;
 }
 
-/* 반응형 - 화면이 좁아지면 세로 정렬 */
-@media (max-width: 800px) {
+/* 반응형 대응 */
+@media (max-width: 480px) {
     body {
-        font-size: 19px;
+        font-size: 16px;
+    }
+
+    header {
+        font-size: 1em;
+        padding: 16px 0;
     }
 
     section {
-        max-width: 800px;  /* 여기서도 모바일 최적화 */
-        padding: 16px 12px;
-        margin: 16px auto;
+        padding: 12px;
     }
 
     h2 {
-        font-size: 1.1em;
+        font-size: 1em;
     }
 
     .stock-table {
-        font-size: 1.2em;
         display: block;
         overflow-x: auto;
         white-space: nowrap;
@@ -119,34 +123,10 @@ h2 {
 
     .stock-table th,
     .stock-table td {
-        padding: 10px 6px;
-        font-size: 1.2em;
+        font-size: 0.9em;
     }
 
     .news-list a {
-        font-size: 1.2em;
-        display: block;
+        font-size: 0.95em;
     }
 }
-
-section {
-    background: #fff;
-    margin: 32px auto;
-    max-width: 360px;   /* 800px → 360px으로 축소 */
-    border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-    padding: 20px 15px 24px 15px;  /* 패딩 좌우를 40px → 15px으로 줄임 */
-}
-
-
-/* 모바일 최적화 + 테이블 가로 스크롤 */
-/* @media (max-width: 768px) {
-    .table-container {
-        width: 100%;
-        overflow-x: auto;
-    }
-
-    table {
-        width: 100%;
-    }
-} */
