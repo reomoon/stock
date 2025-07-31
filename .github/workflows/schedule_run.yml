@@ -4,7 +4,10 @@ name: Scheduled run.py
 
 on:
   schedule:
-    - cron: '0 * * * *'  # 매시간 0분에 실행
+    # 한국 시간 08:00 → UTC 23:00
+    - cron: '0 23 * * *'
+    # 한국 시간 17:00 → UTC 08:00
+    - cron: '0 8 * * *'
   workflow_dispatch:  # 수동 실행 가능
 
 jobs:
