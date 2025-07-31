@@ -1,149 +1,113 @@
+/* 기본 글자 크기 */
 body {
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background: #f4f6fa;
-    margin: 0 auto;
-    max-width: 960px;
-    padding: 0 10px;
-    font-size: 18px; /* 상대적으로 작은 기본 크기 */
+    color: #2d2d2d;
+    font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 18px;
+    line-height: 1.6;
 }
 
-header {
-    background: #2d3e50;
-    color: #fff;
-    padding: 5px 0;
+/* 제목 크기 */
+h1 {
+    background-color: #03c75a; /* 네이버 초록색 */
+    color: white;
+    font-size: 28px;
     text-align: center;
-    letter-spacing: 1px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-    font-size: 1.2em;
-}
-
-section {
-    background: #fff;
-    margin: 24px auto;
-    max-width: 100%;
-    border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-    padding: 16px;
+    margin-bottom: 12px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 h2 {
-    color: #2d3e50;
-    border-bottom: 2px solid #e0e6ed;
-    padding-bottom: 6px;
-    margin-bottom: 16px;
-    font-size: 45px;
-}
-
-.stock-table-wrap{
-    font-size: 35px;     /* 혹은 px 단위로 예: 20px */
-    font-weight: bold;
-    margin-top: 20px;
+    font-size: 24px;
+    margin-top: 24px;
     margin-bottom: 12px;
-    color: #2d3e50;       /* 보기 좋은 색상 */
 }
 
-.stock-table {
-    font-size: 50px; 
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 16px;
-    overflow-x: auto;
+section {
+
+    padding: 10px;
 }
 
-.stock-table th {
-    background: #f0f4f8;
-    color: #2d3e50;
-    border-bottom: 2px solid #e0e6ed;
-    font-size: 1em;
-    font-weight: bold;
-}
-
-.stock-table th,
-.stock-table td {
-    padding: 10px 6px;
-    text-align: left;
-    font-size: 40px;
-}
-
-.stock-table tr:nth-child(even) {
-    background: #f8fafc;
-}
-
-.stock-table td {
-    font-weight: bold;
-    letter-spacing: 0.5px;
-}
-
-.up {
-    color: #2d1abc;
-}
-
-.down {
-    color: #e74c3c;
-}
-
-.neutral {
-    color: #888;
-}
-
+/* 뉴스 날짜 텍스트 */
 .news-header {
-    font-size: 45px;     /* 혹은 px 단위로 예: 20px */
+    font-size: 20px;
     font-weight: bold;
-    margin-top: 30px;
-    margin-bottom: 12px;
-    color: #2d3e50;       /* 보기 좋은 색상 */
+    margin-bottom: 10px;
+    display: block;
+    color: #333;
 }
 
+/* 뉴스 항목 */
 .news-list {
-    list-style: none;
-    padding: 0;
+    padding: 5px 0 5px 0;
 }
 
 .news-list li {
-    margin-bottom: 12px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #f0f0f0;
+    margin-bottom: 8px;
 }
 
-.news-list a {
-    font-size: 45px;
-    word-break: break-word;
-    text-decoration: none;
-    color: #333;
-    display: block;
+/* 반응형 테이블 감싸기 */
+.stock-table-wrap {
+    overflow-x: auto;
 }
 
-/* 반응형 대응 */
-@media (max-width: 480px) {
+/* 테이블 스타일 */
+.stock-table {
+    width: 100%;
+    font-size: 16px;
+    border-collapse: collapse;
+}
+.stock-table th, .stock-table td {
+    padding: 8px;
+    border: 1px solid #ccc;
+}
+
+section#stock {
+    background-color: #f4f4f5;
+}
+
+section#economy {
+    background-color: #f4f4f5;
+}
+
+section#realestate {
+    background-color: #f4f4f5;
+}
+
+/* ul, li 태그 불릿 제거 */
+ul {
+  list-style-type: none;
+  padding-left: 0; /* 불릿 없앴으면 들여쓰기 제거도 보통 같이 함 */
+}
+
+/* 주가 이모티콘 */
+.up {
+  color: red;    /* 상승 빨간색 (세모 빨간색일 때) */
+}
+
+.down {
+  color: blue;   /* 하락 파란색 */
+}
+
+.neutral {
+  color: gray;
+}
+
+
+/* 모바일 대응 */
+@media (max-width: 600px) {
     body {
-        font-size: 45px;
+        font-size: 17px;
     }
 
-    header {
-        font-size: 45px;
-        padding: 16px 0;
-    }
-
-    section {
-        padding: 12px;
+    h1 {
+        font-size: 24px;
     }
 
     h2 {
-        font-size: 45px;
+        font-size: 20px;
     }
 
-    .stock-table {
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
-    }
-
-    .stock-table th,
-    .stock-table td {
-        font-size: 45px;
-    }
-
-    .news-list a {
-        font-size: 45px;
+    .stock-table th, .stock-table td {
+        font-size: 14px;
     }
 }

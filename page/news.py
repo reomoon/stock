@@ -22,7 +22,7 @@ def economy():
             href = link_tag["href"]
             html += f"<li><a href='{href}' target='_blank'>{title}</a></li>"
             count += 1
-        if count >= 10:
+        if count >= 6:
             break
     html += "</ul></div>"
     return html
@@ -45,7 +45,7 @@ def realestate():
             href = link_tag["href"]
             html += f"<li><a href='{href}' target='_blank'>{title}</a></li>"
             count += 1
-        if count >= 10:
+        if count >= 6:
             break
     html += "</ul></div>"
     return html
