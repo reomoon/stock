@@ -1,11 +1,10 @@
 /* 기본 글자 크기 */
 body {
-    background-color: #f7f7f7; /* 아주 연한 회색 */
-    color: #2d2d2d;            /* 글자색은 명도 대비 위해 진한 회색 */
+    background-color: #ccc;
+    color: #2d2d2d;
     font-family: Arial, sans-serif;
-    font-size: 18px;           /* 모바일에서 보기 좋게 기본 글자 크게 */
+    font-size: 18px;
     line-height: 1.6;
-    margin: 0;
     padding: 12px;
 }
 
@@ -22,6 +21,7 @@ h2 {
 }
 
 section {
+
     padding: 10px;
 }
 
