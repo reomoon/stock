@@ -1,8 +1,5 @@
 import yfinance as yf
 from datetime import date
-
-import yfinance as yf
-from datetime import date
 import requests
 
 def kospi():
@@ -44,7 +41,7 @@ def stock():
     tickers = ["^IXIC", "AAPL", "MSFT", "NVDA", "AMZN", "META", "GOOGL", "TSLA"]
     data = yf.download(tickers, period="2d", interval="1d")
     today_str = date.today().strftime("%Y-%m-%d")
-    html = f"<div class='stock-table-wrap'><div>📊[{today_str}] 주요 미국 주식 종가 변동</div><table class='stock-table'><tr><th>종목</th><th>종가</th><th>변동</th></tr>"
+    html = f"<div class='stock-table-wrap'><div>주요 미국 주식 종가 변동({today_str})</div><table class='stock-table'><tr><th>종목</th><th>종가</th><th>변동</th></tr>"
     for ticker in tickers:
         try:
             today = data["Close"][ticker].iloc[-1]

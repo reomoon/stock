@@ -1,7 +1,11 @@
 /* 기본 글자 크기 */
 body {
-    font-size: 18px;
+    background-color: #f7f7f7; /* 아주 연한 회색 */
+    color: #2d2d2d;            /* 글자색은 명도 대비 위해 진한 회색 */
+    font-family: Arial, sans-serif;
+    font-size: 18px;           /* 모바일에서 보기 좋게 기본 글자 크게 */
     line-height: 1.6;
+    margin: 0;
     padding: 12px;
 }
 
@@ -31,6 +35,10 @@ section {
 }
 
 /* 뉴스 항목 */
+.news-list {
+    padding: 30px 0;
+}
+
 .news-list li {
     margin-bottom: 8px;
 }

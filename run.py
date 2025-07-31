@@ -6,7 +6,7 @@ with open("main.html", "w", encoding="utf-8") as f:
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>오늘의 주가 및 주요 뉴스</title>
+    <title>Stock & News Dashboard</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
