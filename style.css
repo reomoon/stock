@@ -1,0 +1,149 @@
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f4f6fa;
+    margin: 0 auto;
+    max-width: 960px;
+    padding: 0 10px;
+    font-size: 18px; /* 상대적으로 작은 기본 크기 */
+}
+
+header {
+    background: #2d3e50;
+    color: #fff;
+    padding: 5px 0;
+    text-align: center;
+    letter-spacing: 1px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    font-size: 1.2em;
+}
+
+section {
+    background: #fff;
+    margin: 24px auto;
+    max-width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    padding: 16px;
+}
+
+h2 {
+    color: #2d3e50;
+    border-bottom: 2px solid #e0e6ed;
+    padding-bottom: 6px;
+    margin-bottom: 16px;
+    font-size: 45px;
+}
+
+.stock-table-wrap{
+    font-size: 35px;     /* 혹은 px 단위로 예: 20px */
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 12px;
+    color: #2d3e50;       /* 보기 좋은 색상 */
+}
+
+.stock-table {
+    font-size: 50px; 
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 16px;
+    overflow-x: auto;
+}
+
+.stock-table th {
+    background: #f0f4f8;
+    color: #2d3e50;
+    border-bottom: 2px solid #e0e6ed;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+.stock-table th,
+.stock-table td {
+    padding: 10px 6px;
+    text-align: left;
+    font-size: 40px;
+}
+
+.stock-table tr:nth-child(even) {
+    background: #f8fafc;
+}
+
+.stock-table td {
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.up {
+    color: #2d1abc;
+}
+
+.down {
+    color: #e74c3c;
+}
+
+.neutral {
+    color: #888;
+}
+
+.news-header {
+    font-size: 45px;     /* 혹은 px 단위로 예: 20px */
+    font-weight: bold;
+    margin-top: 30px;
+    margin-bottom: 12px;
+    color: #2d3e50;       /* 보기 좋은 색상 */
+}
+
+.news-list {
+    list-style: none;
+    padding: 0;
+}
+
+.news-list li {
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.news-list a {
+    font-size: 45px;
+    word-break: break-word;
+    text-decoration: none;
+    color: #333;
+    display: block;
+}
+
+/* 반응형 대응 */
+@media (max-width: 480px) {
+    body {
+        font-size: 45px;
+    }
+
+    header {
+        font-size: 45px;
+        padding: 16px 0;
+    }
+
+    section {
+        padding: 12px;
+    }
+
+    h2 {
+        font-size: 45px;
+    }
+
+    .stock-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .stock-table th,
+    .stock-table td {
+        font-size: 45px;
+    }
+
+    .news-list a {
+        font-size: 45px;
+    }
+}
