@@ -8,6 +8,7 @@ with open("main.html", "w", encoding="utf-8") as f:
     <meta charset="UTF-8">
     <title>Stock & News Dashboard</title>
     <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
     <header>
