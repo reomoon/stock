@@ -31,11 +31,11 @@ h2 {
     border-bottom: 2px solid #e0e6ed;
     padding-bottom: 6px;
     margin-bottom: 16px;
-    font-size: 5em;
+    font-size: 35px;
 }
 
 .stock-table-wrap{
-    font-size: 40px;     /* 혹은 px 단위로 예: 20px */
+    font-size: 30px;     /* 혹은 px 단위로 예: 20px */
     font-weight: bold;
     margin-top: 20px;
     margin-bottom: 12px;
