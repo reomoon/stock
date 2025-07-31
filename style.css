@@ -3,8 +3,9 @@ body {
     background: #f4f6fa;
     margin: 0;
     padding: 0;
-    font-size: 18px; /* 기본 글자 크기 크게 */
+    font-size: 18px;
 }
+
 header {
     background: #2d3e50;
     color: #fff;
@@ -13,6 +14,7 @@ header {
     letter-spacing: 2px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
+
 section {
     background: #fff;
     margin: 32px auto;
@@ -21,6 +23,7 @@ section {
     box-shadow: 0 2px 12px rgba(0,0,0,0.06);
     padding: 32px 40px 24px 40px;
 }
+
 h2 {
     color: #2d3e50;
     border-bottom: 2px solid #e0e6ed;
@@ -28,11 +31,13 @@ h2 {
     margin-bottom: 24px;
     font-size: 1.4em;
 }
+
 .stock-table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 16px;
 }
+
 .stock-table th {
     background: #f0f4f8;
     color: #2d3e50;
@@ -40,49 +45,96 @@ h2 {
     font-size: 1.2em;
     font-weight: bold;
 }
+
 .stock-table th, .stock-table td {
     padding: 14px 8px;
     text-align: left;
 }
+
 .stock-table tr:nth-child(even) {
     background: #f8fafc;
 }
+
 .stock-table td {
     font-size: 1.1em;
     font-weight: bold;
     letter-spacing: 0.5px;
 }
-.up { color: #1abc9c; font-weight: bold; }
-.down { color: #e74c3c; font-weight: bold; }
-.neutral { color: #888; }
+
+.up {
+    color: #1abc9c;
+    font-weight: bold;
+}
+
+.down {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+.neutral {
+    color: #888;
+}
+
 .news-list {
     list-style: none;
     padding: 0;
 }
+
 .news-list li {
     margin-bottom: 16px;
     padding-bottom: 12px;
     border-bottom: 1px solid #f0f0f0;
 }
+
 .news-list a {
     font-size: 1em;
-    word-break: break-all;
+    word-break: break-word;
+    text-decoration: none;
+    color: #333;
 }
+
+/* 반응형 - 화면이 좁아지면 세로 정렬 */
 @media (max-width: 600px) {
     body {
-        font-size: 19px; /* 모바일에서 더 크게 */
+        font-size: 19px;
     }
+
     section {
-        padding: 14px 4px 10px 4px;
+        padding: 16px 12px;
+        margin: 16px 8px;
     }
+
     h2 {
         font-size: 1.1em;
     }
-    .stock-table th, .stock-table td {
-        padding: 10px 4px;
+
+    .stock-table {
+        font-size: 0.95em;
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .stock-table th,
+    .stock-table td {
+        padding: 10px 6px;
         font-size: 1em;
     }
+
     .news-list a {
         font-size: 1em;
+        display: block;
+    }
+}
+
+/* 모바일 최적화 + 테이블 가로 스크롤 */
+@media (max-width: 768px) {
+    .table-container {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
     }
 }
