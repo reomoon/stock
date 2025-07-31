@@ -35,7 +35,7 @@ h2 {
 }
 
 .stock-table-wrap{
-    font-size: 50px;     /* 혹은 px 단위로 예: 20px */
+    font-size: 35px;     /* 혹은 px 단위로 예: 20px */
     font-weight: bold;
     margin-top: 20px;
     margin-bottom: 12px;
@@ -43,6 +43,7 @@ h2 {
 }
 
 .stock-table {
+    font-size: 50px; 
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 16px;
