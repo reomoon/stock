@@ -6,12 +6,12 @@ with open("main.html", "w", encoding="utf-8") as f:
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Stock & News Dashboard</title>
+    <title>오늘의 주가 및 주요 뉴스</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-        <h1>Stock & News Dashboard</h1>
+        <h1>오늘의 주가 및 주요 뉴스</h1>
     </header>
     <section id="stock">
         <h2>주식 정보</h2>
