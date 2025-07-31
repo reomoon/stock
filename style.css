@@ -35,7 +35,7 @@ h2 {
 }
 
 .stock-table-wrap{
-    font-size: 3.5em;     /* 혹은 px 단위로 예: 20px */
+    font-size: 40px;     /* 혹은 px 단위로 예: 20px */
     font-weight: bold;
     margin-top: 20px;
     margin-bottom: 12px;
@@ -61,7 +61,7 @@ h2 {
 .stock-table td {
     padding: 10px 6px;
     text-align: left;
-    font-size: 3.5em;
+    font-size: 40px;
 }
 
 .stock-table tr:nth-child(even) {
@@ -86,7 +86,7 @@ h2 {
 }
 
 .news-header {
-    font-size: 3.5em;     /* 혹은 px 단위로 예: 20px */
+    font-size: 24px;     /* 혹은 px 단위로 예: 20px */
     font-weight: bold;
     margin-top: 20px;
     margin-bottom: 12px;
