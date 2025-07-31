@@ -1,18 +1,23 @@
 /* 기본 글자 크기 */
 body {
-    background-color: #ccc;
     color: #2d2d2d;
-    font-family: Arial, sans-serif;
+    font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: 18px;
     line-height: 1.6;
-    padding: 12px;
 }
 
 /* 제목 크기 */
 h1 {
-    font-size: 28px;
-    margin-bottom: 12px;
+  background-color: #03c75a; /* 네이버 초록색 */
+  color: white;
+  padding: 16px 24px;
+  font-size: 24px;
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
+
 
 h2 {
     font-size: 24px;
@@ -58,6 +63,32 @@ section {
     padding: 8px;
     border: 1px solid #ccc;
 }
+
+section#stock {
+    background-color: #f4f4f5;
+}
+
+section#economy {
+    background-color: #f4f4f5;
+}
+
+section#realestate {
+    background-color: #f4f4f5;
+}
+
+/* 주가 이모티콘 */
+.up {
+  color: red;    /* 상승 빨간색 (세모 빨간색일 때) */
+}
+
+.down {
+  color: blue;   /* 하락 파란색 */
+}
+
+.neutral {
+  color: gray;
+}
+
 
 /* 모바일 대응 */
 @media (max-width: 600px) {
