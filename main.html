@@ -12,8 +12,8 @@
     </header>
     <section id="stock">
         <h2>주식 정보</h2>
-        <div class='stock-table-wrap'><div>주요 미국 주식 종가 변동(2025-08-04 16:28)</div><table class='stock-table'><tr><th>종목</th><th>종가</th><th>변동</th></tr><tr><td>NASDAQ</td><td>20650.13</td><td class='down'>&#9660; (-2.2%, -472.32)</td></tr><tr><td>AAPL</td><td>202.38</td><td class='down'>&#9660; (-2.5%, -5.19)</td></tr><tr><td>MSFT</td><td>524.11</td><td class='down'>&#9660; (-1.8%, -9.39)</td></tr><tr><td>NVDA</td><td>173.72</td><td class='down'>&#9660; (-2.3%, -4.15)</td></tr><tr><td>AMZN</td><td>214.75</td><td class='down'>&#9660; (-8.3%, -19.36)</td></tr><tr><td>META</td><td>750.01</td><td class='down'>&#9660; (-3.0%, -23.43)</td></tr><tr><td>GOOGL</td><td>189.13</td><td class='down'>&#9660; (-1.4%, -2.77)</td></tr><tr><td>TSLA</td><td>302.63</td><td class='down'>&#9660; (-1.8%, -5.64)</td></tr><tr><td>BTC(Upbit)</td><td>160,131,000원</td><td class='down'>&#9660; (-0.1%, -96000)</td></tr><tr><td>KOSPI</td><td>3,147.75</td><td class='up'>&#9650; (+0.9%, +28.34)</td></tr></table></div>
-        <h2>이동평균선</h2>
+        <div class='stock-table-wrap'><div>주요 미국 주식 종가 변동(2025-08-04 07:58)</div><table class='stock-table'><tr><th>종목</th><th>종가</th><th>변동</th></tr><tr><td>NASDAQ</td><td>20650.13</td><td class='down'>&#9660; (-2.2%, -472.32)</td></tr><tr><td>AAPL</td><td>202.38</td><td class='down'>&#9660; (-2.5%, -5.19)</td></tr><tr><td>MSFT</td><td>524.11</td><td class='down'>&#9660; (-1.8%, -9.39)</td></tr><tr><td>NVDA</td><td>173.72</td><td class='down'>&#9660; (-2.3%, -4.15)</td></tr><tr><td>AMZN</td><td>214.75</td><td class='down'>&#9660; (-8.3%, -19.36)</td></tr><tr><td>META</td><td>750.01</td><td class='down'>&#9660; (-3.0%, -23.43)</td></tr><tr><td>GOOGL</td><td>189.13</td><td class='down'>&#9660; (-1.4%, -2.77)</td></tr><tr><td>TSLA</td><td>302.63</td><td class='down'>&#9660; (-1.8%, -5.64)</td></tr><tr><td>BTC(Upbit)</td><td>160,389,000원</td><td class='up'>&#9650; (+0.1%, +162000)</td></tr><tr><td>KOSPI</td><td>3,147.75</td><td class='up'>&#9650; (+0.9%, +28.34)</td></tr></table></div>
+        <h2>나스닥 이동평균선</h2>
         <div id="ma-graphs">
             
 <canvas id="nasdaqChart" style="max-width:100%;"></canvas>
@@ -40,8 +40,15 @@ const nasdaqChart = new Chart(ctx, {
                 borderWidth: 1,      // 선 굵기
                 fill: false,
                 pointRadius: 0
+            },
+            {
+                label: '200일선',
+                data: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, 18376.61, 18387.09, 18400.72, 18412.57, 18427.59, 18439.79, 18451.94, 18463.61, 18473.89, 18484.92, 18494.25, 18502.58, 18510.85, 18519.72, 18528.7, 18538.68, 18547.6, 18556.01, 18565.74, 18575.57, 18585.72, 18594.39, 18606.86, 18621.0, 18635.23, 18652.61, 18669.56, 18686.28, 18700.32, 18714.43, 18729.02, 18743.12, 18757.07, 18772.26, 18785.35, 18798.53, 18811.86, 18824.88, 18838.12, 18851.6, 18865.48, 18879.4, 18894.31, 18909.79, 18925.49, 18940.34, 18956.61, 18971.19, 18985.38, 18999.58, 19011.12],
+                borderColor: 'blue',  // 파란색
+                borderWidth: 1,      // 선 굵기
+                fill: false,
+                pointRadius: 0
             }
-    
         ]
     },
     options: {
@@ -58,16 +65,16 @@ const nasdaqChart = new Chart(ctx, {
         },
         interaction: { mode: 'nearest', intersect: false },
         scales: {
-            x: { 
+            x: {
                 display: true,
-                title: { display: true, text: '날짜' }
-                ticks: { font: { size: 10} // font size
-                },
-            y: { 
+                title: { display: true, text: '날짜' },
+                ticks: { font: { size: 10 } }
+            },
+            y: {
                 display: true,
-                title: { display: true, text: '지수' }
-                min: 0 //y축 0부터 시작
-                }
+                title: { display: true, text: '지수' },
+                min: 10000
+            }
         }
     }
 });
@@ -78,16 +85,16 @@ const nasdaqChart = new Chart(ctx, {
     <section id="economy">
         <h2>경제 뉴스</h2>
         
-    <div class='news-header'>주요 경제 뉴스(2025-08-04 16:28)</div>
+    <div class='news-header'>주요 경제 뉴스(2025-08-04 07:58)</div>
     <ul class='news-list'>
-    <li><a href='https://n.news.naver.com/mnews/article/243/0000082497' target='_blank'>코인원, 8월 한 달간 거래량 이벤트 진행</a></li><li><a href='https://n.news.naver.com/mnews/article/018/0006081556' target='_blank'>거래소, 유진테크놀로지에 현저한 시황변동 조회공시 요구</a></li><li><a href='https://n.news.naver.com/mnews/article/003/0013403163' target='_blank'>日증시, '美 고용 쇼크'에 장중 4만선 붕괴…닛케이지수 1.25%↓</a></li><li><a href='https://n.news.naver.com/mnews/article/015/0005166555' target='_blank'>'2년 공회전, 드디어 국회 넘나' 기대감에 오르는 토큰증권주</a></li><li><a href='https://n.news.naver.com/mnews/article/014/0005386913' target='_blank'>'세제 폭탄' 맞았던 코스피, 저가매수세에 3140선 마감[fn마감시황]</a></li><li><a href='https://n.news.naver.com/mnews/article/011/0004517140' target='_blank'>라자드자산운용 "하반기 시장, 트럼프發 구조적 충격 대비해야"</a></li></ul></div>
+    <li><a href='https://n.news.naver.com/mnews/article/018/0006081576' target='_blank'>거래소 “플래스크, 상장폐지 관련 이의신청서 제출”</a></li><li><a href='https://n.news.naver.com/mnews/article/011/0004517154' target='_blank'>강훈식 "집중호우 가용 자원 총동원…만전 기해달라"</a></li><li><a href='https://n.news.naver.com/mnews/article/029/0002973185' target='_blank'>법원 가처분에 막힌 부실기업 퇴출…투자자만 거래 정지 피해</a></li><li><a href='https://n.news.naver.com/mnews/article/243/0000082499' target='_blank'>VIG파트너스, 비올 상장폐지 요건 충족…지분 95% 확보</a></li><li><a href='https://n.news.naver.com/mnews/article/018/0006081573' target='_blank'>[마켓인]비올, 자진상폐 요건 충족…VIG, 지분 확보 완료</a></li><li><a href='https://n.news.naver.com/mnews/article/421/0008410527' target='_blank'>수출·신약·CDMO '3박자'로 역대급 실적…제약·바이오 2분기 날았다</a></li></ul></div>
     </section>
     <section id="realestate">
         <h2>부동산 뉴스</h2>
         
-    <div class='news-header'>주요 부동산 뉴스(2025-08-04 16:28)</div>
+    <div class='news-header'>주요 부동산 뉴스(2025-08-04 07:58)</div>
     <ul class='news-list'>
-    <li><a href='https://n.news.naver.com/mnews/article/421/0008410436' target='_blank'>도공서비스, 하계 휴가철 특별영업대책 기간 지정…'안전관리 강화'</a></li><li><a href='https://n.news.naver.com/mnews/article/243/0000082493' target='_blank'>'재개발 조합 비리' 피의자, 경찰 압수수색 중 아파트서 투신 사망</a></li><li><a href='https://n.news.naver.com/mnews/article/421/0008410431' target='_blank'>"LH가 직접 짓고 분양도?"…정부, 공공개발 구조 전환 모색</a></li><li><a href='https://n.news.naver.com/mnews/article/014/0005386897' target='_blank'>"갈아타기 못한다"...대출규제 직전, 40대 서초구 아파트 폭풍 매입</a></li><li><a href='https://n.news.naver.com/mnews/article/016/0002509504' target='_blank'>아이에스동서 장학재단, 취약계층 아동 위해 소방안전물품 후원</a></li><li><a href='https://n.news.naver.com/mnews/article/011/0004517119' target='_blank'>"인천 용현학익지구 중심 입지"… '인하대역 수자인 로이센트' 분양 [집슐랭]</a></li></ul></div>
+    <li><a href='https://n.news.naver.com/mnews/article/009/0005535881' target='_blank'>GTX역 랜드마크 전셋값 '신고가 행진'</a></li><li><a href='https://n.news.naver.com/mnews/article/009/0005535880' target='_blank'>심각한 지방 미분양해소 위해 안심환매 사업 세제혜택 추진</a></li><li><a href='https://n.news.naver.com/mnews/article/009/0005535879' target='_blank'>개포우성7차에 층간소음 저감 1등급</a></li><li><a href='https://n.news.naver.com/mnews/article/009/0005535878' target='_blank'>이달 잠실르엘 등 전국 2만5천가구 분양</a></li><li><a href='https://n.news.naver.com/mnews/article/421/0008410528' target='_blank'>코레일, 철도현장 산업재해 예방대책 점검회의 개최</a></li><li><a href='https://n.news.naver.com/mnews/article/014/0005386927' target='_blank'>코레일, 철도현장 산업재해 예방대책 점검회의 개최</a></li></ul></div>
     </section>
 </body>
 </html>
