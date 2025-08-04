@@ -1,8 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
-from datetime import date
+from datetime import datetime
 
-today = date.today()
+# 예시: 2025-08-04 14:23
+today = datetime.now().strftime("%Y-%m-%d %H:%M")
 
 def economy():
     url = "https://news.naver.com/breakingnews/section/101/258"

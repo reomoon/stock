@@ -1,6 +1,7 @@
 from page.market import stock
 from plot_averages import make_nasdaq_ma_graphs
 from page.news import economy, realestate
+from datetime import datetime
 
 ma_graphs_html = make_nasdaq_ma_graphs()
 

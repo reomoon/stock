@@ -1,11 +1,14 @@
 import yfinance as yf
 import requests
-from datetime import date
+from datetime import datetime
+
+# 예시: 2025-08-04 14:23
+now_str = datetime.now().strftime("%Y-%m-%d %H:%M")
 
 def kospi():
     import yfinance as yf
     try:
-        data = yf.download("^KS11", period="2d", interval="1d", progress=False)
+        data = yf.download("^KS11", period="2d", interval="1d", progress=False, auto_adjust=True)
 
         if data.empty or "Close" not in data.columns or len(data) < 2:
             return "<tr><td>KOSPI</td><td colspan='2'>데이터 오류 - 데이터가 부족하거나 가져오지 못함.</td></tr>"
@@ -49,9 +52,8 @@ def bitcoin():
 
 def stock():
     tickers = ["^IXIC", "AAPL", "MSFT", "NVDA", "AMZN", "META", "GOOGL", "TSLA"]
-    data = yf.download(tickers, period="2d", interval="1d")
-    today_str = date.today().strftime("%Y-%m-%d")
-    html = f"<div class='stock-table-wrap'><div>주요 미국 주식 종가 변동({today_str})</div><table class='stock-table'><tr><th>종목</th><th>종가</th><th>변동</th></tr>"
+    data = yf.download(tickers, period="2d", interval="1d", auto_adjust=True)
+    html = f"<div class='stock-table-wrap'><div>주요 미국 주식 종가 변동({now_str})</div><table class='stock-table'><tr><th>종목</th><th>종가</th><th>변동</th></tr>"
     for ticker in tickers:
         try:
             today = data["Close"][ticker].iloc[-1]
