@@ -24,7 +24,7 @@ def kospi():
         diff = today - yesterday
         percent = (diff / yesterday) * 100 if yesterday != 0 else 0
 
-        emoji = "🔺" if diff > 0 else "🔻" if diff < 0 else "➖"
+        emoji = "▲" if diff > 0 else "▼" if diff < 0 else "-"
         diff_class = "up" if diff > 0 else "down" if diff < 0 else "neutral"
 
         return f"<tr><td>KOSPI</td><td>{today:,.2f}</td><td class='{diff_class}'>{emoji} ({percent:+.1f}%, {diff:+.2f})</td></tr>"
