@@ -33,24 +33,6 @@ with open("main.html", "w", encoding="utf-8") as f:
         <h2>부동산 뉴스</h2>
         %s
     </section>
-    <!-- ...other sections... -->
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        function toggleMA() {
-            document.querySelectorAll("#ma-graphs img").forEach(function(img) {
-                if (img.src.includes("120MA")) {
-                    img.style.display = document.getElementById("ma120").checked ? "" : "none";
-                }
-                if (img.src.includes("200MA")) {
-                    img.style.display = document.getElementById("ma200").checked ? "" : "none";
-                }
-            });
-        }
-        document.getElementById("ma120").addEventListener("change", toggleMA);
-        document.getElementById("ma200").addEventListener("change", toggleMA);
-        toggleMA();
-    });
-    </script>
 </body>
 </html>
 """ % (stock(), ma_graphs_html, economy(), realestate()))
