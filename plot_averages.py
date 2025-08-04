@@ -9,7 +9,7 @@ def make_nasdaq_ma_graphs():
         return "" # 데이터가 없으면 빈 문자 반환
     # 120일 이동평균선 계산
     df["120MA"] = df["Close"].rolling(window=120).mean()
-    # df["200MA"] = df["Close"].rolling(window=200).mean()
+    df["200MA"] = df["Close"].rolling(window=200).mean()
 
     # 날짜 리스트 생성 (x축)
     labels = [d.strftime("%Y-%m-%d") for d in df.index]
@@ -23,7 +23,16 @@ def make_nasdaq_ma_graphs():
     close = close.tolist()
     # 120일 이동평균선(Series)을 소수점 2자리로 반올림 후 리스트로 변환
     ma120 = df["120MA"].round(2).tolist() # tolist()는 pandas Series를 파이썬 리스트로 바꿔줌
-    # ma200 = df["200MA"].round(2).tolist()
+    ma200 = df["200MA"].round(2).tolist()
+
+    # 200MA에서 NaN이 아닌 첫 구간부터 모두 잘라냄
+    # valid_idx = [i for i, v in enumerate(ma200) if not (v is None or str(v) == 'nan')]
+    # if valid_idx:
+    #     start = valid_idx[0]
+    #     labels = labels[start:]
+    #     close = close[start:]
+    #     ma120 = ma120[start:]
+    #     ma200 = ma200[start:]
 
     # f-string에서 JS 객체 중괄호는 {{ }}로 작성해야 실제 JS에서는 { }로 출력됨
     return f"""
@@ -51,8 +60,15 @@ const nasdaqChart = new Chart(ctx, {{
                 borderWidth: 1,      // 선 굵기
                 fill: false,
                 pointRadius: 0
+            }},
+            {{
+                label: '200일선',
+                data: {json.dumps(ma200)},
+                borderColor: 'blue',  // 파란색
+                borderWidth: 1,      // 선 굵기
+                fill: false,
+                pointRadius: 0
             }}
-    
         ]
     }},
     options: {{
@@ -69,16 +85,16 @@ const nasdaqChart = new Chart(ctx, {{
         }},
         interaction: {{ mode: 'nearest', intersect: false }},
         scales: {{
-            x: {{ 
+            x: {{
                 display: true,
-                title: {{ display: true, text: '날짜' }}
-                ticks: {{ font: {{ size: 10}} // font size
-                }},
-            y: {{ 
+                title: {{ display: true, text: '날짜' }},
+                ticks: {{ font: {{ size: 10 }} }}
+            }},
+            y: {{
                 display: true,
-                title: {{ display: true, text: '지수' }}
-                min: 0 //y축 0부터 시작
-                }}
+                title: {{ display: true, text: '지수' }},
+                min: 10000
+            }}
         }}
     }}
 }});
