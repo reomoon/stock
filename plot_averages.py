@@ -69,8 +69,16 @@ const nasdaqChart = new Chart(ctx, {{
         }},
         interaction: {{ mode: 'nearest', intersect: false }},
         scales: {{
-            x: {{ display: true, title: {{ display: true, text: '날짜' }} }},
-            y: {{ display: true, title: {{ display: true, text: '지수' }} }}
+            x: {{ 
+                display: true,
+                title: {{ display: true, text: '날짜' }}
+                ticks: {{ font: {{ size: 10}} // font size
+                }},
+            y: {{ 
+                display: true,
+                title: {{ display: true, text: '지수' }}
+                min: 0 //y축 0부터 시작
+                }}
         }}
     }}
 }});

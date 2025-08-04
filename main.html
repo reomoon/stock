@@ -12,7 +12,7 @@
     </header>
     <section id="stock">
         <h2>주식 정보</h2>
-        <div class='stock-table-wrap'><div>주요 미국 주식 종가 변동(2025-08-04 16:13)</div><table class='stock-table'><tr><th>종목</th><th>종가</th><th>변동</th></tr><tr><td>NASDAQ</td><td>20650.13</td><td class='down'>&#9660; (-2.2%, -472.32)</td></tr><tr><td>AAPL</td><td>202.38</td><td class='down'>&#9660; (-2.5%, -5.19)</td></tr><tr><td>MSFT</td><td>524.11</td><td class='down'>&#9660; (-1.8%, -9.39)</td></tr><tr><td>NVDA</td><td>173.72</td><td class='down'>&#9660; (-2.3%, -4.15)</td></tr><tr><td>AMZN</td><td>214.75</td><td class='down'>&#9660; (-8.3%, -19.36)</td></tr><tr><td>META</td><td>750.01</td><td class='down'>&#9660; (-3.0%, -23.43)</td></tr><tr><td>GOOGL</td><td>189.13</td><td class='down'>&#9660; (-1.4%, -2.77)</td></tr><tr><td>TSLA</td><td>302.63</td><td class='down'>&#9660; (-1.8%, -5.64)</td></tr><tr><td>BTC(Upbit)</td><td>160,053,000원</td><td class='down'>&#9660; (-0.1%, -174000)</td></tr><tr><td>KOSPI</td><td>3,147.75</td><td class='up'>&#9650; (+0.9%, +28.34)</td></tr></table></div>
+        <div class='stock-table-wrap'><div>주요 미국 주식 종가 변동(2025-08-04 16:28)</div><table class='stock-table'><tr><th>종목</th><th>종가</th><th>변동</th></tr><tr><td>NASDAQ</td><td>20650.13</td><td class='down'>&#9660; (-2.2%, -472.32)</td></tr><tr><td>AAPL</td><td>202.38</td><td class='down'>&#9660; (-2.5%, -5.19)</td></tr><tr><td>MSFT</td><td>524.11</td><td class='down'>&#9660; (-1.8%, -9.39)</td></tr><tr><td>NVDA</td><td>173.72</td><td class='down'>&#9660; (-2.3%, -4.15)</td></tr><tr><td>AMZN</td><td>214.75</td><td class='down'>&#9660; (-8.3%, -19.36)</td></tr><tr><td>META</td><td>750.01</td><td class='down'>&#9660; (-3.0%, -23.43)</td></tr><tr><td>GOOGL</td><td>189.13</td><td class='down'>&#9660; (-1.4%, -2.77)</td></tr><tr><td>TSLA</td><td>302.63</td><td class='down'>&#9660; (-1.8%, -5.64)</td></tr><tr><td>BTC(Upbit)</td><td>160,131,000원</td><td class='down'>&#9660; (-0.1%, -96000)</td></tr><tr><td>KOSPI</td><td>3,147.75</td><td class='up'>&#9650; (+0.9%, +28.34)</td></tr></table></div>
         <h2>이동평균선</h2>
         <div id="ma-graphs">
             
@@ -58,8 +58,16 @@ const nasdaqChart = new Chart(ctx, {
         },
         interaction: { mode: 'nearest', intersect: false },
         scales: {
-            x: { display: true, title: { display: true, text: '날짜' } },
-            y: { display: true, title: { display: true, text: '지수' } }
+            x: { 
+                display: true,
+                title: { display: true, text: '날짜' }
+                ticks: { font: { size: 10} // font size
+                },
+            y: { 
+                display: true,
+                title: { display: true, text: '지수' }
+                min: 0 //y축 0부터 시작
+                }
         }
     }
 });
@@ -70,16 +78,16 @@ const nasdaqChart = new Chart(ctx, {
     <section id="economy">
         <h2>경제 뉴스</h2>
         
-    <div class='news-header'>[2025-08-04 16:13] 주요 경제 뉴스 (네이버 기준)</div>
+    <div class='news-header'>주요 경제 뉴스(2025-08-04 16:28)</div>
     <ul class='news-list'>
-    <li><a href='https://n.news.naver.com/mnews/article/648/0000038511' target='_blank'>예탁결제원, 국채통합계좌 수수료 인하…"외국인 투자 촉진"</a></li><li><a href='https://n.news.naver.com/mnews/article/001/0015548096' target='_blank'>코스피, 美고용지표 부진에도 저가 매수세에 3,140대 회복(종합)</a></li><li><a href='https://n.news.naver.com/mnews/article/008/0005231224' target='_blank'>롯데웰푸드, 육군본부와 업무협약 "장병 복지지원 확대"</a></li><li><a href='https://n.news.naver.com/mnews/article/020/0003652238' target='_blank'>뿔난 개미들, 與의원들에 문자테러 “여론을 전달하는 가장 좋은 방법”</a></li><li><a href='https://n.news.naver.com/mnews/article/008/0005231223' target='_blank'>자회사 편입 마무리한 동원F&B, '참치·양반·펫푸드' 공략 가속화</a></li><li><a href='https://n.news.naver.com/mnews/article/031/0000954351' target='_blank'>지투지바이오, 공모가 5만8000원 확정</a></li></ul></div>
+    <li><a href='https://n.news.naver.com/mnews/article/243/0000082497' target='_blank'>코인원, 8월 한 달간 거래량 이벤트 진행</a></li><li><a href='https://n.news.naver.com/mnews/article/018/0006081556' target='_blank'>거래소, 유진테크놀로지에 현저한 시황변동 조회공시 요구</a></li><li><a href='https://n.news.naver.com/mnews/article/003/0013403163' target='_blank'>日증시, '美 고용 쇼크'에 장중 4만선 붕괴…닛케이지수 1.25%↓</a></li><li><a href='https://n.news.naver.com/mnews/article/015/0005166555' target='_blank'>'2년 공회전, 드디어 국회 넘나' 기대감에 오르는 토큰증권주</a></li><li><a href='https://n.news.naver.com/mnews/article/014/0005386913' target='_blank'>'세제 폭탄' 맞았던 코스피, 저가매수세에 3140선 마감[fn마감시황]</a></li><li><a href='https://n.news.naver.com/mnews/article/011/0004517140' target='_blank'>라자드자산운용 "하반기 시장, 트럼프發 구조적 충격 대비해야"</a></li></ul></div>
     </section>
     <section id="realestate">
         <h2>부동산 뉴스</h2>
         
-    <div class='news-header'>[2025-08-04 16:13] 주요 부동산 뉴스 (네이버 기준)</div>
+    <div class='news-header'>주요 부동산 뉴스(2025-08-04 16:28)</div>
     <ul class='news-list'>
-    <li><a href='https://n.news.naver.com/mnews/article/014/0005386897' target='_blank'>"갈아타기 못한다"...대출규제 직전, 40대 서초구 아파트 폭풍 매입</a></li><li><a href='https://n.news.naver.com/mnews/article/016/0002509504' target='_blank'>아이에스동서 장학재단, 취약계층 아동 위해 소방안전물품 후원</a></li><li><a href='https://n.news.naver.com/mnews/article/011/0004517119' target='_blank'>"인천 용현학익지구 중심 입지"… '인하대역 수자인 로이센트' 분양 [집슐랭]</a></li><li><a href='https://n.news.naver.com/mnews/article/016/0002509500' target='_blank'>공사중단에 뿔난 광주주월지역주택조합원</a></li><li><a href='https://n.news.naver.com/mnews/article/022/0004057146' target='_blank'>KCC, 하이엔드 창호 ‘클렌체’ 신규 광고</a></li><li><a href='https://n.news.naver.com/mnews/article/009/0005535821' target='_blank'>강동구 먹자상권 입지 상업시설 ‘강동역 SK 리더스뷰 아트리움’ 공급</a></li></ul></div>
+    <li><a href='https://n.news.naver.com/mnews/article/421/0008410436' target='_blank'>도공서비스, 하계 휴가철 특별영업대책 기간 지정…'안전관리 강화'</a></li><li><a href='https://n.news.naver.com/mnews/article/243/0000082493' target='_blank'>'재개발 조합 비리' 피의자, 경찰 압수수색 중 아파트서 투신 사망</a></li><li><a href='https://n.news.naver.com/mnews/article/421/0008410431' target='_blank'>"LH가 직접 짓고 분양도?"…정부, 공공개발 구조 전환 모색</a></li><li><a href='https://n.news.naver.com/mnews/article/014/0005386897' target='_blank'>"갈아타기 못한다"...대출규제 직전, 40대 서초구 아파트 폭풍 매입</a></li><li><a href='https://n.news.naver.com/mnews/article/016/0002509504' target='_blank'>아이에스동서 장학재단, 취약계층 아동 위해 소방안전물품 후원</a></li><li><a href='https://n.news.naver.com/mnews/article/011/0004517119' target='_blank'>"인천 용현학익지구 중심 입지"… '인하대역 수자인 로이센트' 분양 [집슐랭]</a></li></ul></div>
     </section>
 </body>
 </html>

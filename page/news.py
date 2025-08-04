@@ -12,7 +12,7 @@ def economy():
     soup = BeautifulSoup(response.text, "html.parser")
 
     html = f"""
-    <div class='news-header'>[{today}] 주요 경제 뉴스 (네이버 기준)</div>
+    <div class='news-header'>주요 경제 뉴스({today})</div>
     <ul class='news-list'>
     """
     count = 0
@@ -35,7 +35,7 @@ def realestate():
     soup = BeautifulSoup(response.text, "html.parser")
 
     html = f"""
-    <div class='news-header'>[{today}] 주요 부동산 뉴스 (네이버 기준)</div>
+    <div class='news-header'>주요 부동산 뉴스({today})</div>
     <ul class='news-list'>
     """
     count = 0
