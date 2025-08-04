@@ -24,7 +24,7 @@ def kospi():
         diff = today - yesterday
         percent = (diff / yesterday) * 100 if yesterday != 0 else 0
 
-        emoji = "▲" if diff > 0 else "▼" if diff < 0 else "-"
+        emoji = "&#9650;" if diff > 0 else "&#9660;" if diff < 0 else "&#8212;"
         diff_class = "up" if diff > 0 else "down" if diff < 0 else "neutral"
 
         return f"<tr><td>KOSPI</td><td>{today:,.2f}</td><td class='{diff_class}'>{emoji} ({percent:+.1f}%, {diff:+.2f})</td></tr>"
@@ -41,7 +41,7 @@ def bitcoin():
         prev_closing_price = data["prev_closing_price"]
         diff = trade_price - prev_closing_price
         percent = (diff / prev_closing_price) * 100 if prev_closing_price != 0 else 0
-        emoji = "🔺" if diff > 0 else "🔻" if diff < 0 else "➖"
+        emoji = "&#9650;" if diff > 0 else "&#9660;" if diff < 0 else "&#8212;"
         diff_class = "up" if diff > 0 else "down" if diff < 0 else "neutral"
         return f"<tr><td>BTC(Upbit)</td><td>{trade_price:,.0f}원</td><td class='{diff_class}'>{emoji} ({percent:+.1f}%, {diff:+.0f})</td></tr>"
     except Exception as e:
@@ -58,7 +58,7 @@ def stock():
             yesterday = data["Close"][ticker].iloc[-2]
             diff = today - yesterday
             percent = (diff / yesterday) * 100 if yesterday != 0 else 0
-            emoji = "🔺" if diff > 0 else "🔻" if diff < 0 else "➖"
+            emoji = "&#9650;" if diff > 0 else "&#9660;" if diff < 0 else "&#8212;"
             display_ticker = "NASDAQ" if ticker == "^IXIC" else ticker
             diff_class = "up" if diff > 0 else "down" if diff < 0 else "neutral"
             html += (
