@@ -1,6 +1,6 @@
 import yfinance as yf
-from datetime import date
 import requests
+from datetime import date
 
 def kospi():
     import yfinance as yf
