@@ -1,8 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
-from datetime import date
+from datetime import datetime
 
-today = date.today()
+# 예시: 2025-08-04 14:23
+today = datetime.now().strftime("%Y-%m-%d %H:%M")
 
 def economy():
     url = "https://news.naver.com/breakingnews/section/101/258"
@@ -11,7 +12,7 @@ def economy():
     soup = BeautifulSoup(response.text, "html.parser")
 
     html = f"""
-    <div class='news-header'>[{today}] 주요 경제 뉴스 (네이버 기준)</div>
+    <div class='news-header'>주요 경제 뉴스({today})</div>
     <ul class='news-list'>
     """
     count = 0
@@ -34,7 +35,7 @@ def realestate():
     soup = BeautifulSoup(response.text, "html.parser")
 
     html = f"""
-    <div class='news-header'>[{today}] 주요 부동산 뉴스 (네이버 기준)</div>
+    <div class='news-header'>주요 부동산 뉴스({today})</div>
     <ul class='news-list'>
     """
     count = 0
