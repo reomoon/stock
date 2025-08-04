@@ -21,7 +21,7 @@ with open("main.html", "w", encoding="utf-8") as f:
     <section id="stock">
         <h2>주식 정보</h2>
         %s
-        <h2>이동평균선</h2>
+        <h2>나스닥 이동평균선</h2>
         <div id="ma-graphs">
             %s
         </div>
