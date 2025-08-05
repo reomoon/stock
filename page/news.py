@@ -1,9 +1,10 @@
 import requests
 from bs4 import BeautifulSoup
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 
-# 예시: 2025-08-04 14:23
-today = datetime.now().strftime("%Y-%m-%d %H:%M")
+# 예시: 2025-08-04 14:23 (KST)
+kst = timezone(timedelta(hours=9))
+today = datetime.now(kst).strftime("%Y-%m-%d %H:%M")
 
 def economy():
     url = "https://news.naver.com/breakingnews/section/101/258"

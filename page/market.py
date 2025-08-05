@@ -1,9 +1,10 @@
 import yfinance as yf
 import requests
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 
-# 예시: 2025-08-04 14:23
-now_str = datetime.now().strftime("%Y-%m-%d %H:%M")
+# 예시: 2025-08-04 14:23 (KST)
+kst = timezone(timedelta(hours=9))
+now_str = datetime.now(kst).strftime("%Y-%m-%d %H:%M")
 
 def kospi():
     import yfinance as yf
