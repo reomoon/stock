@@ -92,7 +92,7 @@ const nasdaqChart = new Chart(ctx, {{
             }},
             y: {{
                 display: true,
-                title: {{ display: true, text: '지수' }},
+                title: {{ display: false, text: '지수' }},
                 min: 10000
             }}
         }}
