@@ -12,7 +12,7 @@
     </header>
     <section id="stock">
         <h2>주식 정보</h2>
-        <div class='stock-table-wrap'><div>주요 미국 주식 종가 변동(2025-08-04 23:22)</div><table class='stock-table'><tr><th>종목</th><th>종가</th><th>변동</th></tr><tr><td>NASDAQ</td><td>21053.58</td><td class='up'>&#9650; (+2.0%, +403.45)</td></tr><tr><td>AAPL</td><td>203.35</td><td class='up'>&#9650; (+0.5%, +0.97)</td></tr><tr><td>MSFT</td><td>535.64</td><td class='up'>&#9650; (+2.2%, +11.53)</td></tr><tr><td>NVDA</td><td>180.00</td><td class='up'>&#9650; (+3.6%, +6.28)</td></tr><tr><td>AMZN</td><td>211.65</td><td class='down'>&#9660; (-1.4%, -3.10)</td></tr><tr><td>META</td><td>776.37</td><td class='up'>&#9650; (+3.5%, +26.36)</td></tr><tr><td>GOOGL</td><td>195.04</td><td class='up'>&#9650; (+3.1%, +5.91)</td></tr><tr><td>TSLA</td><td>309.26</td><td class='up'>&#9650; (+2.2%, +6.63)</td></tr><tr><td>BTC(Upbit)</td><td>160,648,000원</td><td class='up'>&#9650; (+0.3%, +421000)</td></tr><tr><td>KOSPI</td><td>3,147.75</td><td class='up'>&#9650; (+0.9%, +28.34)</td></tr></table></div>
+        <div class='stock-table-wrap'><div>주요 미국 주식 종가 변동(2025-08-05 17:35)</div><table class='stock-table'><tr><th>종목</th><th>종가</th><th>변동</th></tr><tr><td>NASDAQ</td><td>21053.58</td><td class='up'>&#9650; (+2.0%, +403.45)</td></tr><tr><td>AAPL</td><td>203.35</td><td class='up'>&#9650; (+0.5%, +0.97)</td></tr><tr><td>MSFT</td><td>535.64</td><td class='up'>&#9650; (+2.2%, +11.53)</td></tr><tr><td>NVDA</td><td>180.00</td><td class='up'>&#9650; (+3.6%, +6.28)</td></tr><tr><td>AMZN</td><td>211.65</td><td class='down'>&#9660; (-1.4%, -3.10)</td></tr><tr><td>META</td><td>776.37</td><td class='up'>&#9650; (+3.5%, +26.36)</td></tr><tr><td>GOOGL</td><td>195.04</td><td class='up'>&#9650; (+3.1%, +5.91)</td></tr><tr><td>TSLA</td><td>309.26</td><td class='up'>&#9650; (+2.2%, +6.63)</td></tr><tr><td>BTC(Upbit)</td><td>159,860,000원</td><td class='down'>&#9660; (-0.3%, -472000)</td></tr><tr><td>KOSPI</td><td>3,198.00</td><td class='up'>&#9650; (+1.6%, +50.25)</td></tr></table></div>
         <h2>나스닥 이동평균선</h2>
         <div id="ma-graphs">
             
@@ -72,7 +72,7 @@ const nasdaqChart = new Chart(ctx, {
             },
             y: {
                 display: true,
-                title: { display: true, text: '지수' },
+                title: { display: false, text: '지수' },
                 min: 10000
             }
         }
@@ -85,16 +85,16 @@ const nasdaqChart = new Chart(ctx, {
     <section id="economy">
         <h2>경제 뉴스</h2>
         
-    <div class='news-header'>주요 경제 뉴스(2025-08-04 23:22)</div>
+    <div class='news-header'>주요 경제 뉴스(2025-08-05 17:35)</div>
     <ul class='news-list'>
-    <li><a href='https://n.news.naver.com/mnews/article/018/0006081839' target='_blank'>피아이이, 460억원 규모 전환사채 발행 결정</a></li><li><a href='https://n.news.naver.com/mnews/article/018/0006081831' target='_blank'>넥스트칩 "방산용 드론 비전센서칩 개발 완료"</a></li><li><a href='https://n.news.naver.com/mnews/article/018/0006081827' target='_blank'>넥스트바이오메디컬 '넥스파우더', 건강보험 급여 지정</a></li><li><a href='https://n.news.naver.com/mnews/article/001/0015548687' target='_blank'>KB증권 "롯데칠성, 하반기 호실적 지속될 것…목표가↑"</a></li><li><a href='https://n.news.naver.com/mnews/article/366/0001097943' target='_blank'>유진證 “S-Oil, 샤힌 프로젝트 가동 시 연간 영업익 2조원 전망”</a></li><li><a href='https://n.news.naver.com/mnews/article/018/0006081825' target='_blank'>지누스, 하반기엔 상반기보다 실적 개선 전망-한국</a></li></ul></div>
+    <li><a href='https://n.news.naver.com/mnews/article/648/0000038554' target='_blank'>'국대 AI'에 이름 올린 엔씨·크래프톤…멀티모달 AI 두각</a></li><li><a href='https://n.news.naver.com/mnews/article/001/0015550492' target='_blank'>카카오, 스테이블코인 TF 꾸렸다</a></li><li><a href='https://n.news.naver.com/mnews/article/469/0000880009' target='_blank'>'가계대출 절반' 고심 끝에 전세대출도 조이는 은행들</a></li><li><a href='https://n.news.naver.com/mnews/article/003/0013405542' target='_blank'>카카오, 카뱅·카페와 스테이블코인 TF 발족</a></li><li><a href='https://n.news.naver.com/mnews/article/031/0000954766' target='_blank'>금감원, 유화증권 윤경립 회장 중징계 '통정매매'</a></li><li><a href='https://n.news.naver.com/mnews/article/014/0005387530' target='_blank'>롯데관광개발, 2분기 사상 최대 영업익.. 순이익 흑자 전환</a></li></ul></div>
     </section>
     <section id="realestate">
         <h2>부동산 뉴스</h2>
         
-    <div class='news-header'>주요 부동산 뉴스(2025-08-04 23:22)</div>
+    <div class='news-header'>주요 부동산 뉴스(2025-08-05 17:35)</div>
     <ul class='news-list'>
-    <li><a href='https://n.news.naver.com/mnews/article/015/0005166768' target='_blank'>한강 변 제2세종문화회관 들어선다…서울시, 설계공모 실시</a></li><li><a href='https://n.news.naver.com/mnews/article/011/0004517332' target='_blank'>"월 수령액 늘어난다" 주금공, 주택연금 전면 개편…"대구 원정 갭투자족 부활" '6·27 규제' 피한 지방, 회복하나 [AI 프리즘*부동산 투자자 뉴스]</a></li><li><a href='https://n.news.naver.com/mnews/article/421/0008411028' target='_blank'>현장 점검부터 AI 활용 교육까지…롯데건설, 무재해 달성에 '총력'</a></li><li><a href='https://n.news.naver.com/mnews/article/011/0004517324' target='_blank'>"인천서 101㎡ 중대형 공급"… '인하대역 수자인 로이센트' 분양 [집슐랭]</a></li><li><a href='https://n.news.naver.com/mnews/article/011/0004517319' target='_blank'>서울 서촌 저층 주거지 높이 제한 3층→4층 완화 [집슐랭]</a></li><li><a href='https://n.news.naver.com/mnews/article/011/0004517317' target='_blank'>6·27 대책에 수도권 묶이자 부산·대구 집값 꿈틀 [집슐랭]</a></li></ul></div>
+    <li><a href='https://n.news.naver.com/mnews/article/018/0006082399' target='_blank'>서울시 행정2부시장, 집중호우 앞두고 침수취약지역 현장점검</a></li><li><a href='https://n.news.naver.com/mnews/article/119/0002987795' target='_blank'>제일건설 '김해 테크노밸리 제일풍경채' 이달 공급</a></li><li><a href='https://n.news.naver.com/mnews/article/417/0001093602' target='_blank'>신규 주담대 문 닫는다… 하나·농협은행 대출모집인 판매 중단</a></li><li><a href='https://n.news.naver.com/mnews/article/417/0001093600' target='_blank'>아파트 커뮤니티의 진화… 퍼팅 시뮬레이터 '투어펏' 도입</a></li><li><a href='https://n.news.naver.com/mnews/article/277/0005633154' target='_blank'>리츠협회 "차라리 기존 혜택 폐지하고 배당소득 분리과세 적용해야"</a></li><li><a href='https://n.news.naver.com/mnews/article/014/0005387525' target='_blank'>잠실래미안아이파크 보류지 '특혜 분양' 계획 철회</a></li></ul></div>
     </section>
 </body>
 </html>
