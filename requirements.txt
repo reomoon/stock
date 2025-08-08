@@ -2,3 +2,4 @@ yfinance
 beautifulsoup4
 requests
 datetime
+PublicDataReader

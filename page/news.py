@@ -6,7 +6,7 @@ from datetime import datetime, timezone, timedelta
 kst = timezone(timedelta(hours=9))
 today = datetime.now(kst).strftime("%Y-%m-%d %H:%M")
 
-def economy():
+def economy_news():
     url = "https://news.naver.com/breakingnews/section/101/258"
     headers = {"User-Agent": "Mozilla/5.0"}
     response = requests.get(url, headers=headers)
@@ -22,14 +22,14 @@ def economy():
         if link_tag:
             title = link_tag.get_text(strip=True)
             href = link_tag["href"]
-            html += f"<li><a href='{href}' target='_blank'>{title}</a></li>"
+            html += f"<li><a href='{href}' target='_blank'>• {title}</a></li>"
             count += 1
         if count >= 6:
             break
     html += "</ul></div>"
     return html
 
-def realestate():
+def realestate_news():
     url = "https://news.naver.com/breakingnews/section/101/260"
     headers = {"User-Agent": "Mozilla/5.0"}
     response = requests.get(url, headers=headers)
@@ -45,7 +45,7 @@ def realestate():
         if link_tag:
             title = link_tag.get_text(strip=True)
             href = link_tag["href"]
-            html += f"<li><a href='{href}' target='_blank'>{title}</a></li>"
+            html += f"<li><a href='{href}' target='_blank'>• {title}</a></li>"
             count += 1
         if count >= 6:
             break
