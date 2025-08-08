@@ -25,8 +25,8 @@ def make_nasdaq_ma_graphs():
     if first_valid_idx is not None:
         df = df.loc[first_valid_idx:]
     
-    # 최근 1년 데이터만 표시
-    df = df.tail(250)
+    # 최근 1개월 데이터만 표시 (약 22거래일)
+    df = df.tail(22)
 
     # 날짜 리스트 생성 (x축)
     labels = [d.strftime("%Y-%m-%d") for d in df.index]
@@ -46,7 +46,7 @@ def make_nasdaq_ma_graphs():
 
     # Plotly.js로 캔들차트 + 이동평균선 생성
     return f"""
-<div id="nasdaqChart" style="width:100%; height:500px;"></div>
+<div id="nasdaqChart" style="width:100%; height:350px;"></div>
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <script>
 // 캔들차트
@@ -60,6 +60,7 @@ var candlestick = {{
     name: '나스닥',
     increasing: {{line: {{color: '#FF4444'}}}},  // 상승 빨간색
     decreasing: {{line: {{color: '#4444FF'}}}}   // 하락 파란색
+
 }};
 
 // 120일 이동평균선
@@ -69,7 +70,7 @@ var ma120_trace = {{
     type: 'scatter',
     mode: 'lines',
     name: '120일선',
-    line: {{color: '#FF4500', width: 2}}
+    line: {{color: '#FFA7A7', width: 2}}  // 연한 빨간색
 }};
 
 // 200일 이동평균선
@@ -79,15 +80,15 @@ var ma200_trace = {{
     type: 'scatter',
     mode: 'lines',
     name: '200일선',
-    line: {{color: '#4169E1', width: 2}}
+    line: {{color: '#5F00FF', width: 2}}  // 보라색
 }};
 
 var data = [candlestick, ma120_trace, ma200_trace];
 
 var layout = {{
     title: {{
-        text: '나스닥 종합지수 & 이동평균선',
-        font: {{ size: 18, color: '#333' }}
+        text: '나스닥 종합지수 (최근 1개월)',
+        font: {{ size: 16, color: '#333' }}
     }},
     xaxis: {{
         title: '날짜',
@@ -110,13 +111,15 @@ var layout = {{
         bordercolor: '#E8E8E8',
         borderwidth: 1
     }},
-    margin: {{l: 50, r: 50, t: 50, b: 50}}
+    margin: {{l: 40, r: 40, t: 40, b: 40}},
+    dragmode: false  // 드래그 비활성화
 }};
 
 var config = {{
     responsive: true,
-    displayModeBar: true,
-    modeBarButtonsToRemove: ['pan2d', 'lasso2d', 'select2d', 'autoScale2d'],
+    displayModeBar: false,  // 툴바 완전히 숨기기
+    scrollZoom: false,      // 스크롤 줌 비활성화
+    doubleClick: false,     // 더블클릭 줌 비활성화
     displaylogo: false
 }};
 
