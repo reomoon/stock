@@ -22,7 +22,7 @@ def economy_news():
         if link_tag:
             title = link_tag.get_text(strip=True)
             href = link_tag["href"]
-            html += f"<li><a href='{href}' target='_blank'>{title}</a></li>"
+            html += f"<li><a href='{href}' target='_blank'>• {title}</a></li>"
             count += 1
         if count >= 6:
             break
@@ -45,7 +45,7 @@ def realestate_news():
         if link_tag:
             title = link_tag.get_text(strip=True)
             href = link_tag["href"]
-            html += f"<li><a href='{href}' target='_blank'>{title}</a></li>"
+            html += f"<li><a href='{href}' target='_blank'>• {title}</a></li>"
             count += 1
         if count >= 6:
             break
