@@ -4,14 +4,16 @@ from page.news import economy_news, realestate_news
 from page.realestate import realestate
 from datetime import datetime
 
-ma_graphs_html = make_nasdaq_ma_graphs()
-stock_data = stock()
-economy_news_data = economy_news()
-realestate_news_data = realestate_news()
-realestate_data = realestate()
+# 정적 HTML 파일 생성 (GitHub Actions용)
+def generate_static_html():
+    ma_graphs_html = make_nasdaq_ma_graphs()
+    stock_data = stock()
+    economy_news_data = economy_news()
+    realestate_news_data = realestate_news()
+    realestate_data = realestate()
 
-with open("main.html", "w", encoding="utf-8") as f:
-    f.write(f"""<!DOCTYPE html>
+    with open("main.html", "w", encoding="utf-8") as f:
+        f.write(f"""<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -43,3 +45,7 @@ with open("main.html", "w", encoding="utf-8") as f:
 </body>
 </html>
 """)
+
+if __name__ == '__main__':
+    generate_static_html()
+    print("HTML 파일이 생성되었습니다.")
