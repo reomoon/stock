@@ -25,8 +25,8 @@ def make_nasdaq_ma_graphs():
     if first_valid_idx is not None:
         df = df.loc[first_valid_idx:]
     
-    # 최근 1개월 데이터만 표시 (약 22거래일)
-    df = df.tail(22)
+    # 최근 6개 데이터만 표시 (약 22거래일)
+    df = df.tail(132)
 
     # 날짜 리스트 생성 (x축)
     labels = [d.strftime("%Y-%m-%d") for d in df.index]
@@ -52,10 +52,10 @@ def make_nasdaq_ma_graphs():
 // 캔들차트
 var candlestick = {{
     x: {json.dumps(labels)},
-    open: {json.dumps(open_data)},
-    high: {json.dumps(high_data)},
-    low: {json.dumps(low_data)},
-    close: {json.dumps(close_data)},
+    // open {json.dumps(open_data)}, //시작가
+    // high: {json.dumps(high_data)}, 
+    // low: {json.dumps(low_data)},
+    close: {json.dumps(close_data)}, // 종가
     type: 'candlestick',
     name: '나스닥',
     increasing: {{line: {{color: '#FF4444'}}}},  // 상승 빨간색
@@ -91,13 +91,13 @@ var layout = {{
         font: {{ size: 16, color: '#333' }}
     }},
     xaxis: {{
-        title: '날짜',
+        // title: '날짜',
         showgrid: true,
         gridcolor: '#E8E8E8',
         rangeslider: {{ visible: false }}  // 하단 슬라이더 제거
     }},
     yaxis: {{
-        title: '지수',
+        // title: '지수',
         showgrid: true,
         gridcolor: '#E8E8E8'
     }},
