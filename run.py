@@ -38,7 +38,6 @@ with open("main.html", "w", encoding="utf-8") as f:
     <section id="realestate">
         <h2>부동산 뉴스</h2>
         {realestate_news_data}
-        <h2>부동산 매매 가격지수</h2>
         {realestate_data}
     </section>
 </body>
