@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Stock & News Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="refresh" content="300">
+</head>
+<body>
+    <header>
+        <h1>오늘의 주가 및 주요 뉴스</h1>
+        <p>이 페이지는 5분마다 자동으로 새로고침됩니다.</p>
+    </header>
+    
+    <div style="text-align: center; padding: 50px;">
+        <h2>데이터 로딩 중...</h2>
+        <p>잠시만 기다려주세요.</p>
+        
+        <script>
+        // GitHub Pages의 최신 데이터를 가져와서 표시
+        fetch('https://reomoon.github.io/stock/main.html')
+        .then(response => response.text())
+        .then(html => {
+            // body 내용만 추출해서 현재 페이지에 삽입
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const body = doc.body;
+            
+            // 현재 페이지의 body를 GitHub Pages 내용으로 교체
+            document.body.innerHTML = body.innerHTML;
+        })
+        .catch(error => {
+            document.body.innerHTML = `
+                <header>
+                    <h1>오늘의 주가 및 주요 뉴스</h1>
+                </header>
+                <div style="text-align: center; padding: 50px;">
+                    <h2>데이터를 불러올 수 없습니다</h2>
+                    <p>GitHub Pages에서 데이터를 가져오는 중 오류가 발생했습니다.</p>
+                    <p><a href="https://reomoon.github.io/stock/">GitHub Pages로 이동</a></p>
+                </div>
+            `;
+        });
+        </script>
+    </div>
+</body>
+</html>

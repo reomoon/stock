@@ -1,7 +1,4 @@
 {
-  "functions": {
-    "api/*.py": {
-      "runtime": "@vercel/python"
-    }
-  }
+  "cleanUrls": true,
+  "trailingSlash": false
 }
