@@ -114,11 +114,21 @@ ul {
     color: #333;
 }
 
+/* 테이블 스크롤 컨테이너 */
+.table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* iOS 스크롤 부드럽게 */
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
 .realestate-table {
     width: 100%;
+    min-width: 800px; /* 최소 너비 설정으로 스크롤 유도 */
     font-size: 16px;
     border-collapse: collapse;
-    margin-bottom: 20px;
+    margin-bottom: 0; /* 스크롤 컨테이너가 여백 처리 */
 }
 
 .realestate-table th, .realestate-table td {
@@ -193,12 +203,22 @@ ul {
         font-size: 14px;
     }
     
+    .table-scroll {
+        margin-left: -10px;
+        margin-right: -10px;
+        border-left: none;
+        border-right: none;
+        border-radius: 0;
+    }
+    
     .realestate-table {
         font-size: 14px;
+        min-width: 700px; /* 모바일에서 스크롤 확실히 유도 */
     }
     
     .realestate-table th, .realestate-table td {
         padding: 6px 4px;
+        white-space: nowrap; /* 텍스트 줄바꿈 방지 */
     }
     
     .realestate-data h3 {
