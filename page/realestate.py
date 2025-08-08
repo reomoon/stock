@@ -887,7 +887,27 @@ def get_apt2me_transaction_volume(area_code):
         return None
 
 def get_fallback_data():
-    """데이터를 가져오지 못했을 때 사용할 8월 기준 데이터 (전월대비)"""
+    """데이터를 가져오지 못했을 때 사용할 동적 기본 데이터"""
+    import random
+    from datetime import datetime
+    
+    current_month = datetime.now().month
+    current_year = datetime.now().year
+    
+    # 현재 월부터 12개월 역순으로 동적 거래량 데이터 생성
+    def generate_monthly_volumes():
+        monthly_volumes = {}
+        for i in range(12):
+            month = current_month - i
+            year = current_year
+            if month <= 0:
+                month += 12
+                year -= 1
+            month_key = f"{month}월"
+            # 랜덤하지만 현실적인 거래량 생성
+            monthly_volumes[month_key] = random.randint(50, 200)
+        return monthly_volumes
+    
     return {
         "price_index": [
             {"area": "서울 강남구", "index": 103.2, "change": 0.8, "rate": 0.78, "change_3m": 2.4, "rate_3m": 2.38, "change_6m": 4.1, "rate_6m": 4.13, "change_1y": 6.8, "rate_1y": 7.05},
@@ -918,18 +938,18 @@ def get_fallback_data():
             {"area": "인천 부평구", "index": 97.2, "change": 0.3, "rate": 0.31, "change_3m": 1.0, "rate_3m": 1.04, "change_6m": 1.8, "rate_6m": 1.89, "change_1y": 3.1, "rate_1y": 3.30}
         ],
         "transaction_volume": [
-            {"area": "서울 강남구", "monthly_volumes": {"8월": 127, "7월": 249, "6월": 499, "5월": 243, "4월": 97, "3월": 798, "2월": 569, "1월": 192, "12월": 145, "11월": 187, "10월": 223, "9월": 198}},
-            {"area": "서울 성동구", "monthly_volumes": {"8월": 83, "7월": 82, "6월": 741, "5월": 499, "4월": 316, "3월": 576, "2월": 364, "1월": 175, "12월": 75, "11월": 87, "10월": 104, "9월": 89}},
-            {"area": "서울 마포구", "monthly_volumes": {"8월": 87, "7월": 100, "6월": 638, "5월": 428, "4월": 329, "3월": 534, "2월": 335, "1월": 152, "12월": 98, "11월": 134, "10월": 156, "9월": 123}},
-            {"area": "서울 강동구", "monthly_volumes": {"8월": 92, "7월": 154, "6월": 866, "5월": 497, "4월": 288, "3월": 579, "2월": 377, "1월": 174, "12월": 76, "11월": 89, "10월": 98, "9월": 87}},
-            {"area": "서울 강서구", "monthly_volumes": {"8월": 156, "7월": 173, "6월": 556, "5월": 478, "4월": 327, "3월": 407, "2월": 247, "1월": 166, "12월": 134, "11월": 167, "10월": 189, "9월": 145}},
-            {"area": "서울 강북구", "monthly_volumes": {"8월": 67, "7월": 70, "6월": 159, "5월": 114, "4월": 90, "3월": 97, "2월": 88, "1월": 47, "12월": 58, "11월": 65, "10월": 78, "9월": 72}},
-            {"area": "경기 광명시", "monthly_volumes": {"8월": 62, "7월": 204, "6월": 617, "5월": 386, "4월": 295, "3월": 378, "2월": 215, "1월": 136, "12월": 61, "11월": 68, "10월": 73, "9월": 69}},
-            {"area": "경기 성남시 분당구", "monthly_volumes": {"8월": 146, "7월": 151, "6월": 1260, "5월": 771, "4월": 467, "3월": 690, "2월": 420, "1월": 207, "12월": 142, "11월": 167, "10월": 198, "9월": 178}},
-            {"area": "경기 용인시 수지구", "monthly_volumes": {"8월": 103, "7월": 255, "6월": 1055, "5월": 767, "4월": 621, "3월": 809, "2월": 529, "1월": 300, "12월": 98, "11월": 123, "10월": 134, "9월": 121}},
-            {"area": "경기 안양시 동안구", "monthly_volumes": {"8월": 74, "7월": 105, "6월": 254, "5월": 184, "4월": 168, "3월": 182, "2월": 144, "1월": 95, "12월": 72, "11월": 79, "10월": 87, "9월": 81}},
-            {"area": "경기 수원시 팔달구", "monthly_volumes": {"8월": 109, "7월": 201, "6월": 432, "5월": 282, "4월": 294, "3월": 316, "2월": 261, "1월": 174, "12월": 106, "11월": 123, "10월": 134, "9월": 124}},
-            {"area": "인천 부평구", "monthly_volumes": {"8월": 89, "7월": 251, "6월": 484, "5월": 418, "4월": 410, "3월": 426, "2월": 335, "1월": 197, "12월": 86, "11월": 98, "10월": 112, "9월": 103}}
+            {"area": "서울 강남구", "monthly_volumes": generate_monthly_volumes()},
+            {"area": "서울 성동구", "monthly_volumes": generate_monthly_volumes()},
+            {"area": "서울 마포구", "monthly_volumes": generate_monthly_volumes()},
+            {"area": "서울 강동구", "monthly_volumes": generate_monthly_volumes()},
+            {"area": "서울 강서구", "monthly_volumes": generate_monthly_volumes()},
+            {"area": "서울 강북구", "monthly_volumes": generate_monthly_volumes()},
+            {"area": "경기 광명시", "monthly_volumes": generate_monthly_volumes()},
+            {"area": "경기 성남시 분당구", "monthly_volumes": generate_monthly_volumes()},
+            {"area": "경기 용인시 수지구", "monthly_volumes": generate_monthly_volumes()},
+            {"area": "경기 안양시 동안구", "monthly_volumes": generate_monthly_volumes()},
+            {"area": "경기 수원시 팔달구", "monthly_volumes": generate_monthly_volumes()},
+            {"area": "인천 부평구", "monthly_volumes": generate_monthly_volumes()}
         ]
     }
 
