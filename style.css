@@ -103,6 +103,78 @@ ul {
     max-width: 100vw;
 }
 
+/* 부동산 데이터 테이블 */
+.realestate-data {
+    margin-top: 10px;
+}
+
+.realestate-data h3 {
+    font-size: 20px;
+    margin: 20px 0 10px 0;
+    color: #333;
+}
+
+.realestate-table {
+    width: 100%;
+    font-size: 16px;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.realestate-table th, .realestate-table td {
+    padding: 10px 8px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.realestate-table th {
+    background-color: #03c75a;
+    color: white;
+    font-weight: bold;
+}
+
+.realestate-table td:first-child {
+    text-align: left;
+    font-weight: bold;
+    background-color: #f8f9fa;
+}
+
+.realestate-table .up {
+    color: #d73527;
+    font-weight: bold;
+}
+
+.realestate-table .down {
+    color: #0051c7;
+    font-weight: bold;
+}
+
+.realestate-table .same {
+    color: #666;
+}
+
+.data-info {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #666;
+}
+
+.data-info p {
+    margin: 5px 0;
+}
+
+.error-message {
+    padding: 20px;
+    background-color: #ffe6e6;
+    border: 1px solid #ffcccc;
+    border-radius: 5px;
+    color: #cc0000;
+    text-align: center;
+}
+
 /* 모바일 대응 */
 @media (max-width: 600px) {
     body {
@@ -119,5 +191,17 @@ ul {
 
     .stock-table th, .stock-table td {
         font-size: 14px;
+    }
+    
+    .realestate-table {
+        font-size: 14px;
+    }
+    
+    .realestate-table th, .realestate-table td {
+        padding: 6px 4px;
+    }
+    
+    .realestate-data h3 {
+        font-size: 18px;
     }
 }
