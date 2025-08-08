@@ -154,6 +154,12 @@ ul {
     text-align: center;
 }
 
+/* 좌측 1열 우선 고정 */
+.realestate-table th:first-child {
+    background-color: #03c75a !important;
+    color: white;
+}
+
 .realestate-table th {
     background-color: #03c75a;
     color: white;
@@ -171,7 +177,7 @@ ul {
 .realestate-table td:first-child {
     position: sticky;
     left: 0;
-    background: #fff;
+    background: #f8f9fa;
     z-index: 2;
     min-width: 100px; /* 필요시 조정 */
     box-shadow: 2px 0 2px -1px #eee;
