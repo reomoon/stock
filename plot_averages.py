@@ -70,7 +70,7 @@ var ma120_trace = {{
     type: 'scatter',
     mode: 'lines',
     name: '120일선',
-    line: {{color: '#47C83E', width: 2}}  // 진한 초록색
+    line: {{color: '#FFA7A7', width: 2}}  // 연한 빨간색
 }};
 
 // 200일 이동평균선
