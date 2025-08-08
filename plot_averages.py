@@ -52,7 +52,7 @@ def make_nasdaq_ma_graphs():
 // 캔들차트
 var candlestick = {{
     x: {json.dumps(labels)},
-    // open {json.dumps(open_data)}, //시작가
+    open: {json.dumps(open_data)}, //시작가
     // high: {json.dumps(high_data)}, 
     // low: {json.dumps(low_data)},
     close: {json.dumps(close_data)}, // 종가
@@ -87,7 +87,7 @@ var data = [candlestick, ma120_trace, ma200_trace];
 
 var layout = {{
     title: {{
-        text: '나스닥 종합지수 (최근 1개월)',
+        text: '나스닥 종합지수 (최근 6개월)',
         font: {{ size: 16, color: '#333' }}
     }},
     xaxis: {{
