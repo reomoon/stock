@@ -12,7 +12,7 @@ def generate_static_html():
     realestate_news_data = realestate_news()
     realestate_data = realestate()
 
-    with open("main.html", "w", encoding="utf-8") as f:
+    with open("public/main.html", "w", encoding="utf-8") as f:
         f.write(f"""<!DOCTYPE html>
 <html lang="ko">
 <head>
