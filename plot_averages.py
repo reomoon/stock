@@ -53,8 +53,8 @@ def make_nasdaq_ma_graphs():
 var candlestick = {{
     x: {json.dumps(labels)},
     open: {json.dumps(open_data)}, //시작가
-    // high: {json.dumps(high_data)}, 
-    // low: {json.dumps(low_data)},
+    high: {json.dumps(high_data)}, 
+    low: {json.dumps(low_data)},
     close: {json.dumps(close_data)}, // 종가
     type: 'candlestick',
     name: '나스닥',
