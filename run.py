@@ -18,7 +18,7 @@ def generate_static_html():
 <head>
     <meta charset="UTF-8">
     <title>Stock & News Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css"> <!-- 절대경로로 변경 --!>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
