@@ -34,7 +34,7 @@ jobs:
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add main.html
+          git add public/main.html
           git commit -m "Auto update main.html" || echo "No changes to commit"
           git push
 
@@ -42,5 +42,5 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./  # HTML 파일이 있는 디렉토리
+          publish_dir: ./public  # HTML 파일이 있는 디렉토리
 
