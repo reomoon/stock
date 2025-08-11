@@ -58,8 +58,8 @@ var candlestick = {{
     close: {json.dumps(close_data)}, // 종가
     type: 'candlestick',
     name: '나스닥',
-    increasing: {{line: {{color: '#FF4444'}}}},  // 상승 빨간색
-    decreasing: {{line: {{color: '#4444FF'}}}}   // 하락 파란색
+    increasing: {{line: {{color: '#FFA7A7'}}}},  // 상승 빨간색
+    decreasing: {{line: {{color: '#6799FF'}}}}   // 하락 파란색
 
 }};
 
