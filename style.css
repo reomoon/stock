@@ -1,270 +1,392 @@
-/* 기본 글자 크기 */
+/* 현대적인 깔끔한 스타일 */
+* {
+    box-sizing: border-box;
+}
+
 body {
-    color: #2d2d2d;
-    font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-size: 18px;
+    color: #333;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 16px;
     line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #fafafa;
 }
 
-/* 제목 크기 */
+/* 컨테이너 */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* 메인 헤더 */
 h1 {
-    background-color: #03c75a; /* 네이버 초록색 */
-    color: white;
-    font-size: 28px;
+    background: #e9ecef;
+    color: #343a40;
+    font-size: 32px;
+    font-weight: 600;
     text-align: center;
-    margin-bottom: 12px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    margin: 0 0 30px 0;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ced4da;
 }
 
+/* 섹션 헤더 */
 h2 {
     font-size: 24px;
-    margin-top: 24px;
-    margin-bottom: 12px;
+    font-weight: 600;
+    margin: 30px 0 20px 0;
+    color: #2d3748;
+    border-left: 4px solid #6c757d;
+    padding-left: 16px;
 }
 
+/* 섹션 스타일 */
 section {
-
-    padding: 10px;
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e2e8f0;
 }
 
-/* 뉴스 날짜 텍스트 */
+/* 뉴스 스타일 */
 .news-header {
     font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 10px;
-    display: block;
-    color: #333;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: #4a5568;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-/* 뉴스 항목 */
+.news-header::before {
+    content: "📰";
+    font-size: 20px;
+}
+
 .news-list {
-    padding: 5px 0 5px 0;
-    list-style-type: none; /* 확실한 불릿 제거 */
+    padding: 0;
+    list-style: none;
+    margin: 0;
 }
 
 .news-list li {
-    margin-bottom: 8px;
-    list-style-type: none; /* li에도 확실한 불릿 제거 */
+    margin-bottom: 12px;
+    padding: 12px 16px;
+    background: #f8fafc;
+    border-radius: 8px;
+    border-left: 3px solid #e2e8f0;
+    transition: all 0.2s ease;
 }
 
-/* 뉴스 링크 스타일 제거 - 일반 텍스트처럼 보이게 */
+.news-list li:hover {
+    background: #edf2f7;
+    border-left-color: #6c757d;
+    transform: translateX(2px);
+}
+
 .news-list a {
-    color: inherit; /* 부모 요소의 색상 상속 */
-    text-decoration: none; /* 밑줄 제거 */
-    cursor: pointer; /* 클릭 가능한 커서는 유지 */
+    color: #4a5568;
+    text-decoration: none;
+    font-weight: 500;
+    display: block;
 }
 
 .news-list a:hover {
-    color: #666; /* 마우스 오버시 회색으로 변경 */
+    color: #495057;
 }
 
 .news-list a:active {
-    color: #999; /* 클릭시 더 밝은 회색으로 변경 */
-}
-
-/* 반응형 테이블 감싸기 */
-.stock-table-wrap {
-    overflow-x: auto;
+    color: #6c757d;
 }
 
 /* 테이블 스타일 */
+.stock-table-wrap {
+    overflow-x: auto;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin: 16px 0;
+}
+
 .stock-table {
     width: 100%;
-    font-size: 16px;
+    font-size: 15px;
     border-collapse: collapse;
-}
-.stock-table th, .stock-table td {
-    padding: 8px;
-    border: 1px solid #ccc;
+    background: white;
+    margin: 0;
 }
 
-section#stock {
-    background-color: #f4f4f5;
+.stock-table th {
+    background: #f8f9fa;
+    color: #495057;
+    font-weight: 600;
+    padding: 16px 12px;
+    text-align: center;
+    border: none;
+    border-bottom: 2px solid #dee2e6;
 }
 
-section#economy {
-    background-color: #f4f4f5;
+.stock-table td {
+    padding: 14px 12px;
+    text-align: center;
+    border-bottom: 1px solid #e2e8f0;
+    font-weight: 500;
 }
 
-section#realestate {
-    background-color: #f4f4f5;
+.stock-table tr:hover {
+    background-color: #edf2f7;
+    transition: background-color 0.2s ease;
 }
 
-/* ul, li 태그 불릿 제거 */
-ul {
-  list-style-type: none;
-  padding-left: 0; /* 불릿 없앴으면 들여쓰기 제거도 보통 같이 함 */
+.stock-table td:first-child {
+    text-align: left;
+    font-weight: 600;
+    color: #2d3748;
 }
 
-/* 주가 이모티콘 */
+/* 주가 색상 개선 */
 .up {
-  color: red;    /* 상승 빨간색 (세모 빨간색일 때) */
+    color: #e53e3e;
+    font-weight: 600;
 }
 
 .down {
-  color: blue;   /* 하락 파란색 */
+    color: #3182ce;
+    font-weight: 600;
 }
 
 .neutral {
-  color: gray;
+    color: #718096;
+    font-weight: 500;
 }
 
-/* 그래프 영역 */
+/* 차트 영역 */
 #ma-graphs {
-    max-width: 100vw;
-    overflow-x: auto;
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e2e8f0;
 }
+
 #ma-graphs .plotly-graph-div {
     width: 100% !important;
     min-width: 320px;
-    max-width: 100vw;
+    border-radius: 8px;
 }
 
-/* 부동산 데이터 테이블 */
-.realestate-data {
-    margin-top: 10px;
+/* 리스트 스타일 */
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
-.realestate-data h3 {
-    font-size: 20px;
-    margin: 20px 0 10px 0;
-    color: #333;
-}
-
-/* 테이블 스크롤 컨테이너 */
-.table-scroll {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch; /* iOS 스크롤 부드럽게 */
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-.realestate-table {
-    width: 100%;
-    min-width: 800px; /* 최소 너비 설정으로 스크롤 유도 */
-    font-size: 16px;
-    border-collapse: collapse;
-    margin-bottom: 0; /* 스크롤 컨테이너가 여백 처리 */
-}
-
-.realestate-table th, .realestate-table td {
-    padding: 10px 8px;
-    border: 1px solid #ddd;
-    text-align: center;
-}
-
-/* 좌측 1열 우선 고정 */
-.realestate-table th:first-child {
-    background-color: #03c75a !important;
-    color: white;
-}
-
-.realestate-table th {
-    background-color: #03c75a;
-    color: white;
-    /* font-weight: bold; */
-}
-
-.realestate-table td:first-child {
-    text-align: left;
-    font-weight: bold;
-    background-color: #f4f4f5;
-}
-
-/* 예시 CSS: 좌측 열 고정 */
-.realestate-table th:first-child,
-.realestate-table td:first-child {
-    position: sticky;
-    left: 0;
-    background: #f4f4f5;
-    z-index: 2;
-    min-width: 100px; /* 필요시 조정 */
-    box-shadow: 2px 0 2px -1px #eee;
-}
-
-.table-scroll {
-    overflow-x: auto;
-}
-
-.realestate-table .up {
-    color: #d73527;
-    /* font-weight: bold; */
-}
-
-.realestate-table .down {
-    color: #0051c7;
-    /* font-weight: bold; */
-}
-
-.realestate-table .same {
-    color: #666;
-}
-
-.data-info {
-    margin-top: 15px;
-    padding: 10px;
-    background-color: #f0f0f0;
-    border-radius: 5px;
-    font-size: 14px;
-    color: #666;
-}
-
-.data-info p {
-    margin: 5px 0;
-}
-
-.error-message {
-    padding: 20px;
-    background-color: #ffe6e6;
-    border: 1px solid #ffcccc;
-    border-radius: 5px;
-    color: #cc0000;
-    text-align: center;
-}
-
-/* 모바일 대응 */
-@media (max-width: 600px) {
+/* 반응형 디자인 */
+@media (max-width: 768px) {
     body {
-        font-size: 17px;
+        font-size: 14px;
+    }
+    
+    .container {
+        padding: 0 16px;
     }
 
     h1 {
         font-size: 24px;
+        padding: 16px;
+        margin-bottom: 20px;
     }
 
     h2 {
         font-size: 20px;
+        margin: 24px 0 16px 0;
+    }
+
+    section {
+        padding: 16px;
+        margin-bottom: 16px;
     }
 
     .stock-table th, .stock-table td {
-        font-size: 14px;
+        font-size: 13px;
+        padding: 10px 8px;
+    }
+    
+    .news-list li {
+        padding: 10px 12px;
+    }
+    
+    #ma-graphs {
+        padding: 12px;
+        margin: 16px -4px;
+        border-radius: 8px;
+    }
+}
+
+/* 부동산 데이터 스타일 */
+.realestate-data {
+    margin-top: 20px;
+}
+
+.realestate-data h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 24px 0 16px 0;
+    color: #2d3748;
+    padding-left: 12px;
+    border-left: 3px solid #6c757d;
+}
+
+.table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e2e8f0;
+}
+
+.realestate-table {
+    width: 100%;
+    min-width: 800px;
+    font-size: 14px;
+    border-collapse: collapse;
+    margin: 0;
+    background: white;
+}
+
+.realestate-table th {
+    background: #f8f9fa;
+    color: #495057;
+    font-weight: 600;
+    padding: 14px 10px;
+    text-align: center;
+    border: none;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.realestate-table td {
+    padding: 12px 10px;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: center;
+    font-weight: 500;
+}
+
+.realestate-table th:first-child,
+.realestate-table td:first-child {
+    position: sticky;
+    left: 0;
+    background: #f8fafc;
+    z-index: 2;
+    min-width: 90px;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    font-weight: 600;
+    color: #2d3748;
+}
+
+.realestate-table th:first-child {
+    background: #f8f9fa;
+    color: #495057;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.realestate-table tr:hover {
+    background-color: #edf2f7;
+}
+
+.realestate-table .up {
+    color: #e53e3e;
+    font-weight: 600;
+}
+
+.realestate-table .down {
+    color: #3182ce;
+    font-weight: 600;
+}
+
+.realestate-table .same {
+    color: #718096;
+    font-weight: 500;
+}
+
+/* 정보 박스 */
+.data-info {
+    margin-top: 20px;
+    padding: 16px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #6c757d;
+    font-size: 14px;
+    color: #4a5568;
+}
+
+.data-info p {
+    margin: 6px 0;
+    line-height: 1.5;
+}
+
+.error-message {
+    padding: 20px;
+    background: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 8px;
+    color: #721c24;
+    text-align: center;
+    font-weight: 500;
+}
+
+/* 추가 모바일 최적화 */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 12px;
+    }
+    
+    h1 {
+        font-size: 20px;
+        padding: 12px;
     }
     
     .table-scroll {
-        margin-left: -10px;
-        margin-right: -10px;
+        margin-left: -12px;
+        margin-right: -12px;
         border-left: none;
         border-right: none;
         border-radius: 0;
     }
     
     .realestate-table {
-        font-size: 14px;
-        min-width: 700px; /* 모바일에서 스크롤 확실히 유도 */
+        font-size: 12px;
+        min-width: 600px;
     }
     
     .realestate-table th, .realestate-table td {
-        padding: 6px 4px;
-        white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+        padding: 8px 6px;
+        white-space: nowrap;
     }
     
     .realestate-data h3 {
         font-size: 18px;
+        margin: 20px 0 12px 0;
     }
     
-    /* 모바일에서는 호버 효과 제거, 터치(active)만 유지 */
     .news-list a:hover {
-        color: inherit; /* 모바일에서는 호버 효과 없음 */
+        color: inherit;
+    }
+    
+    #ma-graphs {
+        margin-left: -12px;
+        margin-right: -12px;
+        border-left: none;
+        border-right: none;
+        border-radius: 0;
     }
 }

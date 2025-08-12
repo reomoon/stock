@@ -13,7 +13,7 @@
     </header>
     <section id="stock">
         <h2>주식 정보</h2>
-        <div class='stock-table-wrap'><div>주요 미국 주식 종가 변동(2025-08-12 15:23)</div><table class='stock-table'><tr><th>종목</th><th>종가</th><th>변동</th></tr><tr><td>NASDAQ</td><td>21385.40</td><td class='down'>&#9660; (-0.3%, -64.62)</td></tr><tr><td>AAPL</td><td>227.18</td><td class='down'>&#9660; (-0.8%, -1.91)</td></tr><tr><td>MSFT</td><td>521.77</td><td class='down'>&#9660; (-0.1%, -0.27)</td></tr><tr><td>NVDA</td><td>182.06</td><td class='down'>&#9660; (-0.4%, -0.64)</td></tr><tr><td>AMZN</td><td>221.30</td><td class='down'>&#9660; (-0.6%, -1.39)</td></tr><tr><td>META</td><td>765.87</td><td class='down'>&#9660; (-0.4%, -3.43)</td></tr><tr><td>GOOGL</td><td>201.00</td><td class='down'>&#9660; (-0.2%, -0.42)</td></tr><tr><td>TSLA</td><td>339.03</td><td class='up'>&#9650; (+2.8%, +9.38)</td></tr><tr><td>BTC(Upbit)</td><td>163,800,000원</td><td class='down'>&#9660; (-0.2%, -410000)</td></tr><tr><td>KOSPI</td><td>3,194.33</td><td class='down'>&#9660; (-0.4%, -12.44)</td></tr></table></div>
+        <div class='stock-table-wrap'><div>주요 미국 주식 종가 변동(2025-08-12 16:11)</div><table class='stock-table'><tr><th>종목</th><th>종가</th><th>변동</th></tr><tr><td>NASDAQ</td><td>21385.40</td><td class='down'>&#9660; (-0.3%, -64.62)</td></tr><tr><td>AAPL</td><td>227.18</td><td class='down'>&#9660; (-0.8%, -1.91)</td></tr><tr><td>MSFT</td><td>521.77</td><td class='down'>&#9660; (-0.1%, -0.27)</td></tr><tr><td>NVDA</td><td>182.06</td><td class='down'>&#9660; (-0.4%, -0.64)</td></tr><tr><td>AMZN</td><td>221.30</td><td class='down'>&#9660; (-0.6%, -1.39)</td></tr><tr><td>META</td><td>765.87</td><td class='down'>&#9660; (-0.4%, -3.43)</td></tr><tr><td>GOOGL</td><td>201.00</td><td class='down'>&#9660; (-0.2%, -0.42)</td></tr><tr><td>TSLA</td><td>339.03</td><td class='up'>&#9650; (+2.8%, +9.38)</td></tr><tr><td>BTC(Upbit)</td><td>163,949,000원</td><td class='down'>&#9660; (-0.2%, -261000)</td></tr><tr><td>KOSPI</td><td>3,189.91</td><td class='down'>&#9660; (-0.5%, -16.86)</td></tr></table></div>
         <h2>나스닥 이동평균선</h2>
         <div id="ma-graphs">
             
@@ -30,7 +30,8 @@ var candlestick = {
     type: 'candlestick',
     name: '나스닥',
     increasing: {line: {color: '#FFA7A7'}},  // 상승 빨간색
-    decreasing: {line: {color: '#6799FF'}}   // 하락 파란색
+    decreasing: {line: {color: '#6799FF'}},   // 하락 파란색
+    hovertemplate: '<b>%{x}</b><br>종가: %{close:,.0f}<extra></extra>'
 
 };
 
@@ -41,7 +42,8 @@ var ma120_trace = {
     type: 'scatter',
     mode: 'lines',
     name: '120일선',
-    line: {color: '#FFA7A7', width: 2}  // 연한 빨간색
+    line: {color: '#A6A6A6', width: 2},  // 그레이
+    hovertemplate: '<b>%{x}</b><br>120일선: %{y:,.0f}<extra></extra>'
 };
 
 // 200일 이동평균선
@@ -51,7 +53,8 @@ var ma200_trace = {
     type: 'scatter',
     mode: 'lines',
     name: '200일선',
-    line: {color: '#5F00FF', width: 2}  // 보라색
+    line: {color: '#003399', width: 2},  // 진남색
+    hovertemplate: '<b>%{x}</b><br>200일선: %{y:,.0f}<extra></extra>'
 };
 
 var data = [candlestick, ma120_trace, ma200_trace];
@@ -72,7 +75,7 @@ var layout = {
         showgrid: true,
         gridcolor: '#E8E8E8'
     },
-    hovermode: 'x unified',
+    hovermode: 'x unified',  // 드래그 시에도 호버 표시
     plot_bgcolor: '#FAFAFA',
     paper_bgcolor: 'white',
     legend: {
@@ -83,14 +86,15 @@ var layout = {
         borderwidth: 1
     },
     margin: {l: 40, r: 40, t: 40, b: 40},
-    dragmode: false  // 드래그 비활성화
+    dragmode: 'pan'  // 드래그로 패닝 가능
 };
 
 var config = {
     responsive: true,
-    displayModeBar: false,  // 툴바 완전히 숨기기
-    scrollZoom: false,      // 스크롤 줌 비활성화
-    doubleClick: false,     // 더블클릭 줌 비활성화
+    displayModeBar: true,   // 툴바 표시 (드래그/줌 컨트롤 위해)
+    modeBarButtonsToRemove: ['lasso2d', 'select2d', 'toggleSpikelines', 'hoverCompareCartesian', 'hoverClosestCartesian'],
+    scrollZoom: false,       // 스크롤 줌 활성화
+    doubleClick: 'reset',   // 더블클릭으로 리셋
     displaylogo: false
 };
 
@@ -102,16 +106,16 @@ Plotly.newPlot('nasdaqChart', data, layout, config);
     <section id="economy">
         <h2>경제 뉴스</h2>
         
-    <div class='news-header'>주요 경제 뉴스(2025-08-12 15:23)</div>
+    <div class='news-header'>주요 경제 뉴스(2025-08-12 16:11)</div>
     <ul class='news-list'>
-    <li><a href='https://n.news.naver.com/mnews/article/029/0002974932' target='_blank'>• 오픈에셋, 두나무 계열사와 원화 스테이블코인 발행·유통 협력</a></li><li><a href='https://n.news.naver.com/mnews/article/469/0000881148' target='_blank'>• 정부, 올해 7월까지 한은서 누적 '114조 원' 빌려… 역대 최대</a></li><li><a href='https://n.news.naver.com/mnews/article/277/0005636257' target='_blank'>• 아톤, PQC 기반 가상 키패드 '퀀텀세이프 패드' 출시</a></li><li><a href='https://n.news.naver.com/mnews/article/008/0005234905' target='_blank'>• 10월 추석 전후 황금연휴, 국장도 '휴업'···투심은 어디로</a></li><li><a href='https://n.news.naver.com/mnews/article/277/0005636245' target='_blank'>• 미래에셋 "상승장에도 성과 낸 데일리 커버드콜 전략"</a></li><li><a href='https://n.news.naver.com/mnews/article/029/0002974923' target='_blank'>• ‘인공지능 투자자문’ AI콴텍, 국내주식 알고리즘 연 수익률 51.5%</a></li></ul></div>
+    <li><a href='https://n.news.naver.com/mnews/article/421/0008424532' target='_blank'>• 두산에너빌, 루마니아 SMR 지연 소식에 5.62% 하락[핫종목]</a></li><li><a href='https://n.news.naver.com/mnews/article/421/0008424527' target='_blank'>• 기관·외인 '팔자' 전환…코스피, 4거래일 만에 3200선 아래로[시황종합]</a></li><li><a href='https://n.news.naver.com/mnews/article/215/0001219815' target='_blank'>• "상승장 놓치지 않는 커버드콜"…미래에셋, 타겟데일리커버드콜 성과 공개</a></li><li><a href='https://n.news.naver.com/mnews/article/018/0006088179' target='_blank'>• 엔케이믹스, 자본전액잠식 해소</a></li><li><a href='https://n.news.naver.com/mnews/article/417/0001095011' target='_blank'>• HD현대, 베트남 당서기장과 '현지 조선소 투자' 확대 논의</a></li><li><a href='https://n.news.naver.com/mnews/article/215/0001219814' target='_blank'>• 금감원, 종투사 간담회 개최… "모험자본 공급 확대"</a></li></ul></div>
     </section>
     <section id="realestate">
         <h2>부동산 뉴스</h2>
         
-    <div class='news-header'>주요 부동산 뉴스(2025-08-12 15:23)</div>
+    <div class='news-header'>주요 부동산 뉴스(2025-08-12 16:11)</div>
     <ul class='news-list'>
-    <li><a href='https://n.news.naver.com/mnews/article/022/0004059388' target='_blank'>• “중대재해 ZERO”‥ 반도건설, CEO부터 협력사까지 '안전릴레이 캠페인’</a></li><li><a href='https://n.news.naver.com/mnews/article/018/0006088138' target='_blank'>• 사업시행인가 반려취소 행정심판 패소…북아현3 재개발 '다시 원점'</a></li><li><a href='https://n.news.naver.com/mnews/article/014/0005390577' target='_blank'>• 코레일, 하반기 1200명 신규 채용.. "공공기관 최대 규모"</a></li><li><a href='https://n.news.naver.com/mnews/article/022/0004059385' target='_blank'>• 현대엔지니어링, 샤힌 프로젝트 최대 중량물 리액터 설치 성공</a></li><li><a href='https://n.news.naver.com/mnews/article/011/0004520144' target='_blank'>• 부산 최고가 아파트 청약이 7대 1…써밋 리미티트 남천에 무슨 일?[집슐랭]</a></li><li><a href='https://n.news.naver.com/mnews/article/003/0013417630' target='_blank'>• 반도건설, CEO부터 협력사까지 '안전릴레이 캠페인'</a></li></ul></div>
+    <li><a href='https://n.news.naver.com/mnews/article/277/0005636288' target='_blank'>• 금호건설, 2분기 영업이익 162억원…3개 분기 연속 흑자 행진</a></li><li><a href='https://n.news.naver.com/mnews/article/119/0002990289' target='_blank'>• 6년째 '중대재해 제로' 반도건설, '안전릴레이 캠페인' 진행</a></li><li><a href='https://n.news.naver.com/mnews/article/277/0005636285' target='_blank'>• 국토안전관리원, 경남 결식아동 60명에 방학 밀키트 지원</a></li><li><a href='https://n.news.naver.com/mnews/article/008/0005234954' target='_blank'>• 쿠팡 본사 들어온다…구의역 '이스트폴' 서울 동부 새 랜드마크로</a></li><li><a href='https://n.news.naver.com/mnews/article/008/0005234951' target='_blank'>• 코레일, 하반기 1200명 신규 채용…공공기관 최대 규모</a></li><li><a href='https://n.news.naver.com/mnews/article/028/0002760776' target='_blank'>• 연면적 1천㎡ 이상 민간건물도 신재생에너지 설비 설치해야</a></li></ul></div>
         
     <div class='news-header'>부동산 매매 가격지수 현황(2025년 08월 12일)</div>
     <div class='realestate-data'>
@@ -447,29 +451,29 @@ Plotly.newPlot('nasdaqChart', data, layout, config);
             <tr>
                 <th>지역</th><th>8월</th><th>7월</th><th>6월</th><th>5월</th><th>4월</th><th>3월</th><th>2월</th><th>1월</th><th>12월</th><th>11월</th><th>10월</th><th>9월</th></tr>
             <tr>
-                <td>서울 강남구</td><td>7건</td><td>268건</td><td>498건</td><td>243건</td><td>97건</td><td>798건</td><td>569건</td><td>192건</td><td>72건</td><td>62건</td><td>50건</td><td>83건</td></tr>
+                <td>서울 강남구</td><td>7건</td><td>268건</td><td>498건</td><td>243건</td><td>97건</td><td>798건</td><td>569건</td><td>192건</td><td>114건</td><td>142건</td><td>171건</td><td>71건</td></tr>
             <tr>
-                <td>서울 성동구</td><td>6건</td><td>88건</td><td>741건</td><td>498건</td><td>316건</td><td>576건</td><td>364건</td><td>175건</td><td>189건</td><td>185건</td><td>194건</td><td>60건</td></tr>
+                <td>서울 성동구</td><td>6건</td><td>88건</td><td>741건</td><td>498건</td><td>316건</td><td>576건</td><td>364건</td><td>175건</td><td>72건</td><td>148건</td><td>84건</td><td>118건</td></tr>
             <tr>
-                <td>서울 마포구</td><td>11건</td><td>104건</td><td>639건</td><td>424건</td><td>329건</td><td>534건</td><td>335건</td><td>152건</td><td>114건</td><td>137건</td><td>78건</td><td>124건</td></tr>
+                <td>서울 마포구</td><td>11건</td><td>104건</td><td>639건</td><td>424건</td><td>329건</td><td>534건</td><td>335건</td><td>152건</td><td>95건</td><td>78건</td><td>57건</td><td>67건</td></tr>
             <tr>
-                <td>서울 강동구</td><td>19건</td><td>166건</td><td>865건</td><td>497건</td><td>288건</td><td>579건</td><td>377건</td><td>174건</td><td>86건</td><td>120건</td><td>92건</td><td>139건</td></tr>
+                <td>서울 강동구</td><td>19건</td><td>166건</td><td>865건</td><td>497건</td><td>288건</td><td>579건</td><td>377건</td><td>174건</td><td>168건</td><td>167건</td><td>65건</td><td>122건</td></tr>
             <tr>
-                <td>서울 강서구</td><td>19건</td><td>193건</td><td>557건</td><td>477건</td><td>327건</td><td>407건</td><td>247건</td><td>166건</td><td>80건</td><td>128건</td><td>78건</td><td>79건</td></tr>
+                <td>서울 강서구</td><td>19건</td><td>193건</td><td>557건</td><td>477건</td><td>327건</td><td>407건</td><td>247건</td><td>166건</td><td>56건</td><td>121건</td><td>108건</td><td>55건</td></tr>
             <tr>
-                <td>서울 강북구</td><td>8건</td><td>72건</td><td>159건</td><td>113건</td><td>90건</td><td>97건</td><td>88건</td><td>47건</td><td>119건</td><td>158건</td><td>194건</td><td>124건</td></tr>
+                <td>서울 강북구</td><td>8건</td><td>72건</td><td>159건</td><td>113건</td><td>90건</td><td>97건</td><td>88건</td><td>47건</td><td>63건</td><td>172건</td><td>84건</td><td>176건</td></tr>
             <tr>
-                <td>경기 광명시</td><td>13건</td><td>221건</td><td>618건</td><td>385건</td><td>295건</td><td>378건</td><td>215건</td><td>136건</td><td>58건</td><td>161건</td><td>120건</td><td>180건</td></tr>
+                <td>경기 광명시</td><td>13건</td><td>221건</td><td>618건</td><td>385건</td><td>295건</td><td>378건</td><td>215건</td><td>136건</td><td>79건</td><td>167건</td><td>97건</td><td>193건</td></tr>
             <tr>
-                <td>경기 성남시 분당구</td><td>5건</td><td>166건</td><td>1,256건</td><td>769건</td><td>467건</td><td>690건</td><td>420건</td><td>207건</td><td>147건</td><td>66건</td><td>115건</td><td>185건</td></tr>
+                <td>경기 성남시 분당구</td><td>5건</td><td>166건</td><td>1,256건</td><td>769건</td><td>467건</td><td>690건</td><td>420건</td><td>207건</td><td>111건</td><td>79건</td><td>111건</td><td>169건</td></tr>
             <tr>
-                <td>경기 용인시 수지구</td><td>18건</td><td>273건</td><td>1,056건</td><td>768건</td><td>621건</td><td>809건</td><td>529건</td><td>300건</td><td>190건</td><td>169건</td><td>160건</td><td>178건</td></tr>
+                <td>경기 용인시 수지구</td><td>18건</td><td>273건</td><td>1,056건</td><td>768건</td><td>621건</td><td>809건</td><td>529건</td><td>300건</td><td>95건</td><td>52건</td><td>198건</td><td>100건</td></tr>
             <tr>
-                <td>경기 안양시 동안구</td><td>17건</td><td>294건</td><td>808건</td><td>609건</td><td>423건</td><td>530건</td><td>361건</td><td>227건</td><td>101건</td><td>180건</td><td>150건</td><td>150건</td></tr>
+                <td>경기 안양시 동안구</td><td>17건</td><td>294건</td><td>808건</td><td>609건</td><td>423건</td><td>530건</td><td>361건</td><td>227건</td><td>109건</td><td>132건</td><td>89건</td><td>75건</td></tr>
             <tr>
-                <td>경기 수원시 팔달구</td><td>16건</td><td>135건</td><td>254건</td><td>157건</td><td>146건</td><td>186건</td><td>96건</td><td>73건</td><td>100건</td><td>136건</td><td>85건</td><td>50건</td></tr>
+                <td>경기 수원시 팔달구</td><td>16건</td><td>135건</td><td>254건</td><td>157건</td><td>146건</td><td>186건</td><td>96건</td><td>73건</td><td>139건</td><td>90건</td><td>177건</td><td>155건</td></tr>
             <tr>
-                <td>인천 부평구</td><td>52건</td><td>262건</td><td>483건</td><td>418건</td><td>410건</td><td>426건</td><td>335건</td><td>197건</td><td>168건</td><td>85건</td><td>82건</td><td>145건</td></tr>
+                <td>인천 부평구</td><td>52건</td><td>262건</td><td>483건</td><td>418건</td><td>410건</td><td>426건</td><td>335건</td><td>197건</td><td>132건</td><td>127건</td><td>56건</td><td>196건</td></tr>
         </table>
         </div>
         
@@ -640,7 +644,7 @@ Plotly.newPlot('nasdaqChart', data, layout, config);
             <p>※ 매매/전세 가격지수 기준: 2020년 1월 = 100.0</p>
             <p>※ 거래량: 국토교통부 아파트 실거래 데이터 기준</p>
             <p>※ 월간 데이터: 전월대비 / 주간 데이터: 전주대비</p>
-            <p>※ 업데이트: 2025-08-12 06:23</p>
+            <p>※ 업데이트: 2025-08-12 07:11</p>
             <p>※ 데이터 제공: <a href='https://data.kbland.kr/kbstats/data-comparison' target='_blank'>KB부동산</a>, <a href='https://rt.molit.go.kr' target='_blank'>국토교통부</a></p>
         </div>
     </div>
