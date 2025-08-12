@@ -2,6 +2,6 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/", "destination": "/main.html" }
+    { "source": "/", "destination": "/public/main.html" }
   ]
 }
