@@ -13,7 +13,7 @@
     </header>
     <section id="stock">
         <h2>주식 정보</h2>
-        <div class='stock-table-wrap'><div>주요 미국 주식 종가 변동(2025-08-12 15:48)</div><table class='stock-table'><tr><th>종목</th><th>종가</th><th>변동</th></tr><tr><td>NASDAQ</td><td>21385.40</td><td class='down'>&#9660; (-0.3%, -64.62)</td></tr><tr><td>AAPL</td><td>227.18</td><td class='down'>&#9660; (-0.8%, -1.91)</td></tr><tr><td>MSFT</td><td>521.77</td><td class='down'>&#9660; (-0.1%, -0.27)</td></tr><tr><td>NVDA</td><td>182.06</td><td class='down'>&#9660; (-0.4%, -0.64)</td></tr><tr><td>AMZN</td><td>221.30</td><td class='down'>&#9660; (-0.6%, -1.39)</td></tr><tr><td>META</td><td>765.87</td><td class='down'>&#9660; (-0.4%, -3.43)</td></tr><tr><td>GOOGL</td><td>201.00</td><td class='down'>&#9660; (-0.2%, -0.42)</td></tr><tr><td>TSLA</td><td>339.03</td><td class='up'>&#9650; (+2.8%, +9.38)</td></tr><tr><td>BTC(Upbit)</td><td>163,799,000원</td><td class='down'>&#9660; (-0.3%, -411000)</td></tr><tr><td>KOSPI</td><td>3,190.50</td><td class='down'>&#9660; (-0.5%, -16.27)</td></tr></table></div>
+        <div class='stock-table-wrap'><div>주요 미국 주식 종가 변동(2025-08-12 16:05)</div><table class='stock-table'><tr><th>종목</th><th>종가</th><th>변동</th></tr><tr><td>NASDAQ</td><td>21385.40</td><td class='down'>&#9660; (-0.3%, -64.62)</td></tr><tr><td>AAPL</td><td>227.18</td><td class='down'>&#9660; (-0.8%, -1.91)</td></tr><tr><td>MSFT</td><td>521.77</td><td class='down'>&#9660; (-0.1%, -0.27)</td></tr><tr><td>NVDA</td><td>182.06</td><td class='down'>&#9660; (-0.4%, -0.64)</td></tr><tr><td>AMZN</td><td>221.30</td><td class='down'>&#9660; (-0.6%, -1.39)</td></tr><tr><td>META</td><td>765.87</td><td class='down'>&#9660; (-0.4%, -3.43)</td></tr><tr><td>GOOGL</td><td>201.00</td><td class='down'>&#9660; (-0.2%, -0.42)</td></tr><tr><td>TSLA</td><td>339.03</td><td class='up'>&#9650; (+2.8%, +9.38)</td></tr><tr><td>BTC(Upbit)</td><td>163,854,000원</td><td class='down'>&#9660; (-0.2%, -356000)</td></tr><tr><td>KOSPI</td><td>3,189.91</td><td class='down'>&#9660; (-0.5%, -16.86)</td></tr></table></div>
         <h2>나스닥 이동평균선</h2>
         <div id="ma-graphs">
             
@@ -42,7 +42,7 @@ var ma120_trace = {
     type: 'scatter',
     mode: 'lines',
     name: '120일선',
-    line: {color: '#FFA7A7', width: 2},  // 연한 빨간색
+    line: {color: '#A6A6A6', width: 2},  // 그레이
     hovertemplate: '<b>%{x}</b><br>120일선: %{y:,.0f}<extra></extra>'
 };
 
@@ -53,7 +53,7 @@ var ma200_trace = {
     type: 'scatter',
     mode: 'lines',
     name: '200일선',
-    line: {color: '#5F00FF', width: 2},  // 보라색
+    line: {color: '#003399', width: 2},  // 진남색
     hovertemplate: '<b>%{x}</b><br>200일선: %{y:,.0f}<extra></extra>'
 };
 
@@ -75,7 +75,7 @@ var layout = {
         showgrid: true,
         gridcolor: '#E8E8E8'
     },
-    hovermode: 'closest',  // 가장 가까운 점만 표시
+    hovermode: 'x unified',  // 드래그 시에도 호버 표시
     plot_bgcolor: '#FAFAFA',
     paper_bgcolor: 'white',
     legend: {
@@ -86,14 +86,15 @@ var layout = {
         borderwidth: 1
     },
     margin: {l: 40, r: 40, t: 40, b: 40},
-    dragmode: false  // 드래그 비활성화
+    dragmode: 'pan'  // 드래그로 패닝 가능
 };
 
 var config = {
     responsive: true,
-    displayModeBar: false,  // 툴바 완전히 숨기기
-    scrollZoom: false,      // 스크롤 줌 비활성화
-    doubleClick: false,     // 더블클릭 줌 비활성화
+    displayModeBar: true,   // 툴바 표시 (드래그/줌 컨트롤 위해)
+    modeBarButtonsToRemove: ['lasso2d', 'select2d', 'toggleSpikelines', 'hoverCompareCartesian', 'hoverClosestCartesian'],
+    scrollZoom: false,       // 스크롤 줌 활성화
+    doubleClick: 'reset',   // 더블클릭으로 리셋
     displaylogo: false
 };
 
@@ -105,17 +106,548 @@ Plotly.newPlot('nasdaqChart', data, layout, config);
     <section id="economy">
         <h2>경제 뉴스</h2>
         
-    <div class='news-header'>주요 경제 뉴스(2025-08-12 15:48)</div>
+    <div class='news-header'>주요 경제 뉴스(2025-08-12 16:05)</div>
     <ul class='news-list'>
-    <li><a href='https://n.news.naver.com/mnews/article/016/0002513436' target='_blank'>• 더즌, 2분기 영업익 31억…전년비 17.3% ↑</a></li><li><a href='https://n.news.naver.com/mnews/article/421/0008424458' target='_blank'>• 외국인·기관 순매도에 코스피 3200선 밑으로</a></li><li><a href='https://n.news.naver.com/mnews/article/421/0008424457' target='_blank'>• 외국인·기관 순매도에 코스피 3200선 하회</a></li><li><a href='https://n.news.naver.com/mnews/article/001/0015562209' target='_blank'>• 서울반도체 2분기 영업손실 79억원…적자 전환</a></li><li><a href='https://n.news.naver.com/mnews/article/119/0002990269' target='_blank'>• 신한운용, ‘글로벌탄소중립솔루션 펀드’ 수탁고 500억 돌파</a></li><li><a href='https://n.news.naver.com/mnews/article/018/0006088159' target='_blank'>• 더즌, 2분기 영업이익 31억…전년比 17.3%↑</a></li></ul></div>
+    <li><a href='https://n.news.naver.com/mnews/article/018/0006088179' target='_blank'>• 엔케이믹스, 자본전액잠식 해소</a></li><li><a href='https://n.news.naver.com/mnews/article/417/0001095011' target='_blank'>• HD현대, 베트남 당서기장과 '현지 조선소 투자' 확대 논의</a></li><li><a href='https://n.news.naver.com/mnews/article/215/0001219814' target='_blank'>• 금감원, 종투사 간담회 개최… "모험자본 공급 확대"</a></li><li><a href='https://n.news.naver.com/mnews/article/003/0013417925' target='_blank'>• 코스피 하락, 3180선 마감</a></li><li><a href='https://n.news.naver.com/mnews/article/003/0013417924' target='_blank'>• 코스피 하락, 3200 아래로</a></li><li><a href='https://n.news.naver.com/mnews/article/003/0013417922' target='_blank'>• 코빗, 체납자 가상자산 압류 지원…부산세관과 협력</a></li></ul></div>
     </section>
     <section id="realestate">
         <h2>부동산 뉴스</h2>
         
-    <div class='news-header'>주요 부동산 뉴스(2025-08-12 15:48)</div>
+    <div class='news-header'>주요 부동산 뉴스(2025-08-12 16:05)</div>
     <ul class='news-list'>
-    <li><a href='https://n.news.naver.com/mnews/article/016/0002513432' target='_blank'>• 정원주 대우건설 회장 “하노이 트엉깟 신도시 사업, 韓기업 투자 마중물될 것”</a></li><li><a href='https://n.news.naver.com/mnews/article/015/0005169827' target='_blank'>• '74만원' 원룸 월세 하락했다고 좋아했는데…대학생들 '부글'</a></li><li><a href='https://n.news.naver.com/mnews/article/656/0000143665' target='_blank'>• 대전도시공사,'갑천2 트리풀시티 엘리프' 계약 취소분 청약</a></li><li><a href='https://n.news.naver.com/mnews/article/009/0005540266' target='_blank'>• “시장 불황 땐 이곳만한 곳 없지”…전세사기 걱정 없이 최장 10년 거주, 이 주택</a></li><li><a href='https://n.news.naver.com/mnews/article/417/0001095003' target='_blank'>• 민간 건축물, 12월부터 친환경 제로에너지 의무 실시</a></li><li><a href='https://n.news.naver.com/mnews/article/029/0002974941' target='_blank'>• 올 2분기 전국 부동산 거래금액 100조원대 회복</a></li></ul></div>
+    <li><a href='https://n.news.naver.com/mnews/article/277/0005636285' target='_blank'>• 국토안전관리원, 경남 결식아동 60명에 방학 밀키트 지원</a></li><li><a href='https://n.news.naver.com/mnews/article/008/0005234954' target='_blank'>• 쿠팡 본사 들어온다…구의역 '이스트폴' 서울 동부 새 랜드마크로</a></li><li><a href='https://n.news.naver.com/mnews/article/008/0005234951' target='_blank'>• 코레일, 하반기 1200명 신규 채용…공공기관 최대 규모</a></li><li><a href='https://n.news.naver.com/mnews/article/028/0002760776' target='_blank'>• 연면적 1천㎡ 이상 민간건물도 신재생에너지 설비 설치해야</a></li><li><a href='https://n.news.naver.com/mnews/article/421/0008424478' target='_blank'>• 행복청, 중대재해 '제로화' 목표로 의무이행 점검회의 개최</a></li><li><a href='https://n.news.naver.com/mnews/article/029/0002974949' target='_blank'>• 금호건설, 2분기 영업이익 162억원…3개 분기 연속 흑자</a></li></ul></div>
         
+    <div class='news-header'>부동산 매매 가격지수 현황(2025년 08월 12일)</div>
+    <div class='realestate-data'>
+        <div class='data-status'>📊 실시간 KB부동산 데이터 표시</div>
+        
+        <h3>매매 가격지수</h3>
+        <div class='table-scroll'>
+        <table class='realestate-table'>
+            <tr>
+                <th>지역</th>
+                <th>최신지수</th>
+                <th>전월대비</th>
+                <th>변동률</th>
+                <th>3개월전</th>
+                <th>변동률</th>
+                <th>6개월전</th>
+                <th>변동률</th>
+                <th>1년전</th>
+                <th>변동률</th>
+            </tr>
+            <tr>
+                <td>서울 강남구</td>
+                <td>118.48</td>
+                <td class='up'>▲ 1.77</td>
+                <td class='up'>+1.51%</td>
+                <td class='up'>▲ 7.81</td>
+                <td class='up'>+7.05%</td>
+                <td class='up'>▲ 13.90</td>
+                <td class='up'>+13.29%</td>
+                <td class='up'>▲ 19.90</td>
+                <td class='up'>+20.19%</td>
+            </tr>
+            <tr>
+                <td>서울 성동구</td>
+                <td>107.53</td>
+                <td class='up'>▲ 3.09</td>
+                <td class='up'>+2.96%</td>
+                <td class='up'>▲ 6.98</td>
+                <td class='up'>+6.94%</td>
+                <td class='up'>▲ 9.61</td>
+                <td class='up'>+9.82%</td>
+                <td class='up'>▲ 13.83</td>
+                <td class='up'>+14.76%</td>
+            </tr>
+            <tr>
+                <td>서울 마포구</td>
+                <td>105.21</td>
+                <td class='up'>▲ 2.71</td>
+                <td class='up'>+2.65%</td>
+                <td class='up'>▲ 4.86</td>
+                <td class='up'>+4.84%</td>
+                <td class='up'>▲ 6.80</td>
+                <td class='up'>+6.92%</td>
+                <td class='up'>▲ 10.41</td>
+                <td class='up'>+10.98%</td>
+            </tr>
+            <tr>
+                <td>서울 강동구</td>
+                <td>102.94</td>
+                <td class='up'>▲ 2.50</td>
+                <td class='up'>+2.49%</td>
+                <td class='up'>▲ 4.64</td>
+                <td class='up'>+4.73%</td>
+                <td class='up'>▲ 6.63</td>
+                <td class='up'>+6.88%</td>
+                <td class='up'>▲ 11.16</td>
+                <td class='up'>+12.16%</td>
+            </tr>
+            <tr>
+                <td>서울 강서구</td>
+                <td>91.93</td>
+                <td class='up'>▲ 0.56</td>
+                <td class='up'>+0.62%</td>
+                <td class='up'>▲ 1.27</td>
+                <td class='up'>+1.40%</td>
+                <td class='up'>▲ 1.63</td>
+                <td class='up'>+1.80%</td>
+                <td class='up'>▲ 3.01</td>
+                <td class='up'>+3.39%</td>
+            </tr>
+            <tr>
+                <td>서울 강북구</td>
+                <td>87.56</td>
+                <td class='up'>▲ 0.42</td>
+                <td class='up'>+0.48%</td>
+                <td class='up'>▲ 0.47</td>
+                <td class='up'>+0.54%</td>
+                <td class='up'>▲ 0.37</td>
+                <td class='up'>+0.43%</td>
+                <td class='up'>▲ 1.17</td>
+                <td class='up'>+1.36%</td>
+            </tr>
+            <tr>
+                <td>경기 광명시</td>
+                <td>82.70</td>
+                <td class='up'>▲ 0.50</td>
+                <td class='up'>+0.61%</td>
+                <td class='up'>▲ 0.62</td>
+                <td class='up'>+0.76%</td>
+                <td class='up'>▲ 0.25</td>
+                <td class='up'>+0.31%</td>
+                <td class='up'>▲ 0.75</td>
+                <td class='up'>+0.92%</td>
+            </tr>
+            <tr>
+                <td>경기 성남시 분당구</td>
+                <td>103.16</td>
+                <td class='up'>▲ 1.83</td>
+                <td class='up'>+1.81%</td>
+                <td class='up'>▲ 4.59</td>
+                <td class='up'>+4.66%</td>
+                <td class='up'>▲ 5.83</td>
+                <td class='up'>+5.99%</td>
+                <td class='up'>▲ 8.95</td>
+                <td class='up'>+9.50%</td>
+            </tr>
+            <tr>
+                <td>경기 용인시 수지구</td>
+                <td>90.51</td>
+                <td class='up'>▲ 1.28</td>
+                <td class='up'>+1.43%</td>
+                <td class='up'>▲ 2.18</td>
+                <td class='up'>+2.47%</td>
+                <td class='up'>▲ 2.57</td>
+                <td class='up'>+2.93%</td>
+                <td class='up'>▲ 4.30</td>
+                <td class='up'>+4.99%</td>
+            </tr>
+            <tr>
+                <td>경기 안양시 동안구</td>
+                <td>87.07</td>
+                <td class='up'>▲ 0.99</td>
+                <td class='up'>+1.14%</td>
+                <td class='up'>▲ 2.03</td>
+                <td class='up'>+2.39%</td>
+                <td class='up'>▲ 2.31</td>
+                <td class='up'>+2.73%</td>
+                <td class='up'>▲ 4.18</td>
+                <td class='up'>+5.04%</td>
+            </tr>
+            <tr>
+                <td>경기 수원시 팔달구</td>
+                <td>89.13</td>
+                <td class='up'>▲ 0.40</td>
+                <td class='up'>+0.45%</td>
+                <td class='up'>▲ 0.49</td>
+                <td class='up'>+0.55%</td>
+                <td class='up'>▲ 0.44</td>
+                <td class='up'>+0.49%</td>
+                <td class='up'>▲ 1.01</td>
+                <td class='up'>+1.15%</td>
+            </tr>
+            <tr>
+                <td>인천 부평구</td>
+                <td>81.16</td>
+                <td class='up'>▲ 0.07</td>
+                <td class='up'>+0.08%</td>
+                <td class='up'>▲ 0.22</td>
+                <td class='up'>+0.28%</td>
+                <td class='up'>▲ 0.31</td>
+                <td class='up'>+0.39%</td>
+                <td class='up'>▲ 0.71</td>
+                <td class='up'>+0.88%</td>
+            </tr>
+        </table>
+        </div>
+        
+        <h3>전세 가격지수</h3>
+        <div class='table-scroll'>
+        <table class='realestate-table'>
+            <tr>
+                <th>지역</th>
+                <th>최신지수</th>
+                <th>전월대비</th>
+                <th>변동률</th>
+                <th>3개월전</th>
+                <th>변동률</th>
+                <th>6개월전</th>
+                <th>변동률</th>
+                <th>1년전</th>
+                <th>변동률</th>
+            </tr>
+            <tr>
+                <td>서울 강남구</td>
+                <td>91.74</td>
+                <td class='up'>▲ 0.21</td>
+                <td class='up'>+0.23%</td>
+                <td class='up'>▲ 0.65</td>
+                <td class='up'>+0.71%</td>
+                <td class='up'>▲ 1.77</td>
+                <td class='up'>+1.96%</td>
+                <td class='up'>▲ 5.36</td>
+                <td class='up'>+6.21%</td>
+            </tr>
+            <tr>
+                <td>서울 성동구</td>
+                <td>96.09</td>
+                <td class='up'>▲ 0.34</td>
+                <td class='up'>+0.36%</td>
+                <td class='up'>▲ 0.62</td>
+                <td class='up'>+0.65%</td>
+                <td class='up'>▲ 0.88</td>
+                <td class='up'>+0.92%</td>
+                <td class='up'>▲ 3.79</td>
+                <td class='up'>+4.10%</td>
+            </tr>
+            <tr>
+                <td>서울 마포구</td>
+                <td>97.69</td>
+                <td class='up'>▲ 0.16</td>
+                <td class='up'>+0.17%</td>
+                <td class='up'>▲ 0.49</td>
+                <td class='up'>+0.51%</td>
+                <td class='up'>▲ 0.78</td>
+                <td class='up'>+0.80%</td>
+                <td class='up'>▲ 3.74</td>
+                <td class='up'>+3.98%</td>
+            </tr>
+            <tr>
+                <td>서울 강동구</td>
+                <td>93.61</td>
+                <td class='up'>▲ 0.81</td>
+                <td class='up'>+0.87%</td>
+                <td class='up'>▲ 2.45</td>
+                <td class='up'>+2.68%</td>
+                <td class='up'>▲ 3.33</td>
+                <td class='up'>+3.68%</td>
+                <td class='up'>▲ 4.36</td>
+                <td class='up'>+4.89%</td>
+            </tr>
+            <tr>
+                <td>서울 강서구</td>
+                <td>97.75</td>
+                <td class='up'>▲ 0.26</td>
+                <td class='up'>+0.27%</td>
+                <td class='up'>▲ 0.60</td>
+                <td class='up'>+0.61%</td>
+                <td class='up'>▲ 1.13</td>
+                <td class='up'>+1.17%</td>
+                <td class='up'>▲ 5.29</td>
+                <td class='up'>+5.72%</td>
+            </tr>
+            <tr>
+                <td>서울 강북구</td>
+                <td>92.32</td>
+                <td class='up'>▲ 0.26</td>
+                <td class='up'>+0.29%</td>
+                <td class='up'>▲ 0.18</td>
+                <td class='up'>+0.20%</td>
+                <td class='up'>▲ 0.02</td>
+                <td class='up'>+0.02%</td>
+                <td class='up'>▲ 1.77</td>
+                <td class='up'>+1.96%</td>
+            </tr>
+            <tr>
+                <td>경기 광명시</td>
+                <td>78.52</td>
+                <td class='down'>▼ 0.16</td>
+                <td class='down'>-0.20%</td>
+                <td class='down'>▼ 1.57</td>
+                <td class='down'>-1.96%</td>
+                <td class='down'>▼ 3.24</td>
+                <td class='down'>-3.96%</td>
+                <td class='down'>▼ 2.90</td>
+                <td class='down'>-3.56%</td>
+            </tr>
+            <tr>
+                <td>경기 성남시 분당구</td>
+                <td>92.75</td>
+                <td class='up'>▲ 0.34</td>
+                <td class='up'>+0.37%</td>
+                <td class='up'>▲ 0.77</td>
+                <td class='up'>+0.84%</td>
+                <td class='up'>▲ 1.47</td>
+                <td class='up'>+1.61%</td>
+                <td class='up'>▲ 2.68</td>
+                <td class='up'>+2.98%</td>
+            </tr>
+            <tr>
+                <td>경기 용인시 수지구</td>
+                <td>90.44</td>
+                <td class='up'>▲ 0.65</td>
+                <td class='up'>+0.73%</td>
+                <td class='up'>▲ 1.38</td>
+                <td class='up'>+1.55%</td>
+                <td class='up'>▲ 2.15</td>
+                <td class='up'>+2.43%</td>
+                <td class='up'>▲ 3.88</td>
+                <td class='up'>+4.48%</td>
+            </tr>
+            <tr>
+                <td>경기 안양시 동안구</td>
+                <td>88.99</td>
+                <td class='up'>▲ 0.72</td>
+                <td class='up'>+0.82%</td>
+                <td class='up'>▲ 2.16</td>
+                <td class='up'>+2.48%</td>
+                <td class='up'>▲ 2.47</td>
+                <td class='up'>+2.86%</td>
+                <td class='up'>▲ 2.77</td>
+                <td class='up'>+3.21%</td>
+            </tr>
+            <tr>
+                <td>경기 수원시 팔달구</td>
+                <td>94.70</td>
+                <td class='up'>▲ 0.13</td>
+                <td class='up'>+0.14%</td>
+                <td class='up'>▲ 0.29</td>
+                <td class='up'>+0.30%</td>
+                <td class='up'>▲ 0.71</td>
+                <td class='up'>+0.76%</td>
+                <td class='up'>▲ 3.28</td>
+                <td class='up'>+3.58%</td>
+            </tr>
+            <tr>
+                <td>인천 부평구</td>
+                <td>87.22</td>
+                <td class='up'>▲ 0.03</td>
+                <td class='up'>+0.04%</td>
+                <td class='up'>▲ 0.37</td>
+                <td class='up'>+0.42%</td>
+                <td class='up'>▲ 1.00</td>
+                <td class='up'>+1.16%</td>
+                <td class='up'>▲ 4.47</td>
+                <td class='up'>+5.40%</td>
+            </tr>
+        </table>
+        </div>
+        
+        <h3>주택 매매 거래량 (월별)</h3>
+        <div class='table-scroll'>
+        <table class='realestate-table'>
+            <tr>
+                <th>지역</th><th>8월</th><th>7월</th><th>6월</th><th>5월</th><th>4월</th><th>3월</th><th>2월</th><th>1월</th><th>12월</th><th>11월</th><th>10월</th><th>9월</th></tr>
+            <tr>
+                <td>서울 강남구</td><td>7건</td><td>268건</td><td>498건</td><td>243건</td><td>97건</td><td>798건</td><td>569건</td><td>192건</td><td>91건</td><td>137건</td><td>149건</td><td>92건</td></tr>
+            <tr>
+                <td>서울 성동구</td><td>6건</td><td>88건</td><td>741건</td><td>498건</td><td>316건</td><td>576건</td><td>364건</td><td>175건</td><td>99건</td><td>108건</td><td>74건</td><td>100건</td></tr>
+            <tr>
+                <td>서울 마포구</td><td>11건</td><td>104건</td><td>639건</td><td>424건</td><td>329건</td><td>534건</td><td>335건</td><td>152건</td><td>96건</td><td>87건</td><td>108건</td><td>96건</td></tr>
+            <tr>
+                <td>서울 강동구</td><td>19건</td><td>166건</td><td>865건</td><td>497건</td><td>288건</td><td>579건</td><td>377건</td><td>174건</td><td>149건</td><td>128건</td><td>165건</td><td>125건</td></tr>
+            <tr>
+                <td>서울 강서구</td><td>19건</td><td>193건</td><td>557건</td><td>477건</td><td>327건</td><td>407건</td><td>247건</td><td>166건</td><td>98건</td><td>169건</td><td>83건</td><td>126건</td></tr>
+            <tr>
+                <td>서울 강북구</td><td>8건</td><td>72건</td><td>159건</td><td>113건</td><td>90건</td><td>97건</td><td>88건</td><td>47건</td><td>183건</td><td>122건</td><td>65건</td><td>109건</td></tr>
+            <tr>
+                <td>경기 광명시</td><td>13건</td><td>221건</td><td>618건</td><td>385건</td><td>295건</td><td>378건</td><td>215건</td><td>136건</td><td>119건</td><td>71건</td><td>122건</td><td>104건</td></tr>
+            <tr>
+                <td>경기 성남시 분당구</td><td>5건</td><td>166건</td><td>1,256건</td><td>769건</td><td>467건</td><td>690건</td><td>420건</td><td>207건</td><td>129건</td><td>72건</td><td>78건</td><td>165건</td></tr>
+            <tr>
+                <td>경기 용인시 수지구</td><td>18건</td><td>273건</td><td>1,056건</td><td>768건</td><td>621건</td><td>809건</td><td>529건</td><td>300건</td><td>55건</td><td>142건</td><td>155건</td><td>51건</td></tr>
+            <tr>
+                <td>경기 안양시 동안구</td><td>17건</td><td>294건</td><td>808건</td><td>609건</td><td>423건</td><td>530건</td><td>361건</td><td>227건</td><td>198건</td><td>158건</td><td>79건</td><td>123건</td></tr>
+            <tr>
+                <td>경기 수원시 팔달구</td><td>16건</td><td>135건</td><td>254건</td><td>157건</td><td>146건</td><td>186건</td><td>96건</td><td>73건</td><td>191건</td><td>195건</td><td>73건</td><td>115건</td></tr>
+            <tr>
+                <td>인천 부평구</td><td>52건</td><td>262건</td><td>483건</td><td>418건</td><td>410건</td><td>426건</td><td>335건</td><td>197건</td><td>156건</td><td>169건</td><td>110건</td><td>82건</td></tr>
+        </table>
+        </div>
+        
+        <h3>주간별 매매 가격지수</h3>
+        <div class='table-scroll'>
+        <table class='realestate-table'>
+            <tr>
+                <th>지역</th>
+                <th>최신지수</th>
+                <th>지난주대비</th>
+                <th>변동률</th>
+                <th>2주전</th>
+                <th>변동률</th>
+                <th>3주전</th>
+                <th>변동률</th>
+                <th>4주전</th>
+                <th>변동률</th>
+            </tr>
+            <tr>
+                <td>서울 강남구</td>
+                <td>119.36</td>
+                <td class='up'>▲ 0.27</td>
+                <td class='up'>+0.23%</td>
+                <td class='up'>▲ 0.57</td>
+                <td class='up'>+0.48%</td>
+                <td class='up'>▲ 0.88</td>
+                <td class='up'>+0.74%</td>
+                <td class='up'>▲ 1.11</td>
+                <td class='up'>+0.94%</td>
+            </tr>
+            <tr>
+                <td>서울 성동구</td>
+                <td>108.45</td>
+                <td class='up'>▲ 0.15</td>
+                <td class='up'>+0.13%</td>
+                <td class='up'>▲ 0.51</td>
+                <td class='up'>+0.47%</td>
+                <td class='up'>▲ 0.92</td>
+                <td class='up'>+0.85%</td>
+                <td class='up'>▲ 1.60</td>
+                <td class='up'>+1.50%</td>
+            </tr>
+            <tr>
+                <td>서울 마포구</td>
+                <td>106.05</td>
+                <td class='up'>▲ 0.17</td>
+                <td class='up'>+0.16%</td>
+                <td class='up'>▲ 0.47</td>
+                <td class='up'>+0.45%</td>
+                <td class='up'>▲ 0.85</td>
+                <td class='up'>+0.81%</td>
+                <td class='up'>▲ 1.40</td>
+                <td class='up'>+1.33%</td>
+            </tr>
+            <tr>
+                <td>서울 강동구</td>
+                <td>103.76</td>
+                <td class='up'>▲ 0.14</td>
+                <td class='up'>+0.13%</td>
+                <td class='up'>▲ 0.35</td>
+                <td class='up'>+0.34%</td>
+                <td class='up'>▲ 0.83</td>
+                <td class='up'>+0.80%</td>
+                <td class='up'>▲ 1.43</td>
+                <td class='up'>+1.40%</td>
+            </tr>
+            <tr>
+                <td>서울 강서구</td>
+                <td>92.14</td>
+                <td class='up'>▲ 0.04</td>
+                <td class='up'>+0.04%</td>
+                <td class='up'>▲ 0.13</td>
+                <td class='up'>+0.14%</td>
+                <td class='up'>▲ 0.21</td>
+                <td class='up'>+0.23%</td>
+                <td class='up'>▲ 0.31</td>
+                <td class='up'>+0.34%</td>
+            </tr>
+            <tr>
+                <td>서울 강북구</td>
+                <td>87.62</td>
+                <td class='up'>▲ 0.04</td>
+                <td class='up'>+0.04%</td>
+                <td class='up'>▲ 0.04</td>
+                <td class='up'>+0.05%</td>
+                <td class='up'>▲ 0.05</td>
+                <td class='up'>+0.06%</td>
+                <td class='up'>▲ 0.09</td>
+                <td class='up'>+0.10%</td>
+            </tr>
+            <tr>
+                <td>경기 광명시</td>
+                <td>82.87</td>
+                <td class='up'>▲ 0.02</td>
+                <td class='up'>+0.02%</td>
+                <td class='up'>▲ 0.07</td>
+                <td class='up'>+0.09%</td>
+                <td class='up'>▲ 0.17</td>
+                <td class='up'>+0.21%</td>
+                <td class='up'>▲ 0.20</td>
+                <td class='up'>+0.24%</td>
+            </tr>
+            <tr>
+                <td>경기 성남시 분당구</td>
+                <td>103.66</td>
+                <td class='up'>▲ 0.10</td>
+                <td class='up'>+0.10%</td>
+                <td class='up'>▲ 0.24</td>
+                <td class='up'>+0.23%</td>
+                <td class='up'>▲ 0.49</td>
+                <td class='up'>+0.48%</td>
+                <td class='up'>▲ 0.77</td>
+                <td class='up'>+0.75%</td>
+            </tr>
+            <tr>
+                <td>경기 용인시 수지구</td>
+                <td>90.71</td>
+                <td class='up'>▲ 0.04</td>
+                <td class='up'>+0.04%</td>
+                <td class='up'>▲ 0.11</td>
+                <td class='up'>+0.12%</td>
+                <td class='up'>▲ 0.20</td>
+                <td class='up'>+0.22%</td>
+                <td class='up'>▲ 0.49</td>
+                <td class='up'>+0.54%</td>
+            </tr>
+            <tr>
+                <td>경기 안양시 동안구</td>
+                <td>87.44</td>
+                <td class='up'>▲ 0.04</td>
+                <td class='up'>+0.05%</td>
+                <td class='up'>▲ 0.13</td>
+                <td class='up'>+0.14%</td>
+                <td class='up'>▲ 0.37</td>
+                <td class='up'>+0.42%</td>
+                <td class='up'>▲ 0.46</td>
+                <td class='up'>+0.53%</td>
+            </tr>
+            <tr>
+                <td>경기 수원시 팔달구</td>
+                <td>89.33</td>
+                <td class='up'>▲ 0.04</td>
+                <td class='up'>+0.04%</td>
+                <td class='up'>▲ 0.16</td>
+                <td class='up'>+0.18%</td>
+                <td class='up'>▲ 0.20</td>
+                <td class='up'>+0.23%</td>
+                <td class='up'>▲ 0.33</td>
+                <td class='up'>+0.37%</td>
+            </tr>
+            <tr>
+                <td>인천 부평구</td>
+                <td>81.18</td>
+                <td class='up'>▲ 0.01</td>
+                <td class='up'>+0.01%</td>
+                <td class='up'>▲ 0.02</td>
+                <td class='up'>+0.02%</td>
+                <td class='up'>▲ 0.02</td>
+                <td class='up'>+0.02%</td>
+                <td class='up'>▲ 0.04</td>
+                <td class='up'>+0.04%</td>
+            </tr>
+        </table>
+        </div>
+        
+        <div class='data-info'>
+            <p>※ 데이터 출처: KB부동산 통계, 국토교통부 실거래가 공개시스템</p>
+            <p>※ 매매/전세 가격지수 기준: 2020년 1월 = 100.0</p>
+            <p>※ 거래량: 국토교통부 아파트 실거래 데이터 기준</p>
+            <p>※ 월간 데이터: 전월대비 / 주간 데이터: 전주대비</p>
+            <p>※ 업데이트: 2025-08-12 16:05</p>
+            <p>※ 데이터 제공: <a href='https://data.kbland.kr/kbstats/data-comparison' target='_blank'>KB부동산</a>, <a href='https://rt.molit.go.kr' target='_blank'>국토교통부</a></p>
+        </div>
+    </div>
     </section>
 </body>
 </html>

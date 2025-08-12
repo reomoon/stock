@@ -22,8 +22,8 @@ body {
 
 /* 메인 헤더 */
 h1 {
-    background: #f8f9fa;
-    color: #495057;
+    background: #e9ecef;
+    color: #343a40;
     font-size: 32px;
     font-weight: 600;
     text-align: center;
@@ -31,7 +31,7 @@ h1 {
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    border: 1px solid #e9ecef;
+    border: 1px solid #ced4da;
 }
 
 /* 섹션 헤더 */
