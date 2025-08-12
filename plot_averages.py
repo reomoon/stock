@@ -113,7 +113,7 @@ var ma120_trace = {{
     type: 'scatter',
     mode: 'lines',
     name: '120일선',
-    line: {{color: '#FFA7A7', width: 2}},  // 연한 빨간색
+    line: {{color: '#A6A6A6', width: 2}},  // 그레이
     hovertemplate: '<b>%{{x}}</b><br>120일선: %{{y:,.0f}}<extra></extra>'
 }};
 
@@ -124,7 +124,7 @@ var ma200_trace = {{
     type: 'scatter',
     mode: 'lines',
     name: '200일선',
-    line: {{color: '#5F00FF', width: 2}},  // 보라색
+    line: {{color: '#003399', width: 2}},  // 진남색
     hovertemplate: '<b>%{{x}}</b><br>200일선: %{{y:,.0f}}<extra></extra>'
 }};
 
@@ -146,7 +146,7 @@ var layout = {{
         showgrid: true,
         gridcolor: '#E8E8E8'
     }},
-    hovermode: 'closest',  // 가장 가까운 점만 표시
+    hovermode: 'x unified',  // 드래그 시에도 호버 표시
     plot_bgcolor: '#FAFAFA',
     paper_bgcolor: 'white',
     legend: {{
@@ -157,14 +157,15 @@ var layout = {{
         borderwidth: 1
     }},
     margin: {{l: 40, r: 40, t: 40, b: 40}},
-    dragmode: false  // 드래그 비활성화
+    dragmode: 'pan'  // 드래그로 패닝 가능
 }};
 
 var config = {{
     responsive: true,
-    displayModeBar: false,  // 툴바 완전히 숨기기
-    scrollZoom: false,      // 스크롤 줌 비활성화
-    doubleClick: false,     // 더블클릭 줌 비활성화
+    displayModeBar: true,   // 툴바 표시 (드래그/줌 컨트롤 위해)
+    modeBarButtonsToRemove: ['lasso2d', 'select2d', 'toggleSpikelines', 'hoverCompareCartesian', 'hoverClosestCartesian'],
+    scrollZoom: false,       // 스크롤 줌 활성화
+    doubleClick: 'reset',   // 더블클릭으로 리셋
     displaylogo: false
 }};
 
