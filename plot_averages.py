@@ -101,7 +101,8 @@ var candlestick = {{
     type: 'candlestick',
     name: '나스닥',
     increasing: {{line: {{color: '#FFA7A7'}}}},  // 상승 빨간색
-    decreasing: {{line: {{color: '#6799FF'}}}}   // 하락 파란색
+    decreasing: {{line: {{color: '#6799FF'}}}},   // 하락 파란색
+    hovertemplate: '<b>%{{x}}</b><br>종가: %{{close:,.0f}}<extra></extra>'
 
 }};
 
@@ -112,7 +113,8 @@ var ma120_trace = {{
     type: 'scatter',
     mode: 'lines',
     name: '120일선',
-    line: {{color: '#FFA7A7', width: 2}}  // 연한 빨간색
+    line: {{color: '#FFA7A7', width: 2}},  // 연한 빨간색
+    hovertemplate: '<b>%{{x}}</b><br>120일선: %{{y:,.0f}}<extra></extra>'
 }};
 
 // 200일 이동평균선
@@ -122,7 +124,8 @@ var ma200_trace = {{
     type: 'scatter',
     mode: 'lines',
     name: '200일선',
-    line: {{color: '#5F00FF', width: 2}}  // 보라색
+    line: {{color: '#5F00FF', width: 2}},  // 보라색
+    hovertemplate: '<b>%{{x}}</b><br>200일선: %{{y:,.0f}}<extra></extra>'
 }};
 
 var data = [candlestick, ma120_trace, ma200_trace];
@@ -143,7 +146,7 @@ var layout = {{
         showgrid: true,
         gridcolor: '#E8E8E8'
     }},
-    hovermode: 'x unified',
+    hovermode: 'closest',  // 가장 가까운 점만 표시
     plot_bgcolor: '#FAFAFA',
     paper_bgcolor: 'white',
     legend: {{
