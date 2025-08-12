@@ -169,7 +169,7 @@ ul {
 .realestate-table td:first-child {
     text-align: left;
     font-weight: bold;
-    background-color: #f8f9fa;
+    background-color: #f4f4f5;
 }
 
 /* 예시 CSS: 좌측 열 고정 */
@@ -177,7 +177,7 @@ ul {
 .realestate-table td:first-child {
     position: sticky;
     left: 0;
-    background: #f8f9fa;
+    background: #f4f4f5;
     z-index: 2;
     min-width: 100px; /* 필요시 조정 */
     box-shadow: 2px 0 2px -1px #eee;
