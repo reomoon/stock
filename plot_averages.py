@@ -162,11 +162,11 @@ var layout = {{
 
 var config = {{
     responsive: true,
-    displayModeBar: true,   // 툴바 표시 (드래그/줌 컨트롤 위해)
-    modeBarButtonsToRemove: ['lasso2d', 'select2d', 'toggleSpikelines', 'hoverCompareCartesian', 'hoverClosestCartesian'],
-    scrollZoom: false,       // 스크롤 줌 활성화
-    doubleClick: 'reset',   // 더블클릭으로 리셋
-    displaylogo: false
+    displayModeBar: false,   // 툴바 완전히 숨김
+    scrollZoom: false,       // 스크롤 줌 비활성화
+    doubleClick: false,      // 더블클릭 비활성화
+    displaylogo: false,
+    staticPlot: false        // 상호작용 유지 (드래그/호버)
 }};
 
 Plotly.newPlot('nasdaqChart', data, layout, config);
