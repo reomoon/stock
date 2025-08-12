@@ -22,15 +22,16 @@ body {
 
 /* 메인 헤더 */
 h1 {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: #f8f9fa;
+    color: #495057;
     font-size: 32px;
     font-weight: 600;
     text-align: center;
     margin: 0 0 30px 0;
     padding: 20px;
     border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e9ecef;
 }
 
 /* 섹션 헤더 */
@@ -39,7 +40,7 @@ h2 {
     font-weight: 600;
     margin: 30px 0 20px 0;
     color: #2d3748;
-    border-left: 4px solid #667eea;
+    border-left: 4px solid #6c757d;
     padding-left: 16px;
 }
 
@@ -86,7 +87,7 @@ section {
 
 .news-list li:hover {
     background: #edf2f7;
-    border-left-color: #667eea;
+    border-left-color: #6c757d;
     transform: translateX(2px);
 }
 
@@ -98,11 +99,11 @@ section {
 }
 
 .news-list a:hover {
-    color: #667eea;
+    color: #495057;
 }
 
 .news-list a:active {
-    color: #5a67d8;
+    color: #6c757d;
 }
 
 /* 테이블 스타일 */
@@ -122,12 +123,13 @@ section {
 }
 
 .stock-table th {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: #f8f9fa;
+    color: #495057;
     font-weight: 600;
     padding: 16px 12px;
     text-align: center;
     border: none;
+    border-bottom: 2px solid #dee2e6;
 }
 
 .stock-table td {
@@ -135,10 +137,6 @@ section {
     text-align: center;
     border-bottom: 1px solid #e2e8f0;
     font-weight: 500;
-}
-
-.stock-table tr:nth-child(even) {
-    background-color: #f8fafc;
 }
 
 .stock-table tr:hover {
@@ -244,7 +242,7 @@ ul {
     margin: 24px 0 16px 0;
     color: #2d3748;
     padding-left: 12px;
-    border-left: 3px solid #667eea;
+    border-left: 3px solid #6c757d;
 }
 
 .table-scroll {
@@ -266,12 +264,13 @@ ul {
 }
 
 .realestate-table th {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: #f8f9fa;
+    color: #495057;
     font-weight: 600;
     padding: 14px 10px;
     text-align: center;
     border: none;
+    border-bottom: 2px solid #dee2e6;
 }
 
 .realestate-table td {
@@ -287,7 +286,7 @@ ul {
     left: 0;
     background: #f8fafc;
     z-index: 2;
-    min-width: 120px;
+    min-width: 90px;
     box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
     text-align: left;
     font-weight: 600;
@@ -295,12 +294,9 @@ ul {
 }
 
 .realestate-table th:first-child {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-}
-
-.realestate-table tr:nth-child(even) {
-    background-color: #f8fafc;
+    background: #f8f9fa;
+    color: #495057;
+    border-bottom: 2px solid #dee2e6;
 }
 
 .realestate-table tr:hover {
@@ -326,9 +322,9 @@ ul {
 .data-info {
     margin-top: 20px;
     padding: 16px;
-    background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+    background: #f8f9fa;
     border-radius: 8px;
-    border-left: 4px solid #667eea;
+    border-left: 4px solid #6c757d;
     font-size: 14px;
     color: #4a5568;
 }
@@ -340,10 +336,10 @@ ul {
 
 .error-message {
     padding: 20px;
-    background: linear-gradient(135deg, #fed7d7 0%, #feb2b2 100%);
-    border: 1px solid #fc8181;
+    background: #f8d7da;
+    border: 1px solid #f5c6cb;
     border-radius: 8px;
-    color: #c53030;
+    color: #721c24;
     text-align: center;
     font-weight: 500;
 }
