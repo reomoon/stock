@@ -67,7 +67,7 @@ def make_nasdaq_ma_graphs():
     if first_valid_idx is not None:
         df = df.loc[first_valid_idx:]
     
-    # 최근 6개 데이터만 표시 (약 22거래일)
+    # 최근 6개월 데이터만 표시 (약 22거래일)
     df = df.tail(132)
 
     # 날짜 리스트 생성 (x축)
@@ -79,9 +79,9 @@ def make_nasdaq_ma_graphs():
             series = series.iloc[:, 0]
         return series.round(2).tolist()
     
-    open_data = safe_convert(df["Open"])
-    high_data = safe_convert(df["High"])
-    low_data = safe_convert(df["Low"])
+    # open_data = safe_convert(df["Open"])
+    # high_data = safe_convert(df["High"])
+    # low_data = safe_convert(df["Low"])
     close_data = safe_convert(df["Close"])
     ma120 = safe_convert(df["120MA"])
     ma200 = safe_convert(df["200MA"])
@@ -91,19 +91,15 @@ def make_nasdaq_ma_graphs():
 <div id="nasdaqChart" style="width:100%; height:350px;"></div>
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <script>
-// 캔들차트
-var candlestick = {{
+// 종가 라인차트
+var close_trace = {{
     x: {json.dumps(labels)},
-    open: {json.dumps(open_data)}, //시작가
-    high: {json.dumps(high_data)}, 
-    low: {json.dumps(low_data)},
-    close: {json.dumps(close_data)}, // 종가
-    type: 'candlestick',
-    name: '나스닥',
-    increasing: {{line: {{color: '#FFA7A7'}}}},  // 상승 빨간색
-    decreasing: {{line: {{color: '#6799FF'}}}},   // 하락 파란색
-    hovertemplate: '<b>%{{x}}</b><br>종가: %{{close:,.0f}}<extra></extra>'
-
+    y: {json.dumps(close_data)},
+    type: 'scatter',
+    mode: 'lines',
+    name: '나스닥 종가',
+    line: {{color: '#333333', width: 3}},  // 진한 회색, 굵은 선
+    hovertemplate: '<b>%{{x}}</b><br>종가: %{{y:,.0f}}<extra></extra>'
 }};
 
 // 120일 이동평균선
@@ -113,7 +109,7 @@ var ma120_trace = {{
     type: 'scatter',
     mode: 'lines',
     name: '120일선',
-    line: {{color: '#A6A6A6', width: 2}},  // 그레이
+    line: {{color: '#FF8C00', width: 2}},  // 오렌지색
     hovertemplate: '<b>%{{x}}</b><br>120일선: %{{y:,.0f}}<extra></extra>'
 }};
 
@@ -124,29 +120,28 @@ var ma200_trace = {{
     type: 'scatter',
     mode: 'lines',
     name: '200일선',
-    line: {{color: '#003399', width: 2}},  // 진남색
+    line: {{color: '#9C27B0', width: 2}},  // 보라색
     hovertemplate: '<b>%{{x}}</b><br>200일선: %{{y:,.0f}}<extra></extra>'
 }};
 
-var data = [candlestick, ma120_trace, ma200_trace];
+var data = [close_trace, ma120_trace, ma200_trace];
 
 var layout = {{
     title: {{
-        text: '나스닥 종합지수 (최근 6개월)',
+        text: '나스닥 종합지수 (최근 1개월)',
         font: {{ size: 16, color: '#333' }}
     }},
     xaxis: {{
-        // title: '날짜',
-        showgrid: true,
-        gridcolor: '#E8E8E8',
-        rangeslider: {{ visible: false }}  // 하단 슬라이더 제거
-    }},
-    yaxis: {{
-        // title: '지수',
         showgrid: true,
         gridcolor: '#E8E8E8'
+        fixedrange: true // x축 고정(드래그/줌 방지)
     }},
-    hovermode: 'x unified',  // 드래그 시에도 호버 표시
+    yaxis: {{
+        showgrid: true,
+        gridcolor: '#E8E8E8',
+        fixedrange: true // y축 고정(드래그/줌 방지)
+    }},
+    hovermode: 'x unified', // 터치 시 모든 데이터 표시
     plot_bgcolor: '#FAFAFA',
     paper_bgcolor: 'white',
     legend: {{
@@ -156,17 +151,18 @@ var layout = {{
         bordercolor: '#E8E8E8',
         borderwidth: 1
     }},
-    margin: {{l: 40, r: 40, t: 40, b: 40}},
-    dragmode: 'pan'  // 드래그로 패닝 가능
+    margin: {{l: 40, r: 40, t: 40, b: 40}}
+    dragmode: false // 드래그 모드 완전 비활성화
 }};
 
 var config = {{
     responsive: true,
-    displayModeBar: false,   // 툴바 완전히 숨김
-    scrollZoom: false,       // 스크롤 줌 비활성화
-    doubleClick: false,      // 더블클릭 비활성화
-    displaylogo: false,
-    staticPlot: false        // 상호작용 유지 (드래그/호버)
+    displayModeBar: false,      // 툴바 숨김
+    scrollZoom: false,          // 스크롤 줌 비활성화
+    doubleClick: false,         // 더블클릭 줌 비활성화
+    displaylogo: false,         // Plotly 로고 숨김
+    staticPlot: false,          // 호버는 허용 (터치 시 정보 표시)
+    modeBarButtonsToRemove: ['pan2d', 'select2d', 'lasso2d', 'resetScale2d', 'zoomIn2d', 'zoomOut2d']
 }};
 
 Plotly.newPlot('nasdaqChart', data, layout, config);
