@@ -3,17 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Stock & News Dashboard</title>
-    <link rel="stylesheet" href="/style.css"> <!-- 절대경로로 변경 -->
+    <link rel="stylesheet" href="/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
-    <header>
-        <h1>오늘의 주가 및 주요 뉴스</h1>
-    </header>
-    <section id="stock">
-        <h2>주식 정보</h2>
-        <div class='stock-table-wrap'><div>주요 미국 주식 종가 변동(2025-08-12 16:11)</div><table class='stock-table'><tr><th>종목</th><th>종가</th><th>변동</th></tr><tr><td>NASDAQ</td><td>21385.40</td><td class='down'>&#9660; (-0.3%, -64.62)</td></tr><tr><td>AAPL</td><td>227.18</td><td class='down'>&#9660; (-0.8%, -1.91)</td></tr><tr><td>MSFT</td><td>521.77</td><td class='down'>&#9660; (-0.1%, -0.27)</td></tr><tr><td>NVDA</td><td>182.06</td><td class='down'>&#9660; (-0.4%, -0.64)</td></tr><tr><td>AMZN</td><td>221.30</td><td class='down'>&#9660; (-0.6%, -1.39)</td></tr><tr><td>META</td><td>765.87</td><td class='down'>&#9660; (-0.4%, -3.43)</td></tr><tr><td>GOOGL</td><td>201.00</td><td class='down'>&#9660; (-0.2%, -0.42)</td></tr><tr><td>TSLA</td><td>339.03</td><td class='up'>&#9650; (+2.8%, +9.38)</td></tr><tr><td>BTC(Upbit)</td><td>163,949,000원</td><td class='down'>&#9660; (-0.2%, -261000)</td></tr><tr><td>KOSPI</td><td>3,189.91</td><td class='down'>&#9660; (-0.5%, -16.86)</td></tr></table></div>
+    <div id="loading" style="text-align: center; padding: 50px;">
+        <h2>데이터를 불러오는 중...</h2>
+    </div>
+    <script>
+        // 최신 데이터가 있는 main.html로 리디렉션
+        window.location.href = '/main.html';
+    </script>
+</body>
+</html>
         <h2>나스닥 이동평균선</h2>
         <div id="ma-graphs">
             
