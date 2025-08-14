@@ -133,7 +133,7 @@ var layout = {{
     }},
     xaxis: {{
         showgrid: true,
-        gridcolor: '#E8E8E8'
+        gridcolor: '#E8E8E8',
         fixedrange: true // x축 고정(드래그/줌 방지)
     }},
     yaxis: {{
@@ -151,7 +151,7 @@ var layout = {{
         bordercolor: '#E8E8E8',
         borderwidth: 1
     }},
-    margin: {{l: 40, r: 40, t: 40, b: 40}}
+    margin: {{l: 40, r: 40, t: 40, b: 40}},
     dragmode: false // 드래그 모드 완전 비활성화
 }};
 
