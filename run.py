@@ -25,7 +25,7 @@ def generate_static_html():
 <head>
     <meta charset="UTF-8">
     <title>Stock & News Dashboard</title>
-    <link rel="stylesheet" href="/style.css"> <!-- 절대경로로 변경 --!>
+    <link rel="stylesheet" href="./style.css"> <!-- 절대경로로 변경 --!>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
@@ -45,10 +45,12 @@ def generate_static_html():
         <h2>경제 뉴스</h2>
         {economy_news_data}
     </section>
-    <section id="realestate">
+    <section id="realestate-news">
         <h2>부동산 뉴스</h2>
         {realestate_news_data}
-        <div class='news-header'>부동산 매매 가격지수 현황</div>
+    </section>
+    <section id="realestate-data">
+        <h2>부동산 매매 가격지수 현황</h2>
         {realestate_chart_html}
         {realestate_data}
     </section>
