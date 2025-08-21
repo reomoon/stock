@@ -285,7 +285,7 @@ ul {
 .realestate-table td:first-child {
     position: sticky;
     left: 0;
-    /* background: #f8f9fa; */
+    background: white; /* 배경색 추가해서 투명하게 겹쳐서 보이지 않도록 */
     z-index: 2;
     min-width: 90px;
     box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
