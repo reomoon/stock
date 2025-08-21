@@ -57,114 +57,23 @@ def make_nasdaq_ma_graphs():
         
         # 캐시로 저장
         save_nasdaq_cache(df)
-        print("Data cached successfully!")
-    else:
-        print("Using cached NASDAQ data...")
-    
+        # Plotly.js 차트 데이터만 전달, 실제 차트 생성은 nasdaq_chart.js에서 처리
+        return f"""
+        <!-- 나스닥 차트 영역 -->
+        <div id=\"nasdaqChart\" style=\"width:100%; height:350px;\"></div>
+        <!-- Plotly.js CDN -->
+        <script src=\"https://cdn.plot.ly/plotly-latest.min.js\"></script>
+        <!-- 파이썬에서 JS로 데이터 전달 -->
+        <script>
+        window.nasdaqData = {{
+            "labels": {json.dumps(labels)},
+            "close_data": {json.dumps(close_data)},
+            "ma120": {json.dumps(ma120)},
+            "ma200": {json.dumps(ma200)}
+        }};
+        </script>
+        <!-- 차트 렌더링 및 이벤트는 nasdaq_chart.js에서 처리 -->
+        <script src=\"nasdaq_chart.js\"></script>
+        """
 
-    # 200일선이 유효한 구간부터 데이터 잘라내기
-    first_valid_idx = df["200MA"].first_valid_index()
-    if first_valid_idx is not None:
-        df = df.loc[first_valid_idx:]
-    
-    # 최근 6개월 데이터만 표시 (약 22거래일)
-    df = df.tail(132)
-
-    # 날짜 리스트 생성 (x축)
-    labels = [d.strftime("%Y-%m-%d") for d in df.index]
-
-    # 캔들차트용 OHLC 데이터 준비
-    def safe_convert(series):
-        if hasattr(series, 'iloc') and len(series.shape) > 1:
-            series = series.iloc[:, 0]
-        return series.round(2).tolist()
-    
-    # open_data = safe_convert(df["Open"])
-    # high_data = safe_convert(df["High"])
-    # low_data = safe_convert(df["Low"])
-    close_data = safe_convert(df["Close"])
-    ma120 = safe_convert(df["120MA"])
-    ma200 = safe_convert(df["200MA"])
-
-    # Plotly.js로 캔들차트 + 이동평균선 생성
-    return f"""
-<div id="nasdaqChart" style="width:100%; height:350px;"></div>
-<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-<script>
-// 종가 라인차트
-var close_trace = {{
-    x: {json.dumps(labels)},
-    y: {json.dumps(close_data)},
-    type: 'scatter',
-    mode: 'lines',
-    name: '나스닥 종가',
-    line: {{color: '#333333', width: 3}},  // 진한 회색, 굵은 선
-    hovertemplate: '<b>%{{x}}</b><br>종가: %{{y:,.0f}}<extra></extra>'
-}};
-
-// 120일 이동평균선
-var ma120_trace = {{
-    x: {json.dumps(labels)},
-    y: {json.dumps(ma120)},
-    type: 'scatter',
-    mode: 'lines',
-    name: '120일선',
-    line: {{color: '#FF8C00', width: 2}},  // 오렌지색
-    hovertemplate: '<b>%{{x}}</b><br>120일선: %{{y:,.0f}}<extra></extra>'
-}};
-
-// 200일 이동평균선
-var ma200_trace = {{
-    x: {json.dumps(labels)},
-    y: {json.dumps(ma200)},
-    type: 'scatter',
-    mode: 'lines',
-    name: '200일선',
-    line: {{color: '#9C27B0', width: 2}},  // 보라색
-    hovertemplate: '<b>%{{x}}</b><br>200일선: %{{y:,.0f}}<extra></extra>'
-}};
-
-var data = [close_trace, ma120_trace, ma200_trace];
-
-var layout = {{
-    title: {{
-        text: '나스닥 종합지수 (최근 1개월)',
-        font: {{ size: 16, color: '#333' }}
-    }},
-    xaxis: {{
-        showgrid: true,
-        gridcolor: '#E8E8E8',
-        fixedrange: true // x축 고정(드래그/줌 방지)
-    }},
-    yaxis: {{
-        showgrid: true,
-        gridcolor: '#E8E8E8',
-        fixedrange: true // y축 고정(드래그/줌 방지)
-    }},
-    hovermode: 'x unified', // 터치 시 모든 데이터 표시
-    plot_bgcolor: '#FAFAFA',
-    paper_bgcolor: 'white',
-    legend: {{
-        x: 0,
-        y: 1,
-        bgcolor: 'rgba(255,255,255,0.8)',
-        bordercolor: '#E8E8E8',
-        borderwidth: 1
-    }},
-    margin: {{l: 40, r: 40, t: 40, b: 40}},
-    dragmode: false // 드래그 모드 완전 비활성화
-}};
-
-var config = {{
-    responsive: true,
-    displayModeBar: false,      // 툴바 숨김
-    scrollZoom: false,          // 스크롤 줌 비활성화
-    doubleClick: false,         // 더블클릭 줌 비활성화
-    displaylogo: false,         // Plotly 로고 숨김
-    staticPlot: false,          // 호버는 허용 (터치 시 정보 표시)
-    modeBarButtonsToRemove: ['pan2d', 'select2d', 'lasso2d', 'resetScale2d', 'zoomIn2d', 'zoomOut2d']
-}};
-
-Plotly.newPlot('nasdaqChart', data, layout, config);
-</script>
-"""
+    # ...JS 차트 생성 코드는 nasdaq_chart.js에서 관리...
