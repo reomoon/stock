@@ -22,8 +22,8 @@ body {
 
 /* 메인 헤더 */
 h1 {
-    background: #f9e8e8;
-    color: #343a40;
+    background: #4374D9;
+    color: white;
     font-size: 32px;
     font-weight: 600;
     text-align: center;
@@ -66,7 +66,7 @@ section {
 }
 
 .news-header::before {
-    content: "📰";
+    /* content: "📰"; */
     font-size: 20px;
 }
 
@@ -280,11 +280,12 @@ ul {
     font-weight: 500;
 }
 
+/* 부동산 표 첫 번째 열 고정 */
 .realestate-table th:first-child,
 .realestate-table td:first-child {
     position: sticky;
     left: 0;
-    background: #f8f9fa;
+    /* background: #f8f9fa; */
     z-index: 2;
     min-width: 90px;
     box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
@@ -293,6 +294,7 @@ ul {
     color: #2d3748;
 }
 
+/* 부동산 첫 번째 행 */
 .realestate-table th:first-child {
     background: #f8f9fa;
     color: #495057;
