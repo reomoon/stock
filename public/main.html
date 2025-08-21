@@ -13,25 +13,41 @@
     </header>
     <section id="stock">
         <h2>주식 정보</h2>
-        <div class='stock-table-wrap'><div>주요 미국 주식 종가 변동(2025-08-21 14:52)</div><table class='stock-table'><tr><th>종목</th><th>종가</th><th>변동</th></tr><tr><td>^IXIC</td><td colspan='2'>데이터 오류 - single positional indexer is out-of-bounds</td></tr><tr><td>AAPL</td><td colspan='2'>데이터 오류 - single positional indexer is out-of-bounds</td></tr><tr><td>MSFT</td><td colspan='2'>데이터 오류 - single positional indexer is out-of-bounds</td></tr><tr><td>NVDA</td><td colspan='2'>데이터 오류 - single positional indexer is out-of-bounds</td></tr><tr><td>AMZN</td><td colspan='2'>데이터 오류 - single positional indexer is out-of-bounds</td></tr><tr><td>META</td><td colspan='2'>데이터 오류 - single positional indexer is out-of-bounds</td></tr><tr><td>GOOGL</td><td colspan='2'>데이터 오류 - single positional indexer is out-of-bounds</td></tr><tr><td>TSLA</td><td colspan='2'>데이터 오류 - single positional indexer is out-of-bounds</td></tr><tr><td>BTC(Upbit)</td><td>158,887,000원</td><td class='down'>&#9660; (-0.2%, -262000)</td></tr><tr><td>KOSPI</td><td colspan='2'>데이터 오류 - 데이터가 부족하거나 가져오지 못함.</td></tr></table></div>
+        <div class='stock-table-wrap'><div>주요 미국 주식 종가 변동(2025-08-21 16:43)</div><table class='stock-table'><tr><th>종목</th><th>종가</th><th>변동</th></tr><tr><td>NASDAQ</td><td>21172.86</td><td class='down'>&#9660; (-0.7%, -142.09)</td></tr><tr><td>AAPL</td><td>226.01</td><td class='down'>&#9660; (-2.0%, -4.55)</td></tr><tr><td>MSFT</td><td>505.72</td><td class='down'>&#9660; (-0.8%, -4.05)</td></tr><tr><td>NVDA</td><td>175.40</td><td class='down'>&#9660; (-0.1%, -0.24)</td></tr><tr><td>AMZN</td><td>223.81</td><td class='down'>&#9660; (-1.8%, -4.20)</td></tr><tr><td>META</td><td>747.72</td><td class='down'>&#9660; (-0.5%, -3.76)</td></tr><tr><td>GOOGL</td><td>199.32</td><td class='down'>&#9660; (-1.1%, -2.25)</td></tr><tr><td>TSLA</td><td>323.90</td><td class='down'>&#9660; (-1.6%, -5.41)</td></tr><tr><td>BTC(Upbit)</td><td>158,884,000원</td><td class='down'>&#9660; (-0.2%, -265000)</td></tr><tr><td>KOSPI</td><td>3,141.74</td><td class='up'>&#9650; (+0.4%, +11.65)</td></tr></table></div>
         <h2>나스닥 이동평균선</h2>
         <div id="ma-graphs">
             
+    <!-- 나스닥 차트 영역 -->
+    <div id="nasdaqChart" style="width:100%; height:350px;"></div>
+    <!-- Plotly.js CDN -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <!-- 파이썬에서 JS로 데이터 전달 -->
+    <script>
+    window.nasdaqData = {
+        "labels": ["2025-02-11", "2025-02-12", "2025-02-13", "2025-02-14", "2025-02-18", "2025-02-19", "2025-02-20", "2025-02-21", "2025-02-24", "2025-02-25", "2025-02-26", "2025-02-27", "2025-02-28", "2025-03-03", "2025-03-04", "2025-03-05", "2025-03-06", "2025-03-07", "2025-03-10", "2025-03-11", "2025-03-12", "2025-03-13", "2025-03-14", "2025-03-17", "2025-03-18", "2025-03-19", "2025-03-20", "2025-03-21", "2025-03-24", "2025-03-25", "2025-03-26", "2025-03-27", "2025-03-28", "2025-03-31", "2025-04-01", "2025-04-02", "2025-04-03", "2025-04-04", "2025-04-07", "2025-04-08", "2025-04-09", "2025-04-10", "2025-04-11", "2025-04-14", "2025-04-15", "2025-04-16", "2025-04-17", "2025-04-21", "2025-04-22", "2025-04-23", "2025-04-24", "2025-04-25", "2025-04-28", "2025-04-29", "2025-04-30", "2025-05-01", "2025-05-02", "2025-05-05", "2025-05-06", "2025-05-07", "2025-05-08", "2025-05-09", "2025-05-12", "2025-05-13", "2025-05-14", "2025-05-15", "2025-05-16", "2025-05-19", "2025-05-20", "2025-05-21", "2025-05-22", "2025-05-23", "2025-05-27", "2025-05-28", "2025-05-29", "2025-05-30", "2025-06-02", "2025-06-03", "2025-06-04", "2025-06-05", "2025-06-06", "2025-06-09", "2025-06-10", "2025-06-11", "2025-06-12", "2025-06-13", "2025-06-16", "2025-06-17", "2025-06-18", "2025-06-20", "2025-06-23", "2025-06-24", "2025-06-25", "2025-06-26", "2025-06-27", "2025-06-30", "2025-07-01", "2025-07-02", "2025-07-03", "2025-07-07", "2025-07-08", "2025-07-09", "2025-07-10", "2025-07-11", "2025-07-14", "2025-07-15", "2025-07-16", "2025-07-17", "2025-07-18", "2025-07-21", "2025-07-22", "2025-07-23", "2025-07-24", "2025-07-25", "2025-07-28", "2025-07-29", "2025-07-30", "2025-07-31", "2025-08-01", "2025-08-04", "2025-08-05", "2025-08-06", "2025-08-07", "2025-08-08", "2025-08-11", "2025-08-12", "2025-08-13", "2025-08-14", "2025-08-15", "2025-08-18", "2025-08-19", "2025-08-20"],
+        "close_data": [19643.86, 19649.95, 19945.64, 20026.77, 20041.26, 20056.25, 19962.36, 19524.01, 19286.93, 19026.39, 19075.26, 18544.42, 18847.28, 18350.19, 18285.16, 18552.73, 18069.26, 18196.22, 17468.32, 17436.1, 17648.45, 17303.01, 17754.09, 17808.66, 17504.12, 17750.79, 17691.63, 17784.05, 18188.59, 18271.86, 17899.02, 17804.03, 17322.99, 17299.29, 17449.89, 17601.05, 16550.61, 15587.79, 15603.26, 15267.91, 17124.97, 16387.31, 16724.46, 16831.48, 16823.17, 16307.16, 16286.45, 15870.9, 16300.42, 16708.05, 17166.04, 17382.94, 17366.13, 17461.32, 17446.34, 17710.74, 17977.73, 17844.24, 17689.66, 17738.16, 17928.14, 17928.92, 18708.34, 19010.09, 19146.81, 19112.32, 19211.1, 19215.46, 19142.71, 18872.64, 18925.74, 18737.21, 19199.16, 19100.94, 19175.87, 19113.77, 19242.61, 19398.96, 19460.49, 19298.45, 19529.95, 19591.24, 19714.99, 19615.88, 19662.49, 19406.83, 19701.21, 19521.09, 19546.27, 19447.41, 19630.97, 19912.53, 19973.55, 20167.91, 20273.46, 20369.73, 20202.89, 20393.13, 20601.1, 20412.52, 20418.46, 20611.34, 20630.66, 20585.53, 20640.33, 20677.8, 20730.49, 20885.65, 20895.65, 20974.18, 20892.69, 21020.02, 21057.96, 21108.32, 21178.58, 21098.29, 21129.67, 21122.45, 20650.13, 21053.58, 20916.55, 21169.42, 21242.7, 21450.02, 21385.4, 21681.9, 21713.14, 21710.67, 21622.98, 21629.77, 21314.95, 21172.86],
+        "ma120": [18792.72, 18808.0, 18824.88, 18844.95, 18862.97, 18882.4, 18900.79, 18917.19, 18931.95, 18942.89, 18959.04, 18971.21, 18985.54, 18999.37, 19011.04, 19023.76, 19029.38, 19034.6, 19032.8, 19031.5, 19031.67, 19029.42, 19027.25, 19026.09, 19022.17, 19019.47, 19016.22, 19012.83, 19013.41, 19014.1, 19014.0, 19013.0, 19008.03, 19001.04, 18997.09, 18992.25, 18977.74, 18955.29, 18932.45, 18905.5, 18895.58, 18879.08, 18865.34, 18851.52, 18837.21, 18818.27, 18801.69, 18780.48, 18762.0, 18746.5, 18733.62, 18723.41, 18717.33, 18710.84, 18704.73, 18698.66, 18690.28, 18678.4, 18665.09, 18652.09, 18640.81, 18629.96, 18626.63, 18629.38, 18632.34, 18633.38, 18635.42, 18637.45, 18638.61, 18637.09, 18635.02, 18632.32, 18632.17, 18629.64, 18627.1, 18621.92, 18618.11, 18614.27, 18611.97, 18608.73, 18604.52, 18601.92, 18600.16, 18595.51, 18591.79, 18591.9, 18594.64, 18594.21, 18592.39, 18587.53, 18584.28, 18585.87, 18589.92, 18597.07, 18605.34, 18611.57, 18614.39, 18621.92, 18631.27, 18641.69, 18652.78, 18665.84, 18675.17, 18685.56, 18693.98, 18701.65, 18707.66, 18714.6, 18722.44, 18736.04, 18745.7, 18757.27, 18768.73, 18781.08, 18795.96, 18808.0, 18819.98, 18831.06, 18840.45, 18851.61, 18862.22, 18874.88, 18885.69, 18897.55, 18908.75, 18922.3, 18936.89, 18955.11, 18974.58, 18996.27, 19014.94, 19036.84],
+        "ma200": [18150.61, 18170.8, 18190.89, 18211.11, 18233.03, 18255.28, 18275.89, 18292.73, 18307.42, 18320.88, 18334.75, 18345.74, 18358.27, 18368.08, 18376.95, 18386.0, 18392.86, 18400.41, 18403.77, 18406.79, 18411.03, 18413.86, 18418.03, 18421.97, 18424.89, 18429.96, 18434.74, 18439.52, 18446.18, 18451.6, 18455.22, 18458.58, 18459.23, 18459.01, 18458.22, 18457.89, 18452.19, 18440.85, 18429.55, 18417.28, 18414.46, 18408.91, 18403.95, 18399.08, 18393.9, 18386.78, 18378.81, 18368.02, 18358.58, 18350.36, 18344.17, 18338.94, 18332.53, 18328.42, 18323.66, 18319.85, 18317.19, 18316.43, 18315.52, 18315.58, 18315.18, 18314.84, 18321.67, 18330.81, 18339.76, 18348.47, 18358.79, 18366.87, 18376.61, 18387.09, 18400.72, 18412.57, 18427.59, 18439.79, 18451.94, 18463.61, 18473.89, 18484.92, 18494.25, 18502.58, 18510.85, 18519.72, 18528.7, 18538.68, 18547.6, 18556.01, 18565.74, 18575.57, 18585.72, 18594.39, 18606.86, 18621.0, 18635.23, 18652.61, 18669.56, 18686.28, 18700.32, 18714.43, 18729.02, 18743.12, 18757.07, 18772.26, 18785.35, 18798.53, 18811.86, 18824.88, 18838.12, 18851.6, 18865.48, 18879.4, 18894.31, 18909.79, 18925.49, 18940.34, 18956.61, 18971.19, 18985.38, 18999.58, 19011.12, 19023.87, 19036.88, 19050.89, 19065.23, 19080.03, 19094.26, 19109.77, 19126.95, 19143.43, 19158.95, 19174.27, 19187.28, 19200.1]
+    };
+    </script>
+    <!-- 차트 렌더링 및 이벤트는 nasdaq_chart.js에서 처리 -->
+    <script src="nasdaq_chart.js"></script>
+    
         </div>
     </section>
     <section id="economy">
         <h2>경제 뉴스</h2>
         
-    <div class='news-header'>주요 경제 뉴스(2025-08-21 14:52)</div>
+    <div class='news-header'>주요 경제 뉴스(2025-08-21 16:43)</div>
     <ul class='news-list'>
-    <li><a href='https://n.news.naver.com/mnews/article/215/0001220863' target='_blank'>• [단독] 서클, 韓 가상자산 기업 투자…최고경영진 방한</a></li><li><a href='https://n.news.naver.com/mnews/article/009/0005545231' target='_blank'>• “풍력·태양광은 세기의 사기극” 트럼프 한마디에…신재생에너지 관련주 하락세</a></li><li><a href='https://n.news.naver.com/mnews/article/277/0005640309' target='_blank'>• [특징주]나노엔텍, 글로벌 1위 로레알과 뷰티테크 '정조준'</a></li><li><a href='https://n.news.naver.com/mnews/article/008/0005239076' target='_blank'>• 유안타증권 금융센터인천본부점, 28일 투자설명회</a></li><li><a href='https://n.news.naver.com/mnews/article/366/0001101953' target='_blank'>• 동성제약 경영진 “최대주주, 사문서위조로 법적 조치할 것”</a></li><li><a href='https://n.news.naver.com/mnews/article/011/0004523524' target='_blank'>• 삼진제약-나무ICT, AI 기반 비만 신약개발 공동연구 계약 체결</a></li></ul></div>
+    <li><a href='https://n.news.naver.com/mnews/article/018/0006095272' target='_blank'>• 텔콘RF제약, 22일 권리락 발생</a></li><li><a href='https://n.news.naver.com/mnews/article/011/0004523588' target='_blank'>• SK, 이번엔 中 물류사 지분 처분…'자산 팔고 또 팔고' 끝없는 리밸런싱</a></li><li><a href='https://n.news.naver.com/mnews/article/018/0006095270' target='_blank'>• 위닉스, 111억 규모 국세청 추징금 부과</a></li><li><a href='https://n.news.naver.com/mnews/article/011/0004523587' target='_blank'>• '이가탄' 유명한 명인제약, 코스피시장 IPO 시동… 증권신고서 제출</a></li><li><a href='https://n.news.naver.com/mnews/article/016/0002517635' target='_blank'>• “풍력·태양광은 세기의 사기극” 트럼프 한마디에 ‘와르르’…신재생에너지株 ‘휘청’ [투자360]</a></li><li><a href='https://n.news.naver.com/mnews/article/009/0005545335' target='_blank'>• 뛰는 패시브 ETF 위에 나는 액티브 ETF</a></li></ul></div>
     </section>
     <section id="realestate">
         <h2>부동산 뉴스</h2>
         
-    <div class='news-header'>주요 부동산 뉴스(2025-08-21 14:52)</div>
+    <div class='news-header'>주요 부동산 뉴스(2025-08-21 16:43)</div>
     <ul class='news-list'>
-    <li><a href='https://n.news.naver.com/mnews/article/031/0000958932' target='_blank'>• 알스퀘어, 베트남 상업용 부동산 지도 기반 정보 서비스 출시</a></li><li><a href='https://n.news.naver.com/mnews/article/022/0004061796' target='_blank'>• 강남 3구도 주춤…11주 만에 제동 걸린 전국 아파트값</a></li><li><a href='https://n.news.naver.com/mnews/article/003/0013434712' target='_blank'>• 엔지니어링협회, FIDIC 아태 콘퍼런스 대표단 참가</a></li><li><a href='https://n.news.naver.com/mnews/article/003/0013434711' target='_blank'>• 삼성물산, 개포우성 7차에 전사적 역량·기술 총결집</a></li><li><a href='https://n.news.naver.com/mnews/article/417/0001096652' target='_blank'>• "7명 사상 '청도 열차사고' 책임 통감"… 한문희 코레일 사장 사의</a></li><li><a href='https://n.news.naver.com/mnews/article/032/0003390986' target='_blank'>• 한문희 코레일 사장, ‘청도 열차 사고’에 사의 표명</a></li></ul></div>
+    <li><a href='https://n.news.naver.com/mnews/article/421/0008440909' target='_blank'>• 외국인 토지거래허가 '서울 전역·인천 7개구·경기 23개 시군' 지정</a></li><li><a href='https://n.news.naver.com/mnews/article/366/0001102009' target='_blank'>• 한국도 외국인 주택 쇼핑 ‘제동’… 캐나다는 전면금지·호주 사전 승인</a></li><li><a href='https://n.news.naver.com/mnews/article/001/0015579326' target='_blank'>• 외국인 토지거래허가구역 지정 첫 시행</a></li><li><a href='https://n.news.naver.com/mnews/article/016/0002517637' target='_blank'>• “신라·하얏트·메리어트” 광주에도 특급호텔 들어서나</a></li><li><a href='https://n.news.naver.com/mnews/article/018/0006095267' target='_blank'>• [인사]국토교통부</a></li><li><a href='https://n.news.naver.com/mnews/article/215/0001220879' target='_blank'>• 실거주 안 하는 외국인, 수도권에 집 못 산다</a></li></ul></div>
         
     <div class='news-header'>부동산 매매 가격지수 현황(2025년 08월 21일)</div>
     <div class='realestate-data'>
@@ -65,6 +81,18 @@
                 <td class='up'>+20.19%</td>
             </tr>
             <tr>
+                <td>서울 용산구</td>
+                <td>111.83</td>
+                <td class='up'>▲ 2.10</td>
+                <td class='up'>+1.91%</td>
+                <td class='up'>▲ 4.89</td>
+                <td class='up'>+4.57%</td>
+                <td class='up'>▲ 8.12</td>
+                <td class='up'>+7.83%</td>
+                <td class='up'>▲ 11.06</td>
+                <td class='up'>+10.98%</td>
+            </tr>
+            <tr>
                 <td>서울 성동구</td>
                 <td>107.53</td>
                 <td class='up'>▲ 3.09</td>
@@ -89,6 +117,18 @@
                 <td class='up'>+10.98%</td>
             </tr>
             <tr>
+                <td>서울 동작구</td>
+                <td>99.32</td>
+                <td class='up'>▲ 1.62</td>
+                <td class='up'>+1.66%</td>
+                <td class='up'>▲ 3.88</td>
+                <td class='up'>+4.07%</td>
+                <td class='up'>▲ 5.10</td>
+                <td class='up'>+5.41%</td>
+                <td class='up'>▲ 8.05</td>
+                <td class='up'>+8.82%</td>
+            </tr>
+            <tr>
                 <td>서울 강동구</td>
                 <td>102.94</td>
                 <td class='up'>▲ 2.50</td>
@@ -99,6 +139,18 @@
                 <td class='up'>+6.88%</td>
                 <td class='up'>▲ 11.16</td>
                 <td class='up'>+12.16%</td>
+            </tr>
+            <tr>
+                <td>서울 동대문구</td>
+                <td>90.72</td>
+                <td class='up'>▲ 0.62</td>
+                <td class='up'>+0.69%</td>
+                <td class='up'>▲ 1.19</td>
+                <td class='up'>+1.33%</td>
+                <td class='up'>▲ 1.56</td>
+                <td class='up'>+1.75%</td>
+                <td class='up'>▲ 3.94</td>
+                <td class='up'>+4.54%</td>
             </tr>
             <tr>
                 <td>서울 강서구</td>
@@ -113,6 +165,18 @@
                 <td class='up'>+3.39%</td>
             </tr>
             <tr>
+                <td>서울 서대문구</td>
+                <td>95.38</td>
+                <td class='up'>▲ 1.04</td>
+                <td class='up'>+1.11%</td>
+                <td class='up'>▲ 2.19</td>
+                <td class='up'>+2.35%</td>
+                <td class='up'>▲ 2.75</td>
+                <td class='up'>+2.97%</td>
+                <td class='up'>▲ 5.50</td>
+                <td class='up'>+6.12%</td>
+            </tr>
+            <tr>
                 <td>서울 강북구</td>
                 <td>87.56</td>
                 <td class='up'>▲ 0.42</td>
@@ -123,6 +187,18 @@
                 <td class='up'>+0.43%</td>
                 <td class='up'>▲ 1.17</td>
                 <td class='up'>+1.36%</td>
+            </tr>
+            <tr>
+                <td>경기 성남시 분당구</td>
+                <td>103.16</td>
+                <td class='up'>▲ 1.83</td>
+                <td class='up'>+1.81%</td>
+                <td class='up'>▲ 4.59</td>
+                <td class='up'>+4.66%</td>
+                <td class='up'>▲ 5.83</td>
+                <td class='up'>+5.99%</td>
+                <td class='up'>▲ 8.95</td>
+                <td class='up'>+9.50%</td>
             </tr>
             <tr>
                 <td>경기 광명시</td>
@@ -137,16 +213,16 @@
                 <td class='up'>+0.92%</td>
             </tr>
             <tr>
-                <td>경기 성남시 분당구</td>
-                <td>103.16</td>
-                <td class='up'>▲ 1.83</td>
-                <td class='up'>+1.81%</td>
-                <td class='up'>▲ 4.59</td>
-                <td class='up'>+4.66%</td>
-                <td class='up'>▲ 5.83</td>
-                <td class='up'>+5.99%</td>
-                <td class='up'>▲ 8.95</td>
-                <td class='up'>+9.50%</td>
+                <td>경기 하남시</td>
+                <td>94.82</td>
+                <td class='up'>▲ 0.57</td>
+                <td class='up'>+0.60%</td>
+                <td class='up'>▲ 1.15</td>
+                <td class='up'>+1.23%</td>
+                <td class='up'>▲ 1.75</td>
+                <td class='up'>+1.88%</td>
+                <td class='up'>▲ 5.02</td>
+                <td class='up'>+5.59%</td>
             </tr>
             <tr>
                 <td>경기 용인시 수지구</td>
@@ -173,6 +249,18 @@
                 <td class='up'>+5.04%</td>
             </tr>
             <tr>
+                <td>경기 수원시 영통구</td>
+                <td>85.99</td>
+                <td class='up'>▲ 0.36</td>
+                <td class='up'>+0.42%</td>
+                <td class='up'>▲ 0.73</td>
+                <td class='up'>+0.86%</td>
+                <td class='up'>▲ 0.91</td>
+                <td class='up'>+1.06%</td>
+                <td class='up'>▲ 2.77</td>
+                <td class='up'>+3.33%</td>
+            </tr>
+            <tr>
                 <td>경기 수원시 팔달구</td>
                 <td>89.13</td>
                 <td class='up'>▲ 0.40</td>
@@ -185,6 +273,102 @@
                 <td class='up'>+1.15%</td>
             </tr>
             <tr>
+                <td>경기 고양시</td>
+                <td>82.92</td>
+                <td class='down'>▼ 0.10</td>
+                <td class='down'>-0.12%</td>
+                <td class='down'>▼ 0.33</td>
+                <td class='down'>-0.39%</td>
+                <td class='down'>▼ 0.64</td>
+                <td class='down'>-0.77%</td>
+                <td class='down'>▼ 0.64</td>
+                <td class='down'>-0.76%</td>
+            </tr>
+            <tr>
+                <td>경기 남양주시</td>
+                <td>82.86</td>
+                <td class='up'>▲ 0.01</td>
+                <td class='up'>+0.01%</td>
+                <td class='down'>▼ 0.06</td>
+                <td class='down'>-0.07%</td>
+                <td class='down'>▼ 0.25</td>
+                <td class='down'>-0.30%</td>
+                <td class='down'>▼ 0.68</td>
+                <td class='down'>-0.81%</td>
+            </tr>
+            <tr>
+                <td>경기 부천시</td>
+                <td>89.92</td>
+                <td class='up'>▲ 0.03</td>
+                <td class='up'>+0.03%</td>
+                <td class='up'>▲ 0.02</td>
+                <td class='up'>+0.02%</td>
+                <td class='up'>▲ 0.01</td>
+                <td class='up'>+0.01%</td>
+                <td class='up'>▲ 0.67</td>
+                <td class='up'>+0.75%</td>
+            </tr>
+            <tr>
+                <td>경기 의정부시</td>
+                <td>80.89</td>
+                <td class='down'>▼ 0.02</td>
+                <td class='down'>-0.03%</td>
+                <td class='down'>▼ 0.25</td>
+                <td class='down'>-0.31%</td>
+                <td class='down'>▼ 0.58</td>
+                <td class='down'>-0.71%</td>
+                <td class='down'>▼ 1.13</td>
+                <td class='down'>-1.37%</td>
+            </tr>
+            <tr>
+                <td>경기 김포시</td>
+                <td>85.64</td>
+                <td class='down'>▼ 0.06</td>
+                <td class='down'>-0.07%</td>
+                <td class='down'>▼ 0.21</td>
+                <td class='down'>-0.24%</td>
+                <td class='down'>▼ 0.19</td>
+                <td class='down'>-0.22%</td>
+                <td class='up'>▲ 0.32</td>
+                <td class='up'>+0.38%</td>
+            </tr>
+            <tr>
+                <td>경기 시흥시</td>
+                <td>86.58</td>
+                <td class='down'>▼ 0.13</td>
+                <td class='down'>-0.15%</td>
+                <td class='down'>▼ 0.27</td>
+                <td class='down'>-0.32%</td>
+                <td class='down'>▼ 0.44</td>
+                <td class='down'>-0.50%</td>
+                <td class='down'>▼ 0.17</td>
+                <td class='down'>-0.19%</td>
+            </tr>
+            <tr>
+                <td>경기 화성시</td>
+                <td>84.15</td>
+                <td class='up'>▲ 0.14</td>
+                <td class='up'>+0.16%</td>
+                <td class='up'>▲ 0.15</td>
+                <td class='up'>+0.18%</td>
+                <td class='up'>▲ 0.10</td>
+                <td class='up'>+0.11%</td>
+                <td class='up'>▲ 1.49</td>
+                <td class='up'>+1.80%</td>
+            </tr>
+            <tr>
+                <td>경기 평택시</td>
+                <td>87.05</td>
+                <td class='down'>▼ 0.18</td>
+                <td class='down'>-0.21%</td>
+                <td class='down'>▼ 1.07</td>
+                <td class='down'>-1.22%</td>
+                <td class='down'>▼ 2.96</td>
+                <td class='down'>-3.29%</td>
+                <td class='down'>▼ 5.79</td>
+                <td class='down'>-6.24%</td>
+            </tr>
+            <tr>
                 <td>인천 부평구</td>
                 <td>81.16</td>
                 <td class='up'>▲ 0.07</td>
@@ -195,6 +379,66 @@
                 <td class='up'>+0.39%</td>
                 <td class='up'>▲ 0.71</td>
                 <td class='up'>+0.88%</td>
+            </tr>
+            <tr>
+                <td>인천 연수구</td>
+                <td>78.97</td>
+                <td class='down'>▼ 0.01</td>
+                <td class='down'>-0.02%</td>
+                <td class='down'>▼ 0.12</td>
+                <td class='down'>-0.15%</td>
+                <td class='down'>▼ 0.43</td>
+                <td class='down'>-0.54%</td>
+                <td class='down'>▼ 0.50</td>
+                <td class='down'>-0.62%</td>
+            </tr>
+            <tr>
+                <td>인천 서구</td>
+                <td>88.25</td>
+                <td class='up'>▲ 0.04</td>
+                <td class='up'>+0.04%</td>
+                <td class='down'>▼ 0.03</td>
+                <td class='down'>-0.04%</td>
+                <td class='up'>▲ 0.00</td>
+                <td class='up'>+0.00%</td>
+                <td class='up'>▲ 1.72</td>
+                <td class='up'>+1.99%</td>
+            </tr>
+            <tr>
+                <td>충남 서북구</td>
+                <td>91.32</td>
+                <td class='down'>▼ 0.13</td>
+                <td class='down'>-0.15%</td>
+                <td class='down'>▼ 0.46</td>
+                <td class='down'>-0.50%</td>
+                <td class='down'>▼ 1.50</td>
+                <td class='down'>-1.62%</td>
+                <td class='down'>▼ 2.23</td>
+                <td class='down'>-2.38%</td>
+            </tr>
+            <tr>
+                <td>충남 아산시</td>
+                <td>90.05</td>
+                <td class='down'>▼ 0.16</td>
+                <td class='down'>-0.17%</td>
+                <td class='down'>▼ 0.54</td>
+                <td class='down'>-0.60%</td>
+                <td class='down'>▼ 1.33</td>
+                <td class='down'>-1.45%</td>
+                <td class='down'>▼ 1.89</td>
+                <td class='down'>-2.06%</td>
+            </tr>
+            <tr>
+                <td>청주 흥덕구</td>
+                <td>94.09</td>
+                <td class='up'>▲ 0.24</td>
+                <td class='up'>+0.25%</td>
+                <td class='up'>▲ 0.41</td>
+                <td class='up'>+0.44%</td>
+                <td class='up'>▲ 0.15</td>
+                <td class='up'>+0.16%</td>
+                <td class='up'>▲ 0.28</td>
+                <td class='up'>+0.30%</td>
             </tr>
         </table>
         </div>
@@ -227,6 +471,18 @@
                 <td class='up'>+6.21%</td>
             </tr>
             <tr>
+                <td>서울 용산구</td>
+                <td>94.82</td>
+                <td class='up'>▲ 0.44</td>
+                <td class='up'>+0.47%</td>
+                <td class='up'>▲ 1.27</td>
+                <td class='up'>+1.36%</td>
+                <td class='up'>▲ 2.44</td>
+                <td class='up'>+2.64%</td>
+                <td class='up'>▲ 4.45</td>
+                <td class='up'>+4.92%</td>
+            </tr>
+            <tr>
                 <td>서울 성동구</td>
                 <td>96.09</td>
                 <td class='up'>▲ 0.34</td>
@@ -251,6 +507,18 @@
                 <td class='up'>+3.98%</td>
             </tr>
             <tr>
+                <td>서울 동작구</td>
+                <td>94.62</td>
+                <td class='up'>▲ 0.26</td>
+                <td class='up'>+0.27%</td>
+                <td class='up'>▲ 0.90</td>
+                <td class='up'>+0.96%</td>
+                <td class='up'>▲ 1.24</td>
+                <td class='up'>+1.33%</td>
+                <td class='up'>▲ 3.29</td>
+                <td class='up'>+3.60%</td>
+            </tr>
+            <tr>
                 <td>서울 강동구</td>
                 <td>93.61</td>
                 <td class='up'>▲ 0.81</td>
@@ -261,6 +529,18 @@
                 <td class='up'>+3.68%</td>
                 <td class='up'>▲ 4.36</td>
                 <td class='up'>+4.89%</td>
+            </tr>
+            <tr>
+                <td>서울 동대문구</td>
+                <td>89.82</td>
+                <td class='up'>▲ 0.21</td>
+                <td class='up'>+0.23%</td>
+                <td class='up'>▲ 0.48</td>
+                <td class='up'>+0.54%</td>
+                <td class='up'>▲ 0.03</td>
+                <td class='up'>+0.04%</td>
+                <td class='up'>▲ 2.71</td>
+                <td class='up'>+3.11%</td>
             </tr>
             <tr>
                 <td>서울 강서구</td>
@@ -275,6 +555,18 @@
                 <td class='up'>+5.72%</td>
             </tr>
             <tr>
+                <td>서울 서대문구</td>
+                <td>100.80</td>
+                <td class='up'>▲ 0.16</td>
+                <td class='up'>+0.16%</td>
+                <td class='up'>▲ 0.52</td>
+                <td class='up'>+0.52%</td>
+                <td class='up'>▲ 0.95</td>
+                <td class='up'>+0.96%</td>
+                <td class='up'>▲ 5.14</td>
+                <td class='up'>+5.37%</td>
+            </tr>
+            <tr>
                 <td>서울 강북구</td>
                 <td>92.32</td>
                 <td class='up'>▲ 0.26</td>
@@ -285,6 +577,18 @@
                 <td class='up'>+0.02%</td>
                 <td class='up'>▲ 1.77</td>
                 <td class='up'>+1.96%</td>
+            </tr>
+            <tr>
+                <td>경기 성남시 분당구</td>
+                <td>92.75</td>
+                <td class='up'>▲ 0.34</td>
+                <td class='up'>+0.37%</td>
+                <td class='up'>▲ 0.77</td>
+                <td class='up'>+0.84%</td>
+                <td class='up'>▲ 1.47</td>
+                <td class='up'>+1.61%</td>
+                <td class='up'>▲ 2.68</td>
+                <td class='up'>+2.98%</td>
             </tr>
             <tr>
                 <td>경기 광명시</td>
@@ -299,16 +603,16 @@
                 <td class='down'>-3.56%</td>
             </tr>
             <tr>
-                <td>경기 성남시 분당구</td>
-                <td>92.75</td>
-                <td class='up'>▲ 0.34</td>
-                <td class='up'>+0.37%</td>
-                <td class='up'>▲ 0.77</td>
-                <td class='up'>+0.84%</td>
-                <td class='up'>▲ 1.47</td>
-                <td class='up'>+1.61%</td>
-                <td class='up'>▲ 2.68</td>
-                <td class='up'>+2.98%</td>
+                <td>경기 하남시</td>
+                <td>95.96</td>
+                <td class='up'>▲ 0.58</td>
+                <td class='up'>+0.60%</td>
+                <td class='up'>▲ 1.57</td>
+                <td class='up'>+1.66%</td>
+                <td class='up'>▲ 2.74</td>
+                <td class='up'>+2.94%</td>
+                <td class='up'>▲ 5.84</td>
+                <td class='up'>+6.48%</td>
             </tr>
             <tr>
                 <td>경기 용인시 수지구</td>
@@ -335,6 +639,18 @@
                 <td class='up'>+3.21%</td>
             </tr>
             <tr>
+                <td>경기 수원시 영통구</td>
+                <td>90.26</td>
+                <td class='up'>▲ 0.16</td>
+                <td class='up'>+0.18%</td>
+                <td class='up'>▲ 0.39</td>
+                <td class='up'>+0.43%</td>
+                <td class='up'>▲ 0.73</td>
+                <td class='up'>+0.82%</td>
+                <td class='up'>▲ 3.94</td>
+                <td class='up'>+4.57%</td>
+            </tr>
+            <tr>
                 <td>경기 수원시 팔달구</td>
                 <td>94.70</td>
                 <td class='up'>▲ 0.13</td>
@@ -345,6 +661,102 @@
                 <td class='up'>+0.76%</td>
                 <td class='up'>▲ 3.28</td>
                 <td class='up'>+3.58%</td>
+            </tr>
+            <tr>
+                <td>경기 고양시</td>
+                <td>85.82</td>
+                <td class='up'>▲ 0.01</td>
+                <td class='up'>+0.01%</td>
+                <td class='up'>▲ 0.32</td>
+                <td class='up'>+0.37%</td>
+                <td class='up'>▲ 1.01</td>
+                <td class='up'>+1.19%</td>
+                <td class='up'>▲ 3.64</td>
+                <td class='up'>+4.43%</td>
+            </tr>
+            <tr>
+                <td>경기 남양주시</td>
+                <td>88.51</td>
+                <td class='up'>▲ 0.18</td>
+                <td class='up'>+0.21%</td>
+                <td class='up'>▲ 0.48</td>
+                <td class='up'>+0.54%</td>
+                <td class='up'>▲ 0.85</td>
+                <td class='up'>+0.98%</td>
+                <td class='up'>▲ 3.00</td>
+                <td class='up'>+3.51%</td>
+            </tr>
+            <tr>
+                <td>경기 부천시</td>
+                <td>92.29</td>
+                <td class='down'>▼ 0.01</td>
+                <td class='down'>-0.02%</td>
+                <td class='down'>▼ 0.00</td>
+                <td class='down'>-0.00%</td>
+                <td class='up'>▲ 0.40</td>
+                <td class='up'>+0.43%</td>
+                <td class='up'>▲ 2.95</td>
+                <td class='up'>+3.30%</td>
+            </tr>
+            <tr>
+                <td>경기 의정부시</td>
+                <td>81.08</td>
+                <td class='up'>▲ 0.06</td>
+                <td class='up'>+0.07%</td>
+                <td class='up'>▲ 0.47</td>
+                <td class='up'>+0.59%</td>
+                <td class='up'>▲ 0.43</td>
+                <td class='up'>+0.53%</td>
+                <td class='up'>▲ 0.98</td>
+                <td class='up'>+1.23%</td>
+            </tr>
+            <tr>
+                <td>경기 김포시</td>
+                <td>90.42</td>
+                <td class='up'>▲ 0.09</td>
+                <td class='up'>+0.10%</td>
+                <td class='up'>▲ 0.24</td>
+                <td class='up'>+0.27%</td>
+                <td class='up'>▲ 0.91</td>
+                <td class='up'>+1.01%</td>
+                <td class='up'>▲ 4.62</td>
+                <td class='up'>+5.38%</td>
+            </tr>
+            <tr>
+                <td>경기 시흥시</td>
+                <td>89.02</td>
+                <td class='down'>▼ 0.01</td>
+                <td class='down'>-0.01%</td>
+                <td class='up'>▲ 0.04</td>
+                <td class='up'>+0.05%</td>
+                <td class='up'>▲ 0.33</td>
+                <td class='up'>+0.37%</td>
+                <td class='up'>▲ 1.99</td>
+                <td class='up'>+2.28%</td>
+            </tr>
+            <tr>
+                <td>경기 화성시</td>
+                <td>88.33</td>
+                <td class='up'>▲ 0.14</td>
+                <td class='up'>+0.16%</td>
+                <td class='up'>▲ 0.29</td>
+                <td class='up'>+0.33%</td>
+                <td class='up'>▲ 0.35</td>
+                <td class='up'>+0.40%</td>
+                <td class='up'>▲ 2.82</td>
+                <td class='up'>+3.30%</td>
+            </tr>
+            <tr>
+                <td>경기 평택시</td>
+                <td>92.01</td>
+                <td class='down'>▼ 0.05</td>
+                <td class='down'>-0.06%</td>
+                <td class='down'>▼ 0.59</td>
+                <td class='down'>-0.64%</td>
+                <td class='down'>▼ 1.20</td>
+                <td class='down'>-1.29%</td>
+                <td class='down'>▼ 2.47</td>
+                <td class='down'>-2.62%</td>
             </tr>
             <tr>
                 <td>인천 부평구</td>
@@ -358,6 +770,66 @@
                 <td class='up'>▲ 4.47</td>
                 <td class='up'>+5.40%</td>
             </tr>
+            <tr>
+                <td>인천 연수구</td>
+                <td>79.04</td>
+                <td class='up'>▲ 0.03</td>
+                <td class='up'>+0.03%</td>
+                <td class='up'>▲ 0.25</td>
+                <td class='up'>+0.31%</td>
+                <td class='up'>▲ 0.70</td>
+                <td class='up'>+0.89%</td>
+                <td class='up'>▲ 2.88</td>
+                <td class='up'>+3.78%</td>
+            </tr>
+            <tr>
+                <td>인천 서구</td>
+                <td>91.62</td>
+                <td class='up'>▲ 0.01</td>
+                <td class='up'>+0.01%</td>
+                <td class='down'>▼ 0.08</td>
+                <td class='down'>-0.08%</td>
+                <td class='down'>▼ 0.33</td>
+                <td class='down'>-0.36%</td>
+                <td class='up'>▲ 3.52</td>
+                <td class='up'>+4.00%</td>
+            </tr>
+            <tr>
+                <td>충남 서북구</td>
+                <td>93.16</td>
+                <td class='down'>▼ 0.06</td>
+                <td class='down'>-0.07%</td>
+                <td class='down'>▼ 0.20</td>
+                <td class='down'>-0.21%</td>
+                <td class='down'>▼ 1.13</td>
+                <td class='down'>-1.20%</td>
+                <td class='down'>▼ 1.60</td>
+                <td class='down'>-1.69%</td>
+            </tr>
+            <tr>
+                <td>충남 아산시</td>
+                <td>91.09</td>
+                <td class='down'>▼ 0.07</td>
+                <td class='down'>-0.08%</td>
+                <td class='down'>▼ 0.22</td>
+                <td class='down'>-0.25%</td>
+                <td class='down'>▼ 0.51</td>
+                <td class='down'>-0.56%</td>
+                <td class='up'>▲ 0.85</td>
+                <td class='up'>+0.95%</td>
+            </tr>
+            <tr>
+                <td>청주 흥덕구</td>
+                <td>96.97</td>
+                <td class='up'>▲ 0.23</td>
+                <td class='up'>+0.24%</td>
+                <td class='up'>▲ 0.64</td>
+                <td class='up'>+0.66%</td>
+                <td class='up'>▲ 1.38</td>
+                <td class='up'>+1.45%</td>
+                <td class='up'>▲ 2.15</td>
+                <td class='up'>+2.26%</td>
+            </tr>
         </table>
         </div>
         
@@ -367,29 +839,67 @@
             <tr>
                 <th>지역</th><th>8월</th><th>7월</th><th>6월</th><th>5월</th><th>4월</th><th>3월</th><th>2월</th><th>1월</th><th>12월</th><th>11월</th><th>10월</th><th>9월</th></tr>
             <tr>
-                <td>서울 강남구</td><td>21건</td><td>300건</td><td>501건</td><td>244건</td><td>97건</td><td>798건</td><td>569건</td><td>192건</td><td>132건</td><td>129건</td><td>54건</td><td>115건</td></tr>
+                <td>서울 강남구</td><td>21건</td><td>300건</td><td>501건</td><td>244건</td><td>97건</td><td>798건</td><td>569건</td><td>192건</td><td>73건</td><td>184건</td><td>72건</td><td>56건</td></tr>
             <tr>
-                <td>서울 성동구</td><td>26건</td><td>102건</td><td>740건</td><td>499건</td><td>316건</td><td>576건</td><td>364건</td><td>175건</td><td>138건</td><td>102건</td><td>175건</td><td>161건</td></tr>
+                <td>서울 용산구</td><td>137건</td><td>89건</td><td>77건</td><td>82건</td><td>39건</td><td>117건</td><td>98건</td><td>143건</td><td>102건</td><td>113건</td><td>149건</td><td>31건</td></tr>
             <tr>
-                <td>서울 마포구</td><td>33건</td><td>114건</td><td>640건</td><td>424건</td><td>329건</td><td>534건</td><td>335건</td><td>152건</td><td>198건</td><td>168건</td><td>196건</td><td>109건</td></tr>
+                <td>서울 성동구</td><td>26건</td><td>102건</td><td>740건</td><td>499건</td><td>316건</td><td>576건</td><td>364건</td><td>175건</td><td>152건</td><td>186건</td><td>180건</td><td>196건</td></tr>
             <tr>
-                <td>서울 강동구</td><td>59건</td><td>192건</td><td>863건</td><td>496건</td><td>288건</td><td>579건</td><td>377건</td><td>174건</td><td>132건</td><td>137건</td><td>97건</td><td>167건</td></tr>
+                <td>서울 마포구</td><td>33건</td><td>114건</td><td>640건</td><td>424건</td><td>329건</td><td>534건</td><td>335건</td><td>152건</td><td>199건</td><td>118건</td><td>150건</td><td>86건</td></tr>
             <tr>
-                <td>서울 강서구</td><td>59건</td><td>209건</td><td>556건</td><td>477건</td><td>327건</td><td>407건</td><td>247건</td><td>166건</td><td>109건</td><td>105건</td><td>80건</td><td>186건</td></tr>
+                <td>서울 동작구</td><td>149건</td><td>115건</td><td>141건</td><td>73건</td><td>43건</td><td>107건</td><td>60건</td><td>84건</td><td>119건</td><td>118건</td><td>55건</td><td>129건</td></tr>
             <tr>
-                <td>서울 강북구</td><td>29건</td><td>77건</td><td>159건</td><td>114건</td><td>90건</td><td>97건</td><td>88건</td><td>47건</td><td>99건</td><td>106건</td><td>194건</td><td>121건</td></tr>
+                <td>서울 강동구</td><td>59건</td><td>192건</td><td>863건</td><td>496건</td><td>288건</td><td>579건</td><td>377건</td><td>174건</td><td>53건</td><td>58건</td><td>100건</td><td>126건</td></tr>
             <tr>
-                <td>경기 광명시</td><td>56건</td><td>245건</td><td>623건</td><td>384건</td><td>295건</td><td>378건</td><td>215건</td><td>136건</td><td>116건</td><td>75건</td><td>94건</td><td>60건</td></tr>
+                <td>서울 동대문구</td><td>84건</td><td>30건</td><td>103건</td><td>146건</td><td>150건</td><td>108건</td><td>31건</td><td>135건</td><td>99건</td><td>126건</td><td>57건</td><td>35건</td></tr>
             <tr>
-                <td>경기 성남시 분당구</td><td>36건</td><td>204건</td><td>1,261건</td><td>768건</td><td>467건</td><td>690건</td><td>420건</td><td>207건</td><td>103건</td><td>117건</td><td>181건</td><td>176건</td></tr>
+                <td>서울 강서구</td><td>59건</td><td>209건</td><td>556건</td><td>477건</td><td>327건</td><td>407건</td><td>247건</td><td>166건</td><td>108건</td><td>69건</td><td>170건</td><td>127건</td></tr>
             <tr>
-                <td>경기 용인시 수지구</td><td>62건</td><td>302건</td><td>1,058건</td><td>766건</td><td>621건</td><td>809건</td><td>529건</td><td>300건</td><td>88건</td><td>71건</td><td>113건</td><td>108건</td></tr>
+                <td>서울 서대문구</td><td>57건</td><td>51건</td><td>117건</td><td>124건</td><td>82건</td><td>33건</td><td>146건</td><td>121건</td><td>64건</td><td>56건</td><td>112건</td><td>146건</td></tr>
             <tr>
-                <td>경기 안양시 동안구</td><td>78건</td><td>323건</td><td>815건</td><td>612건</td><td>423건</td><td>530건</td><td>361건</td><td>227건</td><td>89건</td><td>56건</td><td>195건</td><td>108건</td></tr>
+                <td>서울 강북구</td><td>29건</td><td>77건</td><td>159건</td><td>114건</td><td>90건</td><td>97건</td><td>88건</td><td>47건</td><td>136건</td><td>178건</td><td>159건</td><td>129건</td></tr>
             <tr>
-                <td>경기 수원시 팔달구</td><td>46건</td><td>139건</td><td>253건</td><td>157건</td><td>146건</td><td>186건</td><td>96건</td><td>73건</td><td>196건</td><td>53건</td><td>154건</td><td>184건</td></tr>
+                <td>경기 성남시 분당구</td><td>36건</td><td>204건</td><td>1,261건</td><td>768건</td><td>467건</td><td>690건</td><td>420건</td><td>207건</td><td>124건</td><td>167건</td><td>141건</td><td>111건</td></tr>
             <tr>
-                <td>인천 부평구</td><td>120건</td><td>279건</td><td>482건</td><td>417건</td><td>410건</td><td>426건</td><td>335건</td><td>197건</td><td>114건</td><td>174건</td><td>194건</td><td>143건</td></tr>
+                <td>경기 광명시</td><td>56건</td><td>245건</td><td>623건</td><td>384건</td><td>295건</td><td>378건</td><td>215건</td><td>136건</td><td>114건</td><td>181건</td><td>160건</td><td>132건</td></tr>
+            <tr>
+                <td>경기 하남시</td><td>48건</td><td>47건</td><td>57건</td><td>126건</td><td>90건</td><td>112건</td><td>46건</td><td>62건</td><td>79건</td><td>79건</td><td>119건</td><td>98건</td></tr>
+            <tr>
+                <td>경기 용인시 수지구</td><td>62건</td><td>302건</td><td>1,058건</td><td>766건</td><td>621건</td><td>809건</td><td>529건</td><td>300건</td><td>135건</td><td>190건</td><td>69건</td><td>175건</td></tr>
+            <tr>
+                <td>경기 안양시 동안구</td><td>78건</td><td>323건</td><td>815건</td><td>612건</td><td>423건</td><td>530건</td><td>361건</td><td>227건</td><td>147건</td><td>124건</td><td>131건</td><td>186건</td></tr>
+            <tr>
+                <td>경기 수원시 영통구</td><td>105건</td><td>93건</td><td>64건</td><td>137건</td><td>94건</td><td>111건</td><td>132건</td><td>134건</td><td>73건</td><td>140건</td><td>34건</td><td>150건</td></tr>
+            <tr>
+                <td>경기 수원시 팔달구</td><td>46건</td><td>139건</td><td>253건</td><td>157건</td><td>146건</td><td>186건</td><td>96건</td><td>73건</td><td>187건</td><td>174건</td><td>173건</td><td>123건</td></tr>
+            <tr>
+                <td>경기 고양시</td><td>93건</td><td>75건</td><td>113건</td><td>38건</td><td>77건</td><td>85건</td><td>90건</td><td>64건</td><td>49건</td><td>49건</td><td>117건</td><td>61건</td></tr>
+            <tr>
+                <td>경기 남양주시</td><td>95건</td><td>56건</td><td>91건</td><td>138건</td><td>43건</td><td>68건</td><td>149건</td><td>107건</td><td>44건</td><td>55건</td><td>69건</td><td>81건</td></tr>
+            <tr>
+                <td>경기 부천시</td><td>120건</td><td>86건</td><td>81건</td><td>97건</td><td>60건</td><td>115건</td><td>135건</td><td>39건</td><td>73건</td><td>102건</td><td>67건</td><td>38건</td></tr>
+            <tr>
+                <td>경기 의정부시</td><td>38건</td><td>114건</td><td>30건</td><td>50건</td><td>42건</td><td>53건</td><td>50건</td><td>90건</td><td>89건</td><td>86건</td><td>66건</td><td>34건</td></tr>
+            <tr>
+                <td>경기 김포시</td><td>52건</td><td>148건</td><td>122건</td><td>145건</td><td>136건</td><td>134건</td><td>65건</td><td>121건</td><td>125건</td><td>56건</td><td>112건</td><td>55건</td></tr>
+            <tr>
+                <td>경기 시흥시</td><td>50건</td><td>94건</td><td>53건</td><td>129건</td><td>76건</td><td>84건</td><td>97건</td><td>123건</td><td>92건</td><td>66건</td><td>143건</td><td>94건</td></tr>
+            <tr>
+                <td>경기 화성시</td><td>148건</td><td>81건</td><td>70건</td><td>139건</td><td>62건</td><td>34건</td><td>65건</td><td>145건</td><td>138건</td><td>70건</td><td>73건</td><td>30건</td></tr>
+            <tr>
+                <td>경기 평택시</td><td>37건</td><td>43건</td><td>112건</td><td>87건</td><td>60건</td><td>37건</td><td>49건</td><td>71건</td><td>69건</td><td>47건</td><td>49건</td><td>110건</td></tr>
+            <tr>
+                <td>인천 부평구</td><td>120건</td><td>279건</td><td>482건</td><td>417건</td><td>410건</td><td>426건</td><td>335건</td><td>197건</td><td>162건</td><td>176건</td><td>65건</td><td>187건</td></tr>
+            <tr>
+                <td>인천 연수구</td><td>47건</td><td>56건</td><td>53건</td><td>147건</td><td>43건</td><td>103건</td><td>127건</td><td>73건</td><td>60건</td><td>106건</td><td>70건</td><td>109건</td></tr>
+            <tr>
+                <td>인천 서구</td><td>88건</td><td>130건</td><td>103건</td><td>37건</td><td>110건</td><td>33건</td><td>46건</td><td>110건</td><td>144건</td><td>105건</td><td>102건</td><td>54건</td></tr>
+            <tr>
+                <td>충남 서북구</td><td>126건</td><td>94건</td><td>69건</td><td>130건</td><td>41건</td><td>145건</td><td>93건</td><td>134건</td><td>48건</td><td>106건</td><td>128건</td><td>57건</td></tr>
+            <tr>
+                <td>충남 아산시</td><td>49건</td><td>45건</td><td>100건</td><td>147건</td><td>46건</td><td>57건</td><td>62건</td><td>120건</td><td>41건</td><td>139건</td><td>93건</td><td>78건</td></tr>
+            <tr>
+                <td>청주 흥덕구</td><td>56건</td><td>114건</td><td>137건</td><td>39건</td><td>69건</td><td>44건</td><td>104건</td><td>64건</td><td>80건</td><td>126건</td><td>32건</td><td>131건</td></tr>
         </table>
         </div>
         
@@ -421,6 +931,18 @@
                 <td class='up'>+0.87%</td>
             </tr>
             <tr>
+                <td>서울 용산구</td>
+                <td>112.80</td>
+                <td class='up'>▲ 0.08</td>
+                <td class='up'>+0.07%</td>
+                <td class='up'>▲ 0.28</td>
+                <td class='up'>+0.25%</td>
+                <td class='up'>▲ 0.59</td>
+                <td class='up'>+0.53%</td>
+                <td class='up'>▲ 0.97</td>
+                <td class='up'>+0.87%</td>
+            </tr>
+            <tr>
                 <td>서울 성동구</td>
                 <td>108.51</td>
                 <td class='up'>▲ 0.06</td>
@@ -445,6 +967,18 @@
                 <td class='up'>+0.85%</td>
             </tr>
             <tr>
+                <td>서울 동작구</td>
+                <td>100.36</td>
+                <td class='up'>▲ 0.13</td>
+                <td class='up'>+0.13%</td>
+                <td class='up'>▲ 0.37</td>
+                <td class='up'>+0.37%</td>
+                <td class='up'>▲ 0.69</td>
+                <td class='up'>+0.69%</td>
+                <td class='up'>▲ 1.04</td>
+                <td class='up'>+1.05%</td>
+            </tr>
+            <tr>
                 <td>서울 강동구</td>
                 <td>103.99</td>
                 <td class='up'>▲ 0.22</td>
@@ -455,6 +989,18 @@
                 <td class='up'>+0.55%</td>
                 <td class='up'>▲ 1.05</td>
                 <td class='up'>+1.02%</td>
+            </tr>
+            <tr>
+                <td>서울 동대문구</td>
+                <td>90.95</td>
+                <td class='up'>▲ 0.05</td>
+                <td class='up'>+0.06%</td>
+                <td class='up'>▲ 0.11</td>
+                <td class='up'>+0.12%</td>
+                <td class='up'>▲ 0.15</td>
+                <td class='up'>+0.16%</td>
+                <td class='up'>▲ 0.23</td>
+                <td class='up'>+0.26%</td>
             </tr>
             <tr>
                 <td>서울 강서구</td>
@@ -469,6 +1015,18 @@
                 <td class='up'>+0.35%</td>
             </tr>
             <tr>
+                <td>서울 서대문구</td>
+                <td>95.86</td>
+                <td class='up'>▲ 0.11</td>
+                <td class='up'>+0.12%</td>
+                <td class='up'>▲ 0.20</td>
+                <td class='up'>+0.21%</td>
+                <td class='up'>▲ 0.23</td>
+                <td class='up'>+0.24%</td>
+                <td class='up'>▲ 0.47</td>
+                <td class='up'>+0.50%</td>
+            </tr>
+            <tr>
                 <td>서울 강북구</td>
                 <td>87.64</td>
                 <td class='up'>▲ 0.03</td>
@@ -479,6 +1037,18 @@
                 <td class='up'>+0.08%</td>
                 <td class='up'>▲ 0.08</td>
                 <td class='up'>+0.09%</td>
+            </tr>
+            <tr>
+                <td>경기 성남시 분당구</td>
+                <td>103.89</td>
+                <td class='up'>▲ 0.24</td>
+                <td class='up'>+0.23%</td>
+                <td class='up'>▲ 0.34</td>
+                <td class='up'>+0.33%</td>
+                <td class='up'>▲ 0.48</td>
+                <td class='up'>+0.46%</td>
+                <td class='up'>▲ 0.73</td>
+                <td class='up'>+0.71%</td>
             </tr>
             <tr>
                 <td>경기 광명시</td>
@@ -493,16 +1063,16 @@
                 <td class='up'>+0.25%</td>
             </tr>
             <tr>
-                <td>경기 성남시 분당구</td>
-                <td>103.89</td>
-                <td class='up'>▲ 0.24</td>
-                <td class='up'>+0.23%</td>
-                <td class='up'>▲ 0.34</td>
-                <td class='up'>+0.33%</td>
-                <td class='up'>▲ 0.48</td>
-                <td class='up'>+0.46%</td>
-                <td class='up'>▲ 0.73</td>
-                <td class='up'>+0.71%</td>
+                <td>경기 하남시</td>
+                <td>95.39</td>
+                <td class='up'>▲ 0.21</td>
+                <td class='up'>+0.22%</td>
+                <td class='up'>▲ 0.27</td>
+                <td class='up'>+0.29%</td>
+                <td class='up'>▲ 0.46</td>
+                <td class='up'>+0.49%</td>
+                <td class='up'>▲ 0.57</td>
+                <td class='up'>+0.60%</td>
             </tr>
             <tr>
                 <td>경기 용인시 수지구</td>
@@ -529,6 +1099,18 @@
                 <td class='up'>+0.52%</td>
             </tr>
             <tr>
+                <td>경기 수원시 영통구</td>
+                <td>86.17</td>
+                <td class='up'>▲ 0.03</td>
+                <td class='up'>+0.04%</td>
+                <td class='up'>▲ 0.08</td>
+                <td class='up'>+0.10%</td>
+                <td class='up'>▲ 0.14</td>
+                <td class='up'>+0.16%</td>
+                <td class='up'>▲ 0.17</td>
+                <td class='up'>+0.20%</td>
+            </tr>
+            <tr>
                 <td>경기 수원시 팔달구</td>
                 <td>89.34</td>
                 <td class='up'>▲ 0.01</td>
@@ -539,6 +1121,102 @@
                 <td class='up'>+0.19%</td>
                 <td class='up'>▲ 0.21</td>
                 <td class='up'>+0.24%</td>
+            </tr>
+            <tr>
+                <td>경기 고양시</td>
+                <td>82.84</td>
+                <td class='down'>▼ 0.01</td>
+                <td class='down'>-0.01%</td>
+                <td class='down'>▼ 0.04</td>
+                <td class='down'>-0.05%</td>
+                <td class='down'>▼ 0.07</td>
+                <td class='down'>-0.08%</td>
+                <td class='down'>▼ 0.08</td>
+                <td class='down'>-0.10%</td>
+            </tr>
+            <tr>
+                <td>경기 남양주시</td>
+                <td>82.81</td>
+                <td class='down'>▼ 0.01</td>
+                <td class='down'>-0.02%</td>
+                <td class='down'>▼ 0.02</td>
+                <td class='down'>-0.02%</td>
+                <td class='down'>▼ 0.04</td>
+                <td class='down'>-0.05%</td>
+                <td class='down'>▼ 0.04</td>
+                <td class='down'>-0.05%</td>
+            </tr>
+            <tr>
+                <td>경기 부천시</td>
+                <td>89.95</td>
+                <td class='up'>▲ 0.00</td>
+                <td class='up'>+0.01%</td>
+                <td class='up'>▲ 0.00</td>
+                <td class='up'>+0.00%</td>
+                <td class='up'>▲ 0.01</td>
+                <td class='up'>+0.01%</td>
+                <td class='up'>▲ 0.03</td>
+                <td class='up'>+0.03%</td>
+            </tr>
+            <tr>
+                <td>경기 의정부시</td>
+                <td>80.89</td>
+                <td class='down'>▼ 0.00</td>
+                <td class='down'>-0.00%</td>
+                <td class='down'>▼ 0.00</td>
+                <td class='down'>-0.00%</td>
+                <td class='up'>▲ 0.00</td>
+                <td class='up'>+0.00%</td>
+                <td class='down'>▼ 0.00</td>
+                <td class='down'>-0.01%</td>
+            </tr>
+            <tr>
+                <td>경기 김포시</td>
+                <td>85.56</td>
+                <td class='down'>▼ 0.02</td>
+                <td class='down'>-0.03%</td>
+                <td class='down'>▼ 0.03</td>
+                <td class='down'>-0.03%</td>
+                <td class='down'>▼ 0.06</td>
+                <td class='down'>-0.07%</td>
+                <td class='down'>▼ 0.08</td>
+                <td class='down'>-0.09%</td>
+            </tr>
+            <tr>
+                <td>경기 시흥시</td>
+                <td>86.43</td>
+                <td class='down'>▼ 0.04</td>
+                <td class='down'>-0.04%</td>
+                <td class='down'>▼ 0.07</td>
+                <td class='down'>-0.08%</td>
+                <td class='down'>▼ 0.11</td>
+                <td class='down'>-0.13%</td>
+                <td class='down'>▼ 0.14</td>
+                <td class='down'>-0.17%</td>
+            </tr>
+            <tr>
+                <td>경기 화성시</td>
+                <td>84.24</td>
+                <td class='up'>▲ 0.00</td>
+                <td class='up'>+0.00%</td>
+                <td class='up'>▲ 0.02</td>
+                <td class='up'>+0.03%</td>
+                <td class='up'>▲ 0.05</td>
+                <td class='up'>+0.06%</td>
+                <td class='up'>▲ 0.08</td>
+                <td class='up'>+0.10%</td>
+            </tr>
+            <tr>
+                <td>경기 평택시</td>
+                <td>86.52</td>
+                <td class='down'>▼ 0.10</td>
+                <td class='down'>-0.12%</td>
+                <td class='down'>▼ 0.25</td>
+                <td class='down'>-0.29%</td>
+                <td class='down'>▼ 0.43</td>
+                <td class='down'>-0.49%</td>
+                <td class='down'>▼ 0.53</td>
+                <td class='down'>-0.61%</td>
             </tr>
             <tr>
                 <td>인천 부평구</td>
@@ -552,6 +1230,66 @@
                 <td class='up'>▲ 0.02</td>
                 <td class='up'>+0.03%</td>
             </tr>
+            <tr>
+                <td>인천 연수구</td>
+                <td>78.98</td>
+                <td class='up'>▲ 0.01</td>
+                <td class='up'>+0.02%</td>
+                <td class='up'>▲ 0.02</td>
+                <td class='up'>+0.03%</td>
+                <td class='up'>▲ 0.02</td>
+                <td class='up'>+0.03%</td>
+                <td class='up'>▲ 0.02</td>
+                <td class='up'>+0.02%</td>
+            </tr>
+            <tr>
+                <td>인천 서구</td>
+                <td>88.25</td>
+                <td class='up'>▲ 0.00</td>
+                <td class='up'>+0.00%</td>
+                <td class='up'>▲ 0.00</td>
+                <td class='up'>+0.00%</td>
+                <td class='up'>▲ 0.01</td>
+                <td class='up'>+0.01%</td>
+                <td class='down'>▼ 0.00</td>
+                <td class='down'>-0.00%</td>
+            </tr>
+            <tr>
+                <td>충남 서북구</td>
+                <td>91.26</td>
+                <td class='down'>▼ 0.03</td>
+                <td class='down'>-0.03%</td>
+                <td class='down'>▼ 0.04</td>
+                <td class='down'>-0.05%</td>
+                <td class='down'>▼ 0.05</td>
+                <td class='down'>-0.06%</td>
+                <td class='down'>▼ 0.06</td>
+                <td class='down'>-0.07%</td>
+            </tr>
+            <tr>
+                <td>충남 아산시</td>
+                <td>89.89</td>
+                <td class='down'>▼ 0.07</td>
+                <td class='down'>-0.07%</td>
+                <td class='down'>▼ 0.13</td>
+                <td class='down'>-0.14%</td>
+                <td class='down'>▼ 0.15</td>
+                <td class='down'>-0.16%</td>
+                <td class='down'>▼ 0.17</td>
+                <td class='down'>-0.19%</td>
+            </tr>
+            <tr>
+                <td>청주 흥덕구</td>
+                <td>94.23</td>
+                <td class='up'>▲ 0.06</td>
+                <td class='up'>+0.06%</td>
+                <td class='up'>▲ 0.07</td>
+                <td class='up'>+0.07%</td>
+                <td class='up'>▲ 0.13</td>
+                <td class='up'>+0.13%</td>
+                <td class='up'>▲ 0.14</td>
+                <td class='up'>+0.15%</td>
+            </tr>
         </table>
         </div>
         
@@ -560,7 +1298,7 @@
             <p>※ 매매/전세 가격지수 기준: 2020년 1월 = 100.0</p>
             <p>※ 거래량: 국토교통부 아파트 실거래 데이터 기준</p>
             <p>※ 월간 데이터: 전월대비 / 주간 데이터: 전주대비</p>
-            <p>※ 업데이트: 2025-08-21 14:53</p>
+            <p>※ 업데이트: 2025-08-21 07:43</p>
             <p>※ 데이터 제공: <a href='https://data.kbland.kr/kbstats/data-comparison' target='_blank'>KB부동산</a>, <a href='https://rt.molit.go.kr' target='_blank'>국토교통부</a></p>
         </div>
     </div>
