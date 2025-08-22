@@ -6,7 +6,7 @@ import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from page.market import stock
-from plot_averages import make_nasdaq_ma_graphs
+from page.plot_averages import make_nasdaq_ma_graphs
 from page.news import economy_news, realestate_news
 from page.realestate import realestate
 

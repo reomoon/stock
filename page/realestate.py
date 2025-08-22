@@ -1,4 +1,6 @@
 import requests
+import json
+import os
 from datetime import datetime
 from PublicDataReader import Kbland
 from PublicDataReader import TransactionPrice
@@ -6,7 +8,44 @@ import pandas as pd
 import urllib.parse
 from bs4 import BeautifulSoup
 
+CACHE_PATH = os.path.join(os.path.dirname(__file__), '../js/cache_realestate.json')  # 캐시 파일 경로 (js 폴더)
+
 # 주요 지역 코드와 이름 (전체 함수에서 공통 사용)
+def save_cache_data(data):
+    """
+    부동산 데이터를 js 폴더의 캐시 파일(cache_realestate.json)에 저장합니다.
+    스케줄러 등에서 실제 데이터를 받아올 때 사용하며,
+    파일이 정상적으로 저장되면 경로를 출력합니다.
+    Args:
+        data (dict): 저장할 부동산 데이터
+    """
+    try:
+        with open(CACHE_PATH, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+        print(f"캐시 저장 완료: {CACHE_PATH}")
+    except Exception as e:
+        print(f"캐시 저장 실패: {e}")
+
+def load_cache_data():
+    """
+    js 폴더의 캐시 파일(cache_realestate.json)에서 부동산 데이터를 불러옵니다.
+    run.py 등에서 캐시 데이터를 사용할 때 호출하며,
+    파일이 없거나 오류가 발생하면 None을 반환합니다.
+    Returns:
+        dict or None: 캐시된 부동산 데이터 또는 None
+    """
+    try:
+        if os.path.exists(CACHE_PATH):
+            with open(CACHE_PATH, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            print(f"캐시 불러오기 성공: {CACHE_PATH}")
+            return data
+        else:
+            print(f"캐시 파일 없음: {CACHE_PATH}")
+            return None
+    except Exception as e:
+        print(f"캐시 불러오기 실패: {e}")
+        return None
 REGION_CODES = {
     "11680": "서울 강남구",
     "11170": "서울 용산구",
@@ -65,8 +104,6 @@ def realestate():
         html = f"""
     <div class='news-header'>부동산 매매 가격지수 현황({current_date})</div>
     <div class='realestate-data'>
-        <div class='data-status'>📊 {data_source} 표시</div>
-        
         <h3>매매 가격지수</h3>
         <div class='table-scroll'>
         <table class='realestate-table'>
@@ -267,7 +304,7 @@ def realestate():
             <tr>
                 <th>지역</th>
                 <th>최신지수</th>
-                <th>지난주대비</th>
+                <th>1주전</th>
                 <th>변동률</th>
                 <th>2주전</th>
                 <th>변동률</th>
@@ -437,7 +474,14 @@ def get_weekly_real_estate_data():
                                     "change_3w": change_3w,
                                     "rate_3w": rate_3w,
                                     "change_4w": change_4w,
-                                    "rate_4w": rate_4w
+                                    "rate_4w": rate_4w,
+                                    "indices": [
+                                        float(sorted_weekly_df.iloc[-6]['가격지수']) if len(sorted_weekly_df) >= 6 else 0,
+                                        float(sorted_weekly_df.iloc[-5]['가격지수']) if len(sorted_weekly_df) >= 5 else 0,
+                                        float(sorted_weekly_df.iloc[-4]['가격지수']) if len(sorted_weekly_df) >= 4 else 0,
+                                        float(sorted_weekly_df.iloc[-2]['가격지수']) if len(sorted_weekly_df) >= 2 else 0,
+                                        float(sorted_weekly_df.iloc[-1]['가격지수']) if len(sorted_weekly_df) >= 1 else 0
+                                    ]
                                 })
                                 
                                 print(f"{area_name} 주간: 지수={latest_index:.2f}, 1W={change_1w:.2f}({rate_1w:.2f}%), 2W={change_2w:.2f}({rate_2w:.2f}%), 3W={change_3w:.2f}({rate_3w:.2f}%), 4W={change_4w:.2f}({rate_4w:.2f}%)")
