@@ -1,8 +1,7 @@
 from page.market import stock
 from page.plot_averages import make_nasdaq_ma_graphs
 from page.news import economy_news, realestate_news
-from page.realestate import realestate
-from datetime import datetime
+from page.realestate import realestate, get_weekly_real_estate_data
 
 # 정적 HTML 파일 생성 (GitHub Actions용)
 def generate_static_html():
@@ -10,38 +9,54 @@ def generate_static_html():
     stock_data = stock()
     economy_news_data = economy_news()
     realestate_news_data = realestate_news()
+    weekly_data = get_weekly_real_estate_data()
     realestate_data = realestate()
     with open("public/main.html", "w", encoding="utf-8") as f:
         f.write(f"""<!DOCTYPE html>
-<html lang="ko">
+<html lang=\"ko\">
 <head>
-    <meta charset="UTF-8">
+    <meta charset=\"UTF-8\">
     <title>Stock & News Dashboard</title>
-    <link rel="stylesheet" href="./style.css"> <!-- 절대경로로 변경 --!>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link rel=\"stylesheet\" href=\"./style.css\">
+    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
+
+    <!-- Plotly.js: 최신 버전 CDN -->
+    <script src=\"https://cdn.plot.ly/plotly-2.27.0.min.js\"></script>
+
+    <!-- 주간 부동산 데이터(weekly_data)를 window.weeklyIndexData로 JS에 전달 -->
+    <script>
+        window.weeklyIndexData = {weekly_data};
+    </script>
+
+    <!-- 주간 매매 가격지수 차트 렌더링 JS -->
+    <script src=\"js/weekly_index_chart.js\"></script>
+    <!-- 나스닥 차트 JS -->
+    <script src=\"js/nasdaq_chart.js\"></script>
 </head>
 <body>
     <header>
         <h1>오늘의 주가 및 주요 뉴스</h1>
     </header>
-    <section id="stock">
+    <section id=\"stock\">
         <h2>주식 정보</h2>
         {stock_data}
         <h2>나스닥 이동평균선</h2>
-        <div id="ma-graphs">
+        <div id=\"ma-graphs\">
             {ma_graphs_html}
         </div>
     </section>
-    <section id="economy">
+    <section id=\"economy\">
         <h2>경제 뉴스</h2>
         {economy_news_data}
     </section>
-    <section id="realestate-news">
+    <section id=\"realestate-news\">
         <h2>부동산 뉴스</h2>
         {realestate_news_data}
     </section>
-    <section id="realestate-data">
+    <section id=\"realestate-chart\">
+            <div id=\"weekly-index-chart\"></div>
+    </section>
+    <section id=\"realestate-data\">
         <h2>부동산 매매 가격지수 현황</h2>
         {realestate_data}
     </section>
