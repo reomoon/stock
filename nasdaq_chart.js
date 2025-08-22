@@ -6,7 +6,7 @@
         mode: "lines",
         name: "나스닥 종가",
         line: {color: "#0000B7", width: 2},
-        hovertemplate: "<b>%{{x}}</b><br>종가: %{{y:,.0f}}<extra></extra>"
+        hovertemplate: "<b>%{x}</b><br>종가: %{y:,.0f}<extra></extra>"
     };
     var ma120_trace = {
         x: window.nasdaqData.labels,
@@ -15,7 +15,7 @@
         mode: "lines",
         name: "120일선",
         line: {color: "#FF8C00", width: 1},
-        hovertemplate: "<b>%{{x}}</b><br>120일선: %{{y:,.0f}}<extra></extra>"
+        hovertemplate: "<b>%{x}</b><br>120일선: %{y:,.0f}<extra></extra>"
     };
     var ma200_trace = {
         x: window.nasdaqData.labels,
@@ -24,7 +24,7 @@
         mode: "lines",
         name: "200일선",
         line: {color: "#9C27B0", width: 1},
-        hovertemplate: "<b>%{{x}}</b><br>200일선: %{{y:,.0f}}<extra></extra>"
+        hovertemplate: "<b>%{x}</b><br>200일선: %{y:,.0f}<extra></extra>"
     };
     var data = [close_trace, ma120_trace, ma200_trace];
     var layout = {
