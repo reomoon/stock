@@ -13,21 +13,26 @@ function drawMonthlyVolumeChart() {
     const allRegions = window.monthlyVolumeData.regions;
     const allData = window.monthlyVolumeData.data;
     const regions = getSelectedRegions();
+    let chartLabels = labels;
+    let reversed = false;
+    if (labels && labels.length > 0) {
+        const now = new Date();
+        const currentMonth = now.getMonth() + 1; // JS: 0~11, 실제: 1~12
+        const currentMonthLabel = `${currentMonth}월`;
+        if (labels[0].includes(currentMonthLabel)) {
+            chartLabels = [...labels].reverse();
+            reversed = true;
+        }
+    }
     const traces = regions.map((region, idx) => {
         const regionIdx = allRegions.indexOf(region);
         const colorList = ["#0074D9", "#FF4136", "#2ECC40", "#FF851B", "#B10DC9"];
         let regionData = allData[regionIdx];
-        // 월 데이터가 최신순이면 역순으로 뒤집기 (좌측이 작년 9월, 우측이 현재 월)
-        if (labels && labels.length > 0) {
-            const now = new Date();
-            const currentMonth = now.getMonth() + 1; // JS: 0~11, 실제: 1~12
-            const currentMonthLabel = `${currentMonth}월`;
-            if (labels[0].includes(currentMonthLabel)) {
-                regionData = [...regionData].reverse();
-            }
+        if (reversed) {
+            regionData = [...regionData].reverse();
         }
         return {
-            x: labels,
+            x: chartLabels,
             y: regionData,
             type: 'scatter',
             mode: 'lines+markers',
@@ -38,10 +43,11 @@ function drawMonthlyVolumeChart() {
     });
     const layout = {
         title: '주택 매매 거래량(월별)',
-        xaxis: { title: '월' },
+        xaxis: { title: ' ' },
         yaxis: { title: ' ' },
         legend: { orientation: 'h', x: 0, y: -0.2 },
-        height: 500
+        height: 500,
+        width: 356.67
     };
     Plotly.newPlot('monthlyVolumeChart', traces, layout, {
         responsive: true,
@@ -58,8 +64,8 @@ window.addEventListener('DOMContentLoaded', function() {
         container.style.marginBottom = '10px';
         document.body.insertBefore(container, document.getElementById('monthlyVolumeChart'));
     }
-    // 지역 체크박스 생성
-    const regionList = window.monthlyVolumeData.regions;
+    // 지역 체크박스 생성 (동적)
+    const regionList = window.monthlyVolumeData.regions || [];
     const container = document.getElementById('regionCheckboxContainer');
     container.innerHTML = regionList.map(region =>
         `<label style="margin-right:12px;"><input type="checkbox" class="region-checkbox" value="${region}"> ${region}</label>`
