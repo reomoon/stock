@@ -1,8 +1,5 @@
-from .weekly_chart_html import get_weekly_sale_chart_html
 import requests
 from datetime import datetime
-import json
-import random
 from PublicDataReader import Kbland
 from PublicDataReader import TransactionPrice
 import pandas as pd
@@ -31,9 +28,9 @@ REGION_CODES = {
     "41280": "경기 고양시",
     "41360": "경기 남양주시",
     "41190": "경기 부천시",
-    "41150": "경기 의정부시",
     "41570": "경기 김포시",
     "41390": "경기 시흥시",
+    "41150": "경기 의정부시",
     "41590": "경기 화성시",
     "41220": "경기 평택시",
     "28237": "인천 부평구",
