@@ -19,19 +19,6 @@ def generate_static_html():
     <title>Stock & News Dashboard</title>
     <link rel=\"stylesheet\" href=\"./style.css\">
     <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
-
-    <!-- Plotly.js: 최신 버전 CDN -->
-    <script src=\"https://cdn.plot.ly/plotly-2.27.0.min.js\"></script>
-
-    <!-- 주간 부동산 데이터(weekly_data)를 window.weeklyIndexData로 JS에 전달 -->
-    <script>
-        window.weeklyIndexData = {weekly_data};
-    </script>
-
-    <!-- 주간 매매 가격지수 차트 렌더링 JS -->
-    <script src=\"js/weekly_index_chart.js\"></script>
-    <!-- 나스닥 차트 JS -->
-    <script src=\"js/nasdaq_chart.js\"></script>
 </head>
 <body>
     <header>
@@ -54,12 +41,19 @@ def generate_static_html():
         {realestate_news_data}
     </section>
     <section id=\"realestate-chart\">
-            <div id=\"weekly-index-chart\"></div>
+        <div id=\"weekly-index-chart\"></div>
     </section>
     <section id=\"realestate-data\">
         <h2>부동산 매매 가격지수 현황</h2>
         {realestate_data}
     </section>
+    <!-- JS 및 데이터는 body 끝에서 로드 -->
+    <script src=\"https://cdn.plot.ly/plotly-2.27.0.min.js\"></script>
+    <script>
+        window.weeklyIndexData = {weekly_data};
+    </script>
+    <script src=\"js/weekly_index_chart.js\"></script>
+    <script src=\"js/nasdaq_chart.js\"></script>
 </body>
 </html>
 """)

@@ -104,9 +104,9 @@ function renderWeeklyIndexChartMulti(codes) {
     // Plotly 차트 레이아웃 설정
     const layout = {
         title: `선택 지역 주간 매매 가격지수`,
-        xaxis: { title: '주간', tickvals: xLabels },
-        yaxis: { title: '가격지수', range: [50, 150] },
-        width: 600,
+        xaxis: { tickvals: xLabels },
+        yaxis: { range: [50, 150] },
+        width: 356.67,
         height: 350,
         margin: { t: 40, l: 60, r: 30, b: 40 },
         legend: {
