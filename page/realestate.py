@@ -476,9 +476,9 @@ def get_weekly_real_estate_data():
                                     "change_4w": change_4w,
                                     "rate_4w": rate_4w,
                                     "indices": [
-                                        float(sorted_weekly_df.iloc[-6]['가격지수']) if len(sorted_weekly_df) >= 6 else 0,
                                         float(sorted_weekly_df.iloc[-5]['가격지수']) if len(sorted_weekly_df) >= 5 else 0,
                                         float(sorted_weekly_df.iloc[-4]['가격지수']) if len(sorted_weekly_df) >= 4 else 0,
+                                        float(sorted_weekly_df.iloc[-3]['가격지수']) if len(sorted_weekly_df) >= 3 else 0,
                                         float(sorted_weekly_df.iloc[-2]['가격지수']) if len(sorted_weekly_df) >= 2 else 0,
                                         float(sorted_weekly_df.iloc[-1]['가격지수']) if len(sorted_weekly_df) >= 1 else 0
                                     ]
