@@ -9,7 +9,7 @@
         "mode": "lines",
         "name": "나스닥 종가",
         "line": {"color": "#0000B7", "width": 2},
-        "hovertemplate": "<b>%{{x}}</b><br>종가: %{{y:,.0f}}<extra></extra>"
+    "hovertemplate": "<b>%{x}</b><br>종가: %{y:,.0f}<extra></extra>"
     };
 
     // 2. 120일 이동평균선 트레이스 생성
@@ -20,7 +20,7 @@
         "mode": "lines",
         "name": "120일선",
         "line": {"color": "#FF8C00", "width": 1},
-        "hovertemplate": "<b>%{{x}}</b><br>120일선: %{{y:,.0f}}<extra></extra>"
+    "hovertemplate": "120일선: %{y:,.0f}<extra></extra>"
     };
 
     // 3. 200일 이동평균선 트레이스 생성
@@ -31,7 +31,7 @@
         "mode": "lines",
         "name": "200일선",
         "line": {"color": "#9C27B0", "width": 1},
-        "hovertemplate": "<b>%{{x}}</b><br>200일선: %{{y:,.0f}}<extra></extra>"
+    "hovertemplate": "200일선: %{y:,.0f}<extra></extra>"
     };
 
     // 4. 모든 트레이스 배열로 묶기

@@ -833,26 +833,10 @@ def get_real_estate_data():
 def get_apt2me_transaction_volume(area_code):
     """apt2.me에서 월별 거래량 데이터 가져오기 (현재월부터 12개월 역순)"""
     try:
-        # 지역코드를 apt2.me 형식으로 변환
-        area_mapping = {
-            "11680": "11680",  # 강남구
-            "11440": "11440",  # 마포구
-            "11500": "11500",  # 강서구
-            "11740": "11740",  # 강동구
-            "11305": "11305",  # 강북구
-            "11200": "11200",  # 성동구
-            "41210": "41210",  # 광명시
-            "41135": "41135",  # 성남시 분당구
-            "41465": "41465",  # 용인시 수지구
-            "41173": "41173",  # 안양시 동안구
-            "41115": "41115",  # 수원시 팔달구
-            "28237": "28237"   # 인천 부평구
-        }
-        
-        apt2_area = area_mapping.get(area_code)
-        if not apt2_area:
+        # REGION_CODES 기반으로 지원 지역만 처리
+        if area_code not in REGION_CODES:
             return None
-            
+        apt2_area = area_code  # apt2.me는 지역코드 그대로 사용
         # apt2.me 월별 실거래 페이지 URL
         url = f"https://apt2.me/apt/AptDaily.jsp?area={apt2_area}"
         
