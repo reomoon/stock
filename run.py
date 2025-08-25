@@ -10,7 +10,16 @@ def generate_static_html():
     economy_news_data = economy_news()
     realestate_news_data = realestate_news()
     weekly_data = get_weekly_real_estate_data()
-    monthly_data = get_apt2me_transaction_volume()
+    # 모든 지역의 월별 거래량 데이터를 REGION_CODES 기반으로 생성
+    from page.realestate import REGION_CODES
+    monthly_data = [
+        {
+            "area_code": code,
+            "area": name,
+            "monthly_volumes": get_apt2me_transaction_volume(code)
+        }
+        for code, name in REGION_CODES.items()
+    ]
     realestate_data = realestate()
     with open("public/main.html", "w", encoding="utf-8") as f:
         f.write(f"""<!DOCTYPE html>
@@ -51,12 +60,12 @@ def generate_static_html():
     <!-- JS 및 데이터는 body 끝에서 로드 -->
     <script src=\"https://cdn.plot.ly/plotly-2.27.0.min.js\"></script>
     <script>
-        window.weeklyIndexData = {weekly_data};
-        window.monthluIndexData = {monthly_data};
+    window.weeklyIndexData = {weekly_data};
+    window.monthlyIndexData = {monthly_data};
     </script>
     <script src=\"js/nasdaq_chart.js\"></script>
     <script src=\"js/weekly_index_chart.js\"></script>
-    <script src=\"js/monthly_transaction_chart.js"></script>
+    <script src=\"js/monthly_transaction_chart.js\"></script>
 </body>
 </html>
 """)
