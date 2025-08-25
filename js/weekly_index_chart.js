@@ -21,7 +21,7 @@ function renderWeeklyIndexChart(region) {
     const layout = {
         title: `${region} 주간 매매 가격지수`,
         xaxis: { title: '주간', tickvals: xLabels },
-        yaxis: { title: '가격지수', range: [50, 150] },
+    yaxis: { title: '가격지수', range: [80, 120], tick0: 80, dtick: 1 },
         width: 600,
         height: 350,
         margin: { t: 40, l: 60, r: 30, b: 40 },
@@ -50,9 +50,12 @@ function renderWeeklyIndexChart(region) {
     const chartDiv = document.getElementById('weekly-index-chart');
     if (chartDiv) {
         chartDiv.on('plotly_click', function(data){
-            // indices 배열의 마지막 값이 최신지수
-            const latest = regionData.indices[regionData.indices.length - 1];
-            alert(`${region} 최신지수: ${latest}`);
+            // 클릭한 포인트의 y값(지수)을 소수점 2자리로 표시
+            if (data && data.points && data.points.length > 0) {
+                const idx = data.points[0].pointIndex;
+                const value = data.points[0].y;
+                alert(`${region} ${xLabels[idx]}: ${value.toFixed(2)}`);
+            }
         });
     }
 }
@@ -78,7 +81,11 @@ regionList.forEach(region => {
     // 각 지역별 체크박스(label) 생성 및 컨테이너에 추가
     const label = document.createElement('label');
     label.style.marginRight = '12px';
-    label.innerHTML = `<input type="checkbox" value="${region.code}"> ${region.area}`;
+    // 디폴트 체크 대상 코드 목록
+    const defaultCheckedCodes = ["11680", "11440", "11740", "41135", "41465"];
+    // 체크박스 생성
+    const checkedAttr = defaultCheckedCodes.includes(region.code) ? 'checked' : '';
+    label.innerHTML = `<input type="checkbox" value="${region.code}" ${checkedAttr}> ${region.area}`;
     checkboxContainer.appendChild(label);
 });
 
@@ -105,7 +112,7 @@ function renderWeeklyIndexChartMulti(codes) {
     const layout = {
         title: `선택 지역 주간 매매 가격지수`,
         xaxis: { tickvals: xLabels },
-        yaxis: { range: [50, 150] },
+        yaxis: { range: [80, 120] },
         width: 356.67,
         height: 350,
         margin: { t: 40, l: 60, r: 30, b: 40 },
