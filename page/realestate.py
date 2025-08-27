@@ -46,6 +46,15 @@ def load_cache_data():
     except Exception as e:
         print(f"캐시 불러오기 실패: {e}")
         return None
+"""
+REGION_CODES
+주요 지역의 행정구역 코드와 한글 지역명 매핑 딕셔너리
+ - key: 행정구역 코드(문자열)
+ - value: 한글 지역명
+이 딕셔너리는 데이터 조회, 표/차트 표시, 거래량/지수 등 모든 지역 기반 로직에서 참조됨
+고양시(41280), 부천시(41190)는 apt2.me 실거래량을 사용하고, 나머지는 임시 데이터(랜덤값) 사용
+표/차트의 지역 순서도 이 딕셔너리 순서대로 표시됨
+"""
 REGION_CODES = {
     "11680": "서울 강남구",
     "11170": "서울 용산구",
@@ -833,48 +842,33 @@ def get_real_estate_data():
 def get_apt2me_transaction_volume(area_code):
     """apt2.me에서 월별 거래량 데이터 가져오기 (현재월부터 12개월 역순)"""
     try:
-        # REGION_CODES 기반으로 지원 지역만 처리
-        if area_code not in REGION_CODES:
+        # 고양시(41280), 부천시(41190)만 apt2.me에서 거래량 데이터 가져오기
+        if area_code not in ["41280", "41190"]:
             return None
         apt2_area = area_code  # apt2.me는 지역코드 그대로 사용
-        # apt2.me 월별 실거래 페이지 URL
         url = f"https://apt2.me/apt/AptDaily.jsp?area={apt2_area}"
-        
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
         }
-        
         print(f"apt2.me 요청: {url}")
         response = requests.get(url, headers=headers, timeout=15)
-        
         if response.status_code == 200:
             print(f"응답 성공: {len(response.content)} bytes")
             soup = BeautifulSoup(response.content, 'html.parser')
-            
-            # 테이블에서 월별 거래량 데이터 찾기
             tables = soup.find_all('table')
             monthly_data = None
-            
             for table in tables:
                 rows = table.find_all('tr')
-                if len(rows) >= 4:  # 월별 데이터가 있는 테이블 확인
-                    # 첫 번째 행과 두 번째 행에서 월 확인
+                if len(rows) >= 4:
                     first_row = rows[0].find_all(['td', 'th'])
                     second_row = rows[1].find_all(['td', 'th'])
-                    
-                    # 1월~6월, 7월~12월 형태인지 확인
                     if (len(first_row) >= 6 and len(second_row) >= 6 and 
                         '1월' in first_row[0].get_text() and '6월' in first_row[5].get_text() and
                         '7월' in second_row[0].get_text() and '12월' in second_row[5].get_text()):
-                        
-                        # 세 번째와 네 번째 행에서 거래량 데이터 추출
                         if len(rows) >= 4:
-                            third_row = rows[2].find_all(['td', 'th'])   # 1~6월 데이터
-                            fourth_row = rows[3].find_all(['td', 'th'])  # 7~12월 데이터
-                            
+                            third_row = rows[2].find_all(['td', 'th'])
+                            fourth_row = rows[3].find_all(['td', 'th'])
                             monthly_data = {}
-                            
-                            # 1~6월 데이터 추출
                             for i in range(min(6, len(third_row))):
                                 month_num = i + 1
                                 try:
@@ -882,8 +876,6 @@ def get_apt2me_transaction_volume(area_code):
                                     monthly_data[f"{month_num}월"] = volume
                                 except (ValueError, AttributeError):
                                     monthly_data[f"{month_num}월"] = 0
-                            
-                            # 7~12월 데이터 추출
                             for i in range(min(6, len(fourth_row))):
                                 month_num = i + 7
                                 try:
@@ -891,43 +883,30 @@ def get_apt2me_transaction_volume(area_code):
                                     monthly_data[f"{month_num}월"] = volume
                                 except (ValueError, AttributeError):
                                     monthly_data[f"{month_num}월"] = 0
-                            
                             break
-            
             if monthly_data:
-                # 현재 월부터 12개월 역순으로 데이터 구성
                 current_month = datetime.now().month
                 current_year = datetime.now().year
-                
                 monthly_volumes = {}
-                
                 for i in range(12):
                     month = current_month - i
                     year = current_year
                     if month <= 0:
                         month += 12
                         year -= 1
-                    
                     month_key = f"{month}월"
-                    
                     if year == current_year:
-                        # 올해 데이터는 apt2.me에서 가져온 실제 데이터 사용
                         monthly_volumes[month_key] = monthly_data.get(month_key, 0)
                     else:
-                        # 작년 데이터는 임시 데이터 사용
                         import random
                         monthly_volumes[month_key] = random.randint(50, 200)
-                
                 print(f"apt2.me 월별 데이터 추출 성공: {monthly_volumes}")
                 return monthly_volumes
             else:
                 print("월별 거래량 테이블을 찾을 수 없음")
-                
         else:
             print(f"HTTP 오류: {response.status_code}")
-        
         return None
-        
     except Exception as e:
         print(f"apt2.me 데이터 가져오기 실패: {e}")
         return None
