@@ -52,8 +52,10 @@ def generate_static_html():
         {realestate_news_data}
     </section>
     <section id=\"realestate-chart\">
+        <div class="weekly-chart">주간 매매지수 차트</div>
         <div id=\"weekly-index-chart\"></div>
-        <div id="monthly-transaction-chart"></div>
+        <div class="monthly-chart">월간 거래량 차트</div>
+        <div id=\"monthly-transaction-chart\"></div>
     </section>
     <section id=\"realestate-data\">
         <h2>부동산 매매 가격지수 현황</h2>
