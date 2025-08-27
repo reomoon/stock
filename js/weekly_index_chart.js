@@ -58,6 +58,24 @@ function renderWeeklyIndexChart(region) {
                 alert(`${region} ${xLabels[idx]}: ${value.toFixed(2)}`);
             }
         });
+        // 터치 이벤트에서도 팝업 표시
+        chartDiv.addEventListener('touchend', function(e) {
+            // Plotly hoverdata는 직접 접근 불가하므로, 터치 위치로 최근 hover된 포인트 추정
+            // 단일 trace만 있을 때만 동작
+            if (window.Plotly && chartDiv.data && chartDiv.data.length === 1) {
+                // 마지막 hover된 포인트를 찾아서 alert
+                // Plotly 내부적으로 hover 이벤트에서 pointIndex를 저장하지 않으므로,
+                // 차트의 bounding box와 터치 좌표로 x축 인덱스 추정
+                var touch = e.changedTouches[0];
+                var rect = chartDiv.getBoundingClientRect();
+                var x = touch.clientX - rect.left;
+                var width = rect.width;
+                var idx = Math.round((x / width) * (xLabels.length - 1));
+                idx = Math.max(0, Math.min(xLabels.length - 1, idx));
+                var value = chartDiv.data[0].y[idx];
+                alert(`${region} ${xLabels[idx]}: ${value.toFixed(2)}`);
+            }
+        });
     }
 }
 
@@ -73,6 +91,10 @@ if (!checkboxContainer) {
     // 차트 바로 위에 체크박스 컨테이너 삽입
     chartContainer.parentNode.insertBefore(checkboxContainer, chartContainer);
 }
+// 차트 좌측 정렬 스타일 적용
+if (chartContainer) {
+    chartContainer.style.textAlign = 'left';
+}
 
 // 지역코드/지역명 기준 체크박스 생성
 // window.weeklyIndexData.price_index에서 지역코드(code)와 지역명(area) 추출
@@ -82,8 +104,8 @@ const regionList = window.weeklyIndexData.price_index.map(d => ({code: d.code ||
 regionList.forEach((region, idx) => {
     const label = document.createElement('label');
     label.style.marginRight = '12px';
-    // 첫 5개만 checked
-    const checkedAttr = idx < 5 ? 'checked' : '';
+    // 첫 2개만 checked
+    const checkedAttr = idx < 2 ? 'checked' : '';
     label.innerHTML = `<input type="checkbox" value="${region.code}" ${checkedAttr}> ${region.area}`;
     checkboxContainer.appendChild(label);
 });
@@ -109,7 +131,7 @@ function renderWeeklyIndexChartMulti(codes) {
     });
     // Plotly 차트 레이아웃 설정
     const layout = {
-        title: `선택 지역 주간 매매 가격지수`,
+        // title: `주간 매매 가격지수`, // 타이틀 제거
         xaxis: { tickvals: xLabels },
         yaxis: { range: [80, 120] },
         width: 356.67,
@@ -158,9 +180,9 @@ checkboxContainer.addEventListener('change', function(e) {
 // 최초 로딩 시 첫 지역 차트
 // 페이지 최초 로딩 시 첫 지역 차트 자동 렌더링
 if (window.weeklyIndexData && window.weeklyIndexData.price_index && window.weeklyIndexData.price_index.length > 0) {
-    // 첫 5개 지역코드로 차트 렌더링
-    const first5Codes = regionList.slice(0, 5).map(r => r.code);
-    renderWeeklyIndexChartMulti(first5Codes);
+    // 첫 2개 지역코드로 차트 렌더링
+    const first2Codes = regionList.slice(0, 2).map(r => r.code);
+    renderWeeklyIndexChartMulti(first2Codes);
 }
 
 // 터치/펜 드래그 중에도 hover 유지 이벤트 (Plotly)
