@@ -72,6 +72,21 @@ function renderMonthlyTransactionChartMulti(codes) {
                 alert(`${region} ${monthLabels[idx]} 거래량: ${value}건`);
             }
         });
+        // 터치/펜 드래그 중에도 hover 유지 이벤트 (Plotly)
+        chartDiv.addEventListener('touchmove', function(e) {
+            var touch = e.touches[0];
+            var rect = chartDiv.getBoundingClientRect();
+            var x = touch.clientX - rect.left;
+            var y = touch.clientY - rect.top;
+            Plotly.Fx.hover('monthly-transaction-chart', [{xval: x, yval: y}], 'xy');
+        });
+        chartDiv.addEventListener('pointermove', function(e) {
+            if (e.pointerType === 'touch' || e.pointerType === 'pen') {
+                var x = e.clientX - chartDiv.getBoundingClientRect().left;
+                var y = e.clientY - chartDiv.getBoundingClientRect().top;
+                Plotly.Fx.hover('monthly-transaction-chart', [{xval: x, yval: y}], 'xy');
+            }
+        });
     }
 }
 

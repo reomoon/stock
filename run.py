@@ -1,3 +1,4 @@
+import json
 from page.market import stock
 from page.plot_averages import make_nasdaq_ma_graphs
 from page.news import economy_news, realestate_news
@@ -52,6 +53,7 @@ def generate_static_html():
     </section>
     <section id=\"realestate-chart\">
         <div id=\"weekly-index-chart\"></div>
+        <div id="monthly-transaction-chart"></div>
     </section>
     <section id=\"realestate-data\">
         <h2>부동산 매매 가격지수 현황</h2>
@@ -60,8 +62,8 @@ def generate_static_html():
     <!-- JS 및 데이터는 body 끝에서 로드 -->
     <script src=\"https://cdn.plot.ly/plotly-2.27.0.min.js\"></script>
     <script>
-    window.weeklyIndexData = {weekly_data};
-    window.monthlyIndexData = {monthly_data};
+    window.weeklyIndexData = {json.dumps(weekly_data, ensure_ascii=False)};
+    window.monthlyIndexData = {json.dumps(monthly_data, ensure_ascii=False)};
     </script>
     <script src=\"js/nasdaq_chart.js\"></script>
     <script src=\"js/weekly_index_chart.js\"></script>
