@@ -21,7 +21,7 @@ function renderWeeklyIndexChart(region) {
     const layout = {
         title: `${region} 주간 매매 가격지수`,
         xaxis: { title: '주간', tickvals: xLabels },
-    yaxis: { title: '가격지수', range: [80, 120], tick0: 80, dtick: 1 },
+        yaxis: { title: '가격지수', range: [80, 120], tick0: 80, dtick: 1 },
         width: 600,
         height: 350,
         margin: { t: 40, l: 60, r: 30, b: 40 },
@@ -31,7 +31,8 @@ function renderWeeklyIndexChart(region) {
             y: -0.2,
             xanchor: 'left',
             yanchor: 'top'
-        }
+        },
+        hovermode: 'x unified' // x축 기준 통합 호버
     };
     // Plotly 차트 생성
     // 'weekly-index-chart'는 HTML의 <div id="weekly-index-chart"></div>와 연결됨
@@ -41,7 +42,7 @@ function renderWeeklyIndexChart(region) {
     // scrollZoom: 스크롤로 줌 비활성화
     Plotly.newPlot('weekly-index-chart', [trace], layout, {
         staticPlot: true,         // 차트 상호작용(줌, 팬 등) 비활성화
-        displayModeBar: false,    // 툴바(모드바) 숨김
+        displayModeBar: true,     // 툴바(모드바) 항상 표시
         scrollZoom: false         // 스크롤로 줌 비활성화
     });
 
@@ -77,14 +78,12 @@ if (!checkboxContainer) {
 // window.weeklyIndexData.price_index에서 지역코드(code)와 지역명(area) 추출
 // code가 없으면 area(지역명)으로 대체
 const regionList = window.weeklyIndexData.price_index.map(d => ({code: d.code || d.area, area: d.area}));
-regionList.forEach(region => {
-    // 각 지역별 체크박스(label) 생성 및 컨테이너에 추가
+// 디폴트 체크박스: 첫 5개 지역만 checked
+regionList.forEach((region, idx) => {
     const label = document.createElement('label');
     label.style.marginRight = '12px';
-    // 디폴트 체크 대상 코드 목록
-    const defaultCheckedCodes = ["11680", "11440", "11740", "41135", "41465"];
-    // 체크박스 생성
-    const checkedAttr = defaultCheckedCodes.includes(region.code) ? 'checked' : '';
+    // 첫 5개만 checked
+    const checkedAttr = idx < 5 ? 'checked' : '';
     label.innerHTML = `<input type="checkbox" value="${region.code}" ${checkedAttr}> ${region.area}`;
     checkboxContainer.appendChild(label);
 });
@@ -122,12 +121,13 @@ function renderWeeklyIndexChartMulti(codes) {
             y: -0.2,
             xanchor: 'left',
             yanchor: 'top'
-        }
+        },
+        hovermode: 'x unified' // x축 기준 통합 호버
     };
     // 여러 지역 trace를 한 번에 렌더링, 툴바/줌/아웃 비활성화
     Plotly.newPlot('weekly-index-chart', traces, layout, {
         staticPlot: true,
-        displayModeBar: false,
+        displayModeBar: true,
         scrollZoom: false
     });
 }

@@ -16,18 +16,17 @@ function getMonthLabels() {
 }
 
 function renderMonthlyTransactionChartMulti(codes) {
-    const data = window.weeklyIndexData;
-    if (!data || !data.transaction_volume) return;
+    const data = window.monthlyIndexData;
+    if (!data || !Array.isArray(data)) return;
     const monthLabels = getMonthLabels();
     const traces = [];
     codes.forEach(code => {
-        const regionData = data.transaction_volume.find(d => (d.code || d.area) === code || d.area === code);
+        const regionData = data.find(d => (d.area_code || d.area) === code || d.area === code);
         if (!regionData) return;
         // 월별 거래량 추출 (monthLabels 기준)
         const yData = monthLabels.map(label => {
             // label: "2024-8월" 등, 실제 데이터는 "8월" 등일 수 있음
             const month = label.split('-')[1];
-            // 실제 monthly_volumes는 "8월" 등으로 저장됨
             let found = null;
             Object.keys(regionData.monthly_volumes).forEach(k => {
                 if (k === month) found = regionData.monthly_volumes[k];
@@ -87,12 +86,13 @@ function setupTransactionCheckboxes() {
         chartContainer.parentNode.insertBefore(checkboxContainer, chartContainer);
     }
     // 지역코드/지역명 기준 체크박스 생성
-    const regionList = window.weeklyIndexData.transaction_volume.map(d => ({code: d.code || d.area, area: d.area}));
+    const regionList = window.monthlyIndexData.map(d => ({code: d.area_code || d.area, area: d.area}));
     checkboxContainer.innerHTML = '';
-    regionList.forEach(region => {
+    regionList.forEach((region, idx) => {
         const label = document.createElement('label');
         label.style.marginRight = '12px';
-        const checkedAttr = transactionDefaultCodes.includes(region.code) ? 'checked' : '';
+        // 첫 5개만 checked
+        const checkedAttr = idx < 5 ? 'checked' : '';
         label.innerHTML = `<input type="checkbox" value="${region.code}" ${checkedAttr}> ${region.area}`;
         checkboxContainer.appendChild(label);
     });
@@ -115,8 +115,10 @@ function setupTransactionCheckboxes() {
 
 // 최초 로딩 시 차트 및 체크박스 생성
 window.addEventListener('DOMContentLoaded', function() {
-    if (window.weeklyIndexData && window.weeklyIndexData.transaction_volume && window.weeklyIndexData.transaction_volume.length > 0) {
+    if (window.monthlyIndexData && Array.isArray(window.monthlyIndexData) && window.monthlyIndexData.length > 0) {
         setupTransactionCheckboxes();
-        renderMonthlyTransactionChartMulti(transactionDefaultCodes);
+        // 첫 5개 지역코드로 차트 렌더링
+        const first5Codes = window.monthlyIndexData.slice(0, 5).map(d => d.area_code || d.area);
+        renderMonthlyTransactionChartMulti(first5Codes);
     }
 });
