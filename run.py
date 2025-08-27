@@ -1,3 +1,8 @@
+"""
+# [run.py]
+# 로컬에서 정적 HTML(main.html) 생성용
+# 데이터 수집/가공 후 파일로 저장, 서버 없이 미리보기 가능
+"""
 import json
 from page.market import stock
 from page.plot_averages import make_nasdaq_ma_graphs
@@ -20,6 +25,9 @@ def generate_static_html():
         weekly_data = {"price_index": []}
         monthly_data = []
         realestate_data = "<div style='color:#888'>임시 부동산 데이터 (FAST_LOCAL)</div>"
+        print("FAST_LOCAL=1: 임시 데이터 사용")
+        print("weekly_data:", weekly_data)
+        print("monthly_data:", monthly_data)
     else:
         # 실제 데이터 호출
         weekly_data = get_weekly_real_estate_data()
@@ -33,6 +41,9 @@ def generate_static_html():
             for code, name in REGION_CODES.items()
         ]
         realestate_data = realestate()
+        print("실제 데이터 사용")
+        print("weekly_data:", weekly_data)
+        print("monthly_data:", monthly_data)
     with open("public/main.html", "w", encoding="utf-8") as f:
         f.write(f"""<!DOCTYPE html>
 <html lang=\"ko\">
@@ -75,8 +86,8 @@ def generate_static_html():
     <!-- JS 및 데이터는 body 끝에서 로드 -->
     <script src=\"https://cdn.plot.ly/plotly-2.27.0.min.js\"></script>
     <script>
-    window.weeklyIndexData = {json.dumps(weekly_data, ensure_ascii=False)};
-    window.monthlyIndexData = {json.dumps(monthly_data, ensure_ascii=False)};
+    window.weeklyIndexData = {json.dumps(weekly_data, ensure_ascii=True, separators=(',', ':'))};
+    window.monthlyIndexData = {json.dumps(monthly_data, ensure_ascii=True, separators=(',', ':'))};
     </script>
     <script src=\"js/nasdaq_chart.js\"></script>
     <script src=\"js/weekly_index_chart.js\"></script>

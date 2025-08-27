@@ -1,3 +1,9 @@
+"""
+# [app.py]
+# 서버/배포(GitHub Action, Vercel 등)에서 동적 웹 서비스용
+# Flask 기반 웹 서버로, 실시간 데이터 처리 및 페이지 제공
+# 로컬 테스트는 run.py 사용, 서버/배포는 app.py 사용
+"""
 from flask import Flask
 import sys
 import os
