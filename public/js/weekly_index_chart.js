@@ -158,7 +158,28 @@ checkboxContainer.addEventListener('change', function(e) {
 // 최초 로딩 시 첫 지역 차트
 // 페이지 최초 로딩 시 첫 지역 차트 자동 렌더링
 if (window.weeklyIndexData && window.weeklyIndexData.price_index && window.weeklyIndexData.price_index.length > 0) {
-    renderWeeklyIndexChart(window.weeklyIndexData.price_index[0].area);
+    // 첫 5개 지역코드로 차트 렌더링
+    const first5Codes = regionList.slice(0, 5).map(r => r.code);
+    renderWeeklyIndexChartMulti(first5Codes);
+}
+
+// 터치/펜 드래그 중에도 hover 유지 이벤트 (Plotly)
+var weeklyDiv = document.getElementById('weekly-index-chart');
+if (weeklyDiv) {
+    weeklyDiv.addEventListener('touchmove', function(e) {
+        var touch = e.touches[0];
+        var rect = weeklyDiv.getBoundingClientRect();
+        var x = touch.clientX - rect.left;
+        var y = touch.clientY - rect.top;
+        Plotly.Fx.hover('weekly-index-chart', [{xval: x, yval: y}], 'xy');
+    });
+    weeklyDiv.addEventListener('pointermove', function(e) {
+        if (e.pointerType === 'touch' || e.pointerType === 'pen') {
+            var x = e.clientX - weeklyDiv.getBoundingClientRect().left;
+            var y = e.clientY - weeklyDiv.getBoundingClientRect().top;
+            Plotly.Fx.hover('weekly-index-chart', [{xval: x, yval: y}], 'xy');
+        }
+    });
 }
 
 // 지역 선택시 차트 갱신 함수 필요시 아래처럼 사용
