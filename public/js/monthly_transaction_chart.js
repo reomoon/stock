@@ -1,6 +1,6 @@
 // js/monthly_transaction_chart.js
 // 월별 거래량 차트 (x축: 1년전~저번달, y축: 거래량)
-// window.weeklyIndexData.transaction_volume 사용
+// window.monthly_volume_data 사용
 
 const transactionDefaultCodes = ["11680", "11440", "11740", "41135", "41465"];
 
@@ -16,7 +16,7 @@ function getMonthLabels() {
 }
 
 function renderMonthlyTransactionChartMulti(codes) {
-    const data = window.monthlyIndexData;
+    const data = window.monthly_volume_data;
     if (!data || !Array.isArray(data)) return;
     const monthLabels = getMonthLabels();
     const traces = [];
@@ -61,14 +61,15 @@ function renderMonthlyTransactionChartMulti(codes) {
         displayModeBar: false,
         scrollZoom: false
     });
-    // 클릭 시 해당 월 거래량 팝업
+    // 클릭 이벤트 핸들러 추가 (멀티 트레이스)
     const chartDiv = document.getElementById('monthly-transaction-chart');
     if (chartDiv) {
         chartDiv.on('plotly_click', function(data){
             if (data && data.points && data.points.length > 0) {
-                const idx = data.points[0].pointIndex;
-                const value = data.points[0].y;
-                const region = data.points[0].data.name;
+                const point = data.points[0];
+                const region = point.data.name;
+                const idx = point.pointIndex;
+                const value = point.y;
                 alert(`${region} ${monthLabels[idx]} 거래량: ${value}건`);
             }
         });
@@ -105,7 +106,7 @@ function setupTransactionCheckboxes() {
         chartContainer.style.textAlign = 'left';
     }
     // 지역코드/지역명 기준 체크박스 생성
-    const regionList = window.monthlyIndexData.map(d => ({code: d.area_code || d.area, area: d.area}));
+    const regionList = window.monthly_volume_data.map(d => ({code: d.area_code || d.area, area: d.area}));
     checkboxContainer.innerHTML = '';
     regionList.forEach((region, idx) => {
         const label = document.createElement('label');
@@ -134,10 +135,10 @@ function setupTransactionCheckboxes() {
 
 // 최초 로딩 시 차트 및 체크박스 생성
 window.addEventListener('DOMContentLoaded', function() {
-    if (window.monthlyIndexData && Array.isArray(window.monthlyIndexData) && window.monthlyIndexData.length > 0) {
+    if (window.monthly_volume_data && Array.isArray(window.monthly_volume_data) && window.monthly_volume_data.length > 0) {
         setupTransactionCheckboxes();
         // 첫 2개 지역코드로 차트 렌더링
-        const first2Codes = window.monthlyIndexData.slice(0, 2).map(d => d.area_code || d.area);
+        const first2Codes = window.monthly_volume_data.slice(0, 2).map(d => d.area_code || d.area);
         renderMonthlyTransactionChartMulti(first2Codes);
     }
 });

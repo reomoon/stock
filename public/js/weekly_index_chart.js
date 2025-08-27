@@ -152,6 +152,19 @@ function renderWeeklyIndexChartMulti(codes) {
         displayModeBar: true,
         scrollZoom: false
     });
+    // 클릭 이벤트 핸들러 추가 (멀티 트레이스)
+    const chartDiv = document.getElementById('weekly-index-chart');
+    if (chartDiv) {
+        chartDiv.on('plotly_click', function(data){
+            if (data && data.points && data.points.length > 0) {
+                const point = data.points[0];
+                const region = point.data.name;
+                const idx = point.pointIndex;
+                const value = point.y;
+                alert(`${region} ${xLabels[idx]}: ${value.toFixed(2)}`);
+            }
+        });
+    }
 }
 
 // 체크박스 이벤트: 최대 5개까지 선택 가능
