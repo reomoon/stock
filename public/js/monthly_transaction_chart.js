@@ -50,8 +50,6 @@ function renderMonthlyTransactionChartMulti(codes) {
         // title: `지역 월별 거래량`,
         xaxis: {tickvals: monthLabels, tickangle: -45},
         yaxis: {title: '', rangemode: 'tozero'},
-        width: 340,
-        height: 350,
         margin: {t: 40, l: 60, r: 30, b: 80},
         legend: {
             orientation: 'h',
@@ -64,7 +62,8 @@ function renderMonthlyTransactionChartMulti(codes) {
     Plotly.newPlot('monthly-transaction-chart', traces, layout, {
         staticPlot: true,
         displayModeBar: false,
-        scrollZoom: false
+        scrollZoom: false,
+        responsive: true
     });
     // 클릭 이벤트 핸들러 추가 (멀티 트레이스)
     const chartDiv = document.getElementById('monthly-transaction-chart');
