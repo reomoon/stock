@@ -16,7 +16,9 @@ function renderWeeklyIndexChart(region) {
         mode: 'lines+markers',
         name: region,
         line: { shape: 'linear', color: '#007bff' },
-        marker: { size: 8 }
+        marker: { size: 8 },
+        hovertemplate: `%{text}<br>%{x}: <b>%{y:.2f}</b><extra></extra>`,
+        text: xLabels.map((label, i) => `${region}`)
     };
     const layout = {
         title: `${region} 주간 매매 가격지수`,
@@ -50,22 +52,18 @@ function renderWeeklyIndexChart(region) {
     // 모바일 터치, PC 클릭 모두 지원
     const chartDiv = document.getElementById('weekly-index-chart');
     if (chartDiv) {
+        function showIndexAlert(region, idx, value) {
+            alert(`${region} ${xLabels[idx]}: ${value.toFixed(2)}`);
+        }
         chartDiv.on('plotly_click', function(data){
-            // 클릭한 포인트의 y값(지수)을 소수점 2자리로 표시
             if (data && data.points && data.points.length > 0) {
                 const idx = data.points[0].pointIndex;
                 const value = data.points[0].y;
-                alert(`${region} ${xLabels[idx]}: ${value.toFixed(2)}`);
+                showIndexAlert(region, idx, value);
             }
         });
-        // 터치 이벤트에서도 팝업 표시
         chartDiv.addEventListener('touchend', function(e) {
-            // Plotly hoverdata는 직접 접근 불가하므로, 터치 위치로 최근 hover된 포인트 추정
-            // 단일 trace만 있을 때만 동작
             if (window.Plotly && chartDiv.data && chartDiv.data.length === 1) {
-                // 마지막 hover된 포인트를 찾아서 alert
-                // Plotly 내부적으로 hover 이벤트에서 pointIndex를 저장하지 않으므로,
-                // 차트의 bounding box와 터치 좌표로 x축 인덱스 추정
                 var touch = e.changedTouches[0];
                 var rect = chartDiv.getBoundingClientRect();
                 var x = touch.clientX - rect.left;
@@ -73,7 +71,14 @@ function renderWeeklyIndexChart(region) {
                 var idx = Math.round((x / width) * (xLabels.length - 1));
                 idx = Math.max(0, Math.min(xLabels.length - 1, idx));
                 var value = chartDiv.data[0].y[idx];
-                alert(`${region} ${xLabels[idx]}: ${value.toFixed(2)}`);
+                showIndexAlert(region, idx, value);
+            }
+        });
+        chartDiv.on('plotly_hover', function(data){
+            if (data && data.points && data.points.length > 0) {
+                const idx = data.points[0].pointIndex;
+                const value = data.points[0].y;
+                showIndexAlert(region, idx, value);
             }
         });
     }
@@ -126,7 +131,9 @@ function renderWeeklyIndexChartMulti(codes) {
             mode: 'lines+markers',
             name: regionData.area,       // 범례: 지역명
             line: { shape: 'linear' },
-            marker: { size: 8 }
+            marker: { size: 8 },
+            hovertemplate: `%{text}<br>%{x}: <b>%{y:.2f}</b><extra></extra>`,
+            text: xLabels.map((label, i) => `${regionData.area}`)
         });
     });
     // Plotly 차트 레이아웃 설정
