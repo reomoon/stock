@@ -16,7 +16,7 @@ function getMonthLabels() {
 }
 
 function renderMonthlyTransactionChartMulti(codes) {
-    const data = window.monthly_volume_data;
+    const data = window.monthlyIndexData;
     if (!data || !Array.isArray(data)) return;
     const monthLabels = getMonthLabels();
     const traces = [];
