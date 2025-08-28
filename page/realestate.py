@@ -261,10 +261,9 @@ def realestate():
             for month_header in month_headers:
                 volume = monthly_volumes.get(month_header, 0)
                 html += f"<td>{volume:,}건</td>"
-            # 저번달(1개월 전)과 13개월 전(작년 동월) 증감 표시
-            # month_headers[0] = 이번달, month_headers[1] = 저번달, month_headers[12] = 13개월 전
+            # 저번달과 1년전(13개월 전) 증감 표시 (month_headers[1] = 저번달, month_headers[13] = 1년전)
             last_month = month_headers[1] if len(month_headers) > 1 else None
-            year_ago_month = month_headers[12] if len(month_headers) > 12 else None
+            year_ago_month = month_headers[13] if len(month_headers) > 13 else None
             last_month_vol = monthly_volumes.get(last_month, 0) if last_month else 0
             year_ago_vol = monthly_volumes.get(year_ago_month, 0) if year_ago_month else 0
             diff = last_month_vol - year_ago_vol
@@ -274,8 +273,7 @@ def realestate():
                 trend = '▼'
             else:
                 trend = '→'
-            rate = (diff / year_ago_vol * 100) if year_ago_vol else 0
-            html += f"<td class='{'up' if diff>0 else 'down' if diff<0 else 'same'}'>{trend} {diff:+,}건 ({rate:+.1f}%)</td>"
+            html += f"<td class='{'up' if diff>0 else 'down' if diff<0 else 'same'}'>{trend} {diff:+,}건</td>"
             html += "</tr>"
         
         html += """

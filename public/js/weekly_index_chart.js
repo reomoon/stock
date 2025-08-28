@@ -141,7 +141,7 @@ function renderWeeklyIndexChartMulti(codes) {
         // title: `주간 매매 가격지수`, // 타이틀 제거
         xaxis: { tickvals: xLabels },
         yaxis: { range: [80, 120] },
-        width: 356.67,
+        width: 340,
         height: 350,
         margin: { t: 40, l: 60, r: 30, b: 40 },
         legend: {
