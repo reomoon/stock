@@ -141,8 +141,6 @@ function renderWeeklyIndexChartMulti(codes) {
         // title: `주간 매매 가격지수`, // 타이틀 제거
         xaxis: { tickvals: xLabels },
         yaxis: { range: [80, 120] },
-        width: 356.67,
-        height: 350,
         margin: { t: 40, l: 60, r: 30, b: 40 },
         legend: {
             orientation: 'h', // 수평 범례
@@ -157,7 +155,8 @@ function renderWeeklyIndexChartMulti(codes) {
     Plotly.newPlot('weekly-index-chart', traces, layout, {
         staticPlot: true,
         displayModeBar: true,
-        scrollZoom: false
+        scrollZoom: false,
+        responsive: true
     });
     // 클릭 이벤트 핸들러 추가 (멀티 트레이스)
     const chartDiv = document.getElementById('weekly-index-chart');
