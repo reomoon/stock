@@ -35,9 +35,9 @@ function renderMonthlyTransactionChartMulti(codes) {
             return found || 0;
         });
         traces.push({
-            x: xData,
-            y: monthLabels,
-            type: 'bar',
+            x: monthLabels,
+            y: xData,
+            type: 'scatter',
             orientation: 'h',
             name: regionData.area,
             marker: {line: {width: 1}},
@@ -47,7 +47,7 @@ function renderMonthlyTransactionChartMulti(codes) {
     });
     const layout = {
         // title: `지역 월별 거래량`,
-        height: 600, // 차트 세로 사이즈 고정
+        // height: 600, // 차트 세로 사이즈 고정
         yaxis: {tickvals: monthLabels, tickangle: -45, title: ''},
         xaxis: {title: '', rangemode: 'tozero'},
         margin: {t: 40, l: 60, r: 30, b: 80},
