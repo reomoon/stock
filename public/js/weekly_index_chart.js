@@ -16,7 +16,9 @@ function renderWeeklyIndexChart(region) {
         mode: 'lines+markers',
         name: region,
         line: { shape: 'linear', color: '#007bff' },
-        marker: { size: 8 }
+        marker: { size: 8 },
+        hovertemplate: `%{text}<br>%{x}: <b>%{y:.2f}</b><extra></extra>`,
+        text: xLabels.map((label, i) => `${region}`)
     };
     const layout = {
         title: `${region} 주간 매매 가격지수`,
@@ -129,7 +131,9 @@ function renderWeeklyIndexChartMulti(codes) {
             mode: 'lines+markers',
             name: regionData.area,       // 범례: 지역명
             line: { shape: 'linear' },
-            marker: { size: 8 }
+            marker: { size: 8 },
+            hovertemplate: `%{text}<br>%{x}: <b>%{y:.2f}</b><extra></extra>`,
+            text: xLabels.map((label, i) => `${regionData.area}`)
         });
     });
     // Plotly 차트 레이아웃 설정
