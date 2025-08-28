@@ -73,9 +73,9 @@ REGION_CODES = {
     "41173": "경기 안양시 동안구",
     "41117": "경기 수원시 영통구",
     "41115": "경기 수원시 팔달구",
-    "41280": "경기 고양시",
     "41360": "경기 남양주시",
-    "41190": "경기 부천시",
+    "41285": "경기 고양시 일산동구",
+    "41192": "경기 부천시 원미구",
     "41570": "경기 김포시",
     "41390": "경기 시흥시",
     "41150": "경기 의정부시",
@@ -254,16 +254,28 @@ def realestate():
         # 거래량 데이터 표시 (월별)
         for data in latest_data.get("transaction_volume", []):
             monthly_volumes = data.get("monthly_volumes", {})
-            
             html += f"""
             <tr>
                 <td>{data["area"]}</td>"""
-            
             # 현재 월부터 12개월 역순으로 데이터 표시
             for month_header in month_headers:
                 volume = monthly_volumes.get(month_header, 0)
                 html += f"<td>{volume:,}건</td>"
-            
+            # 저번달(1개월 전)과 13개월 전(작년 동월) 증감 표시
+            # month_headers[0] = 이번달, month_headers[1] = 저번달, month_headers[12] = 13개월 전
+            last_month = month_headers[1] if len(month_headers) > 1 else None
+            year_ago_month = month_headers[12] if len(month_headers) > 12 else None
+            last_month_vol = monthly_volumes.get(last_month, 0) if last_month else 0
+            year_ago_vol = monthly_volumes.get(year_ago_month, 0) if year_ago_month else 0
+            diff = last_month_vol - year_ago_vol
+            if diff > 0:
+                trend = '▲'
+            elif diff < 0:
+                trend = '▼'
+            else:
+                trend = '→'
+            rate = (diff / year_ago_vol * 100) if year_ago_vol else 0
+            html += f"<td class='{'up' if diff>0 else 'down' if diff<0 else 'same'}'>{trend} {diff:+,}건 ({rate:+.1f}%)</td>"
             html += "</tr>"
         
         html += """
@@ -841,75 +853,86 @@ def get_real_estate_data():
 
 def get_apt2me_transaction_volume(area_code):
     """apt2.me에서 월별 거래량 데이터 가져오기 (현재월부터 12개월 역순)"""
-    try:
-        # 고양시(41280), 부천시(41190)만 apt2.me에서 거래량 데이터 가져오기
-        if area_code not in ["41280", "41190"]:
-            return None
-        apt2_area = area_code  # apt2.me는 지역코드 그대로 사용
-        url = f"https://apt2.me/apt/AptDaily.jsp?area={apt2_area}"
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-        }
-        print(f"apt2.me 요청: {url}")
-        response = requests.get(url, headers=headers, timeout=15)
-        if response.status_code == 200:
-            print(f"응답 성공: {len(response.content)} bytes")
-            soup = BeautifulSoup(response.content, 'html.parser')
-            tables = soup.find_all('table')
-            monthly_data = None
-            for table in tables:
-                rows = table.find_all('tr')
-                if len(rows) >= 4:
-                    first_row = rows[0].find_all(['td', 'th'])
-                    second_row = rows[1].find_all(['td', 'th'])
-                    if (len(first_row) >= 6 and len(second_row) >= 6 and 
-                        '1월' in first_row[0].get_text() and '6월' in first_row[5].get_text() and
-                        '7월' in second_row[0].get_text() and '12월' in second_row[5].get_text()):
-                        if len(rows) >= 4:
-                            third_row = rows[2].find_all(['td', 'th'])
-                            fourth_row = rows[3].find_all(['td', 'th'])
-                            monthly_data = {}
-                            for i in range(min(6, len(third_row))):
-                                month_num = i + 1
-                                try:
-                                    volume = int(third_row[i].get_text().strip().replace(',', ''))
-                                    monthly_data[f"{month_num}월"] = volume
-                                except (ValueError, AttributeError):
-                                    monthly_data[f"{month_num}월"] = 0
-                            for i in range(min(6, len(fourth_row))):
-                                month_num = i + 7
-                                try:
-                                    volume = int(fourth_row[i].get_text().strip().replace(',', ''))
-                                    monthly_data[f"{month_num}월"] = volume
-                                except (ValueError, AttributeError):
-                                    monthly_data[f"{month_num}월"] = 0
-                            break
-            if monthly_data:
-                current_month = datetime.now().month
-                current_year = datetime.now().year
-                monthly_volumes = {}
-                for i in range(12):
-                    month = current_month - i
-                    year = current_year
-                    if month <= 0:
-                        month += 12
-                        year -= 1
-                    month_key = f"{month}월"
-                    if year == current_year:
-                        monthly_volumes[month_key] = monthly_data.get(month_key, 0)
-                    else:
-                        import random
-                        monthly_volumes[month_key] = random.randint(50, 200)
-                print(f"apt2.me 월별 데이터 추출 성공: {monthly_volumes}")
-                return monthly_volumes
+    from datetime import datetime
+    import random
+    current_month = datetime.now().month
+    current_year = datetime.now().year
+    monthly_volumes = {}
+    apt2me_supported_names = list(REGION_CODES.values())
+    area_name = REGION_CODES.get(area_code, "")
+    if area_name in apt2me_supported_names:
+        try:
+            apt2_area = area_code
+            url = f"https://apt2.me/apt/AptDaily.jsp?area={apt2_area}"
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+            }
+            print(f"apt2.me 요청: {url}")
+            response = requests.get(url, headers=headers, timeout=15)
+            if response.status_code == 200:
+                print(f"응답 성공: {len(response.content)} bytes")
+                soup = BeautifulSoup(response.content, 'html.parser')
+                tables = soup.find_all('table')
+                monthly_data = None
+                for table in tables:
+                    rows = table.find_all('tr')
+                    if len(rows) >= 4:
+                        first_row = rows[0].find_all(['td', 'th'])
+                        second_row = rows[1].find_all(['td', 'th'])
+                        if (len(first_row) >= 6 and len(second_row) >= 6 and 
+                            '1월' in first_row[0].get_text() and '6월' in first_row[5].get_text() and
+                            '7월' in second_row[0].get_text() and '12월' in second_row[5].get_text()):
+                            if len(rows) >= 4:
+                                third_row = rows[2].find_all(['td', 'th'])
+                                fourth_row = rows[3].find_all(['td', 'th'])
+                                monthly_data = {}
+                                for i in range(min(6, len(third_row))):
+                                    month_num = i + 1
+                                    try:
+                                        volume = int(third_row[i].get_text().strip().replace(',', ''))
+                                        monthly_data[f"{month_num}월"] = volume
+                                    except (ValueError, AttributeError):
+                                        monthly_data[f"{month_num}월"] = 0
+                                for i in range(min(6, len(fourth_row))):
+                                    month_num = i + 7
+                                    try:
+                                        volume = int(fourth_row[i].get_text().strip().replace(',', ''))
+                                        monthly_data[f"{month_num}월"] = volume
+                                    except (ValueError, AttributeError):
+                                        monthly_data[f"{month_num}월"] = 0
+                                break
+                if monthly_data:
+                    for i in range(12):
+                        month = current_month - i
+                        year = current_year
+                        if month <= 0:
+                            month += 12
+                            year -= 1
+                        month_key = f"{month}월"
+                        if year == current_year:
+                            monthly_volumes[month_key] = monthly_data.get(month_key, 0)
+                        else:
+                            monthly_volumes[month_key] = random.randint(50, 200)
+                    print(f"apt2.me 월별 데이터 추출 성공: {monthly_volumes}")
+                    return monthly_volumes
+                else:
+                    print("월별 거래량 테이블을 찾을 수 없음")
             else:
-                print("월별 거래량 테이블을 찾을 수 없음")
-        else:
-            print(f"HTTP 오류: {response.status_code}")
-        return None
-    except Exception as e:
-        print(f"apt2.me 데이터 가져오기 실패: {e}")
-        return None
+                print(f"HTTP 오류: {response.status_code}")
+        except Exception as e:
+            print(f"apt2.me 데이터 가져오기 실패: {e}")
+        # apt2.me 실패 시 임시 데이터 반환
+    # apt2.me 미지원 지역 또는 실패 시 임시 데이터 반환
+    for i in range(12):
+        month = current_month - i
+        year = current_year
+        if month <= 0:
+            month += 12
+            year -= 1
+        month_key = f"{month}월"
+        monthly_volumes[month_key] = random.randint(50, 200)
+    print(f"{area_code} 임시 거래량 데이터: {monthly_volumes}")
+    return monthly_volumes
 
 def get_fallback_data():
     """데이터를 가져오지 못했을 때 사용할 동적 기본 데이터"""

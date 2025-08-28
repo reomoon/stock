@@ -84,14 +84,15 @@ def generate_static_html():
         {realestate_data}
     </section>
     <!-- JS 및 데이터는 body 끝에서 로드 -->
-    <script src=\"https://cdn.plot.ly/plotly-2.27.0.min.js\"></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
     <script>
     window.weeklyIndexData = {json.dumps(weekly_data, ensure_ascii=True, separators=(',', ':'))};
     window.monthlyIndexData = {json.dumps(monthly_data, ensure_ascii=True, separators=(',', ':'))};
+    window.monthly_volume_data = window.monthlyIndexData;
     </script>
-    <script src=\"js/nasdaq_chart.js\"></script>
-    <script src=\"js/weekly_index_chart.js\"></script>
-    <script src=\"js/monthly_transaction_chart.js\"></script>
+    <script src="js/nasdaq_chart.js"></script>
+    <script src="js/weekly_index_chart.js"></script>
+    <script src="js/monthly_transaction_chart.js"></script>
 </body>
 </html>
 """)
