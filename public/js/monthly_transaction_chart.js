@@ -24,11 +24,9 @@ function renderMonthlyTransactionChartMulti(codes) {
         const regionData = data.find(d => (d.area_code || d.area) === code || d.area === code);
         if (!regionData) return;
         // 월별 거래량 추출 (monthLabels 기준)
-        const yData = monthLabels.map(label => {
-            // label: "2024-8월" 등, 실제 데이터는 "8월" 등일 수 있음
+        const xData = monthLabels.map(label => {
             let month = label.split('-')[1];
             if (month) month = month.trim();
-            // 혹시 "8월"이 아니라 "08월" 등으로 되어 있으면, 앞의 0도 제거
             if (month && month.length > 2 && month[0] === '0') month = month.slice(1);
             let found = null;
             Object.keys(regionData.monthly_volumes).forEach(k => {
@@ -37,19 +35,20 @@ function renderMonthlyTransactionChartMulti(codes) {
             return found || 0;
         });
         traces.push({
-            x: monthLabels,
-            y: yData,
+            x: xData,
+            y: monthLabels,
             type: 'bar',
+            orientation: 'h',
             name: regionData.area,
             marker: {line: {width: 1}},
-            hovertemplate: `%{text}<br>%{x}: <b>%{y:,}건</b><extra></extra>`,
+            hovertemplate: `%{text}<br>%{y}: <b>%{x:,}건</b><extra></extra>`,
             text: monthLabels.map((label, i) => `${regionData.area}`)
         });
     });
     const layout = {
         // title: `지역 월별 거래량`,
-        xaxis: {tickvals: monthLabels, tickangle: -45},
-        yaxis: {title: '', rangemode: 'tozero'},
+        yaxis: {tickvals: monthLabels, tickangle: -45, title: ''},
+        xaxis: {title: '', rangemode: 'tozero'},
         margin: {t: 40, l: 60, r: 30, b: 80},
         legend: {
             orientation: 'h',

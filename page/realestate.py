@@ -58,13 +58,16 @@ REGION_CODES
 REGION_CODES = {
     "11680": "서울 강남구",
     "11170": "서울 용산구",
+    "11710": "서울 송파구",
     "11200": "서울 성동구",
-    "11440": "서울 마포구", 
+    "11440": "서울 마포구",
+    "11560": "서울 영등포구", 
     "11590": "서울 동작구",
     "11740": "서울 강동구",
     "11230": "서울 동대문구",
     "11500": "서울 강서구",
     "11410": "서울 서대문구",
+    "11290": "서울 성북구",
     "11305": "서울 강북구",
     "41135": "경기 성남시 분당구",
     "41210": "경기 광명시",
@@ -775,59 +778,16 @@ def get_real_estate_data():
                 except Exception as jeonse_e:
                     print(f"{area_name} 전세 데이터 가져오기 실패: {jeonse_e}")
                 
-                # 실제 거래량 데이터 가져오기 (apt2.me에서 현재월 기준 12개월 데이터)
+                # 거래량 데이터는 get_apt2me_transaction_volume에서 모든 예외/임시 처리 포함
                 try:
-                    # apt2.me에서 현재월 기준 12개월 데이터 가져오기
                     monthly_volumes = get_apt2me_transaction_volume(area_code)
-                    
-                    if monthly_volumes is None:
-                        # apt2.me 실패시 임시 데이터 사용 (현재월 기준 12개월)
-                        import random
-                        current_month = datetime.now().month
-                        current_year = datetime.now().year
-                        
-                        monthly_volumes = {}
-                        for i in range(12):
-                            month = current_month - i
-                            year = current_year
-                            if month <= 0:
-                                month += 12
-                                year -= 1
-                            month_key = f"{month}월"
-                            monthly_volumes[month_key] = random.randint(30, 150)
-                        
-                        print(f"{area_name} 임시 거래량 데이터 사용")
-                    else:
-                        print(f"{area_name} apt2.me 거래량 데이터 사용")
-                    
                     transaction_volume_data.append({
                         "area": area_name,
                         "monthly_volumes": monthly_volumes
                     })
-                    
                     print(f"{area_name} 월별거래량: {monthly_volumes}")
-                
                 except Exception as volume_e:
                     print(f"{area_name} 거래량 데이터 가져오기 실패: {volume_e}")
-                    # 실패시 기본값 사용 (현재월 기준 12개월)
-                    import random
-                    current_month = datetime.now().month
-                    current_year = datetime.now().year
-                    
-                    monthly_volumes = {}
-                    for i in range(12):
-                        month = current_month - i
-                        year = current_year
-                        if month <= 0:
-                            month += 12
-                            year -= 1
-                        month_key = f"{month}월"
-                        monthly_volumes[month_key] = random.randint(30, 150)
-                    
-                    transaction_volume_data.append({
-                        "area": area_name,
-                        "monthly_volumes": monthly_volumes
-                    })
                         
             except Exception as e:
                 print(f"{area_name} 데이터 가져오기 실패: {e}")
@@ -858,6 +818,7 @@ def get_apt2me_transaction_volume(area_code):
     monthly_volumes = {}
     apt2me_supported_names = list(REGION_CODES.values())
     area_name = REGION_CODES.get(area_code, "")
+    # apt2.me 지원 지역이면 실데이터 시도
     if area_name in apt2me_supported_names:
         try:
             apt2_area = area_code
@@ -900,7 +861,7 @@ def get_apt2me_transaction_volume(area_code):
                                         monthly_data[f"{month_num}월"] = 0
                                 break
                 if monthly_data:
-                    for i in range(12):
+                    for i in range(13):
                         month = current_month - i
                         year = current_year
                         if month <= 0:
@@ -919,9 +880,9 @@ def get_apt2me_transaction_volume(area_code):
                 print(f"HTTP 오류: {response.status_code}")
         except Exception as e:
             print(f"apt2.me 데이터 가져오기 실패: {e}")
-        # apt2.me 실패 시 임시 데이터 반환
-    # apt2.me 미지원 지역 또는 실패 시 임시 데이터 반환
-    for i in range(12):
+        # apt2.me 실패 시 임시 데이터로 이동
+    # apt2.me 미지원 지역 또는 apt2.me 실패 시 임시 데이터 생성 (13개월)
+    for i in range(13):
         month = current_month - i
         year = current_year
         if month <= 0:
@@ -943,7 +904,7 @@ def get_fallback_data():
     # 현재 월부터 12개월 역순으로 동적 거래량 데이터 생성
     def generate_monthly_volumes():
         monthly_volumes = {}
-        for i in range(12):
+        for i in range(13):
             month = current_month - i
             year = current_year
             if month <= 0:
