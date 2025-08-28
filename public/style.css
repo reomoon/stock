@@ -187,6 +187,13 @@ section {
     border-radius: 8px;
 }
 
+/* 월간 거래량 차트, 주간 매매지수 차트 스타일 추가 */
+#monthly-transaction-chart, #weekly-index-chart {
+    width: 100%;
+    max-width: 100vw;
+    box-sizing: border-box;
+}
+
 /* 리스트 스타일 */
 ul {
     list-style: none;
