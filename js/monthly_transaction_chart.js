@@ -8,7 +8,7 @@ function getMonthLabels() {
     // 최근 12개월 (좌측이 1년전, 우측이 저번달)
     const now = new Date();
     let labels = [];
-    for (let i = 12; i >= 1; i--) {
+    for (let i = 12; i >= 0; i--) {
         let d = new Date(now.getFullYear(), now.getMonth() - i, 1);
         labels.push(`${d.getFullYear()}-${d.getMonth() + 1}월`);
     }
@@ -35,9 +35,9 @@ function renderMonthlyTransactionChartMulti(codes) {
             return found || 0;
         });
         traces.push({
-            x: xData,
-            y: monthLabels,
-            type: 'bar',
+            x: monthLabels,
+            y: xData,
+            type: 'scatter',
             orientation: 'h',
             name: regionData.area,
             marker: {line: {width: 1}},
@@ -47,8 +47,8 @@ function renderMonthlyTransactionChartMulti(codes) {
     });
     const layout = {
         // title: `지역 월별 거래량`,
-        height: 600, // 차트 세로 사이즈 고정
-        yaxis: {tickvals: monthLabels, tickangle: -45, title: ''},
+        // height: 600, // 차트 세로 사이즈 고정
+        yaxis: {title: '거래량'},
         xaxis: {title: '', rangemode: 'tozero'},
         margin: {t: 40, l: 60, r: 30, b: 80},
         legend: {
