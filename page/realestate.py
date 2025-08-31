@@ -1,7 +1,9 @@
 # ...기존 import...
 import requests
 import os
+from dotenv import load_dotenv
 from datetime import datetime
+load_dotenv()
 from PublicDataReader import Kbland
 from PublicDataReader import TransactionPrice
 import pandas as pd
@@ -364,8 +366,13 @@ def get_weekly_real_estate_data():
     try:
         print("KB부동산 주간 데이터 가져오는 중...")
         
-        # Kbland 객체 생성
-        api = Kbland()
+        # 공공데이터 API 키 설정 (URL 디코딩)
+        api_key_encoded = os.environ.get("PUBLICDATA_API_KEY")
+        if not api_key_encoded:
+            raise ValueError("환경 변수 PUBLICDATA_API_KEY가 설정되어 있지 않습니다. .env 파일에 PUBLICDATA_API_KEY=여기에_인증키 형식으로 추가하세요.")
+        api_key = urllib.parse.unquote(api_key_encoded)
+        # Kbland 객체 생성 (API 키 전달)
+        api = Kbland(api_key)
         
         price_index_data = []
         
@@ -494,9 +501,11 @@ def get_real_estate_data():
         print("KB부동산 데이터 가져오는 중...")
         
         # 공공데이터 API 키 설정 (URL 디코딩)
-        api_key_encoded = "PwOGhANnhkRvkGlFojML8MAtJJzLCeeZozvQRXQ1cSYAyWbo%2FYMKHO956dQKPNK%2Bm2y6kyRCv8cZn3HRCwinvA%3D%3D"
+        api_key_encoded = os.environ.get("PUBLICDATA_API_KEY")
+        if not api_key_encoded:
+            raise ValueError("환경 변수 PUBLICDATA_API_KEY가 설정되어 있지 않습니다. .env 파일에 PUBLICDATA_API_KEY=여기에_인증키 형식으로 추가하세요.")
         api_key = urllib.parse.unquote(api_key_encoded)
-        print(f"API 키 디코딩 완료")
+        print(f"API 키 디코딩 완료 (환경 변수에서 불러옴)")
         
         # Kbland 객체 생성
         api = Kbland()
@@ -739,9 +748,9 @@ def get_real_estate_data():
                 except Exception as jeonse_e:
                     print(f"{area_name} 전세 데이터 가져오기 실패: {jeonse_e}")
                 
-                # 거래량 데이터는 get_apt2me_transaction_volume에서 모든 예외/임시 처리 포함
+                # 거래량 데이터는 get_transaction_volume에서 모든 예외/임시 처리 포함
                 try:
-                    monthly_volumes = get_apt2me_transaction_volume(area_code)
+                    monthly_volumes = get_transaction_volume(area_code)
                     transaction_volume_data.append({
                         "area": area_name,
                         "monthly_volumes": monthly_volumes
@@ -770,79 +779,26 @@ def get_real_estate_data():
         print(f"PublicDataReader 오류: {e}")
         return None
 
-def get_apt2me_transaction_volume(area_code):
-    """apt2.me에서 월별 거래량 데이터 가져오기 (현재월부터 12개월 역순)"""
+def get_transaction_volume(area_code):
+    """공공데이터 API(TransactionPrice)로 월별 거래량 데이터 가져오기 (현재월부터 12개월 역순)"""
     from datetime import datetime
-    import random
     current_month = datetime.now().month
     current_year = datetime.now().year
     monthly_volumes = {}
-    apt2me_supported_names = list(REGION_CODES.values())
-    area_name = REGION_CODES.get(area_code, "")
-    # apt2.me 지원 지역이면 실데이터 시도
-    if area_name in apt2me_supported_names:
-        try:
-            apt2_area = area_code
-            url = f"https://apt2.me/apt/AptDaily.jsp?area={apt2_area}"
-            headers = {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-            }
-            print(f"apt2.me 요청: {url}")
-            response = requests.get(url, headers=headers, timeout=15)
-            if response.status_code == 200:
-                print(f"응답 성공: {len(response.content)} bytes")
-                soup = BeautifulSoup(response.content, 'html.parser')
-                tables = soup.find_all('table')
-                monthly_data = None
-                for table in tables:
-                    rows = table.find_all('tr')
-                    if len(rows) >= 4:
-                        first_row = rows[0].find_all(['td', 'th'])
-                        second_row = rows[1].find_all(['td', 'th'])
-                        if (len(first_row) >= 6 and len(second_row) >= 6 and 
-                            '1월' in first_row[0].get_text() and '6월' in first_row[5].get_text() and
-                            '7월' in second_row[0].get_text() and '12월' in second_row[5].get_text()):
-                            if len(rows) >= 4:
-                                third_row = rows[2].find_all(['td', 'th'])
-                                fourth_row = rows[3].find_all(['td', 'th'])
-                                monthly_data = {}
-                                for i in range(min(6, len(third_row))):
-                                    month_num = i + 1
-                                    try:
-                                        volume = int(third_row[i].get_text().strip().replace(',', ''))
-                                        monthly_data[f"{month_num}월"] = volume
-                                    except (ValueError, AttributeError):
-                                        monthly_data[f"{month_num}월"] = 0
-                                for i in range(min(6, len(fourth_row))):
-                                    month_num = i + 7
-                                    try:
-                                        volume = int(fourth_row[i].get_text().strip().replace(',', ''))
-                                        monthly_data[f"{month_num}월"] = volume
-                                    except (ValueError, AttributeError):
-                                        monthly_data[f"{month_num}월"] = 0
-                                break
-                if monthly_data:
-                    for i in range(13):
-                        month = current_month - i
-                        year = current_year
-                        if month <= 0:
-                            month += 12
-                            year -= 1
-                        month_key = f"{month}월"
-                        if year == current_year:
-                            monthly_volumes[month_key] = monthly_data.get(month_key, 0)
-                        else:
-                            monthly_volumes[month_key] = random.randint(50, 200)
-                    print(f"apt2.me 월별 데이터 추출 성공: {monthly_volumes}")
-                    return monthly_volumes
-                else:
-                    print("월별 거래량 테이블을 찾을 수 없음")
-            else:
-                print(f"HTTP 오류: {response.status_code}")
-        except Exception as e:
-            print(f"apt2.me 데이터 가져오기 실패: {e}")
-        # apt2.me 실패 시 임시 데이터로 이동
-    # apt2.me 미지원 지역 또는 apt2.me 실패 시 임시 데이터 생성 (13개월)
+    # 환경변수에서 API 키 가져오기
+    import os
+    import urllib.parse
+    api_key_encoded = os.environ.get("PUBLICDATA_API_KEY")
+    if not api_key_encoded:
+        raise ValueError("환경 변수 PUBLICDATA_API_KEY가 설정되어 있지 않습니다. .env 파일에 PUBLICDATA_API_KEY=여기에_인증키 형식으로 추가하세요.")
+    api_key = urllib.parse.unquote(api_key_encoded)
+    try:
+        transaction_api = TransactionPrice(api_key)
+    except Exception as e:
+        print(f"TransactionPrice API 초기화 실패: {e}")
+        return monthly_volumes
+
+    # 최근 13개월 거래량 데이터 가져오기
     for i in range(13):
         month = current_month - i
         year = current_year
@@ -850,8 +806,19 @@ def get_apt2me_transaction_volume(area_code):
             month += 12
             year -= 1
         month_key = f"{month}월"
-        monthly_volumes[month_key] = random.randint(50, 200)
-    print(f"{area_code} 임시 거래량 데이터: {monthly_volumes}")
+        # 거래량 데이터 요청
+        try:
+            # TransactionPrice.get_transaction_volume(지역코드, 연도, 월)
+            df = transaction_api.get_transaction_volume(지역코드=area_code, 연도=year, 월=month)
+            if not df.empty and '거래량' in df.columns:
+                volume = int(df['거래량'].sum())
+            else:
+                volume = 0
+        except Exception as e:
+            print(f"{area_code} {year}년 {month}월 거래량 데이터 오류: {e}")
+            volume = 0
+        monthly_volumes[month_key] = volume
+    print(f"{area_code} 공공데이터 거래량: {monthly_volumes}")
     return monthly_volumes
 
 def get_fallback_data():
