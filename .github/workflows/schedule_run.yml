@@ -3,11 +3,11 @@ name: Scheduled run.py
 # schedule 분 (0-59), 시간 (0-23), 일 (1-31), 월 (1-12), 요일 (0-6) (일요일은 0)
 
 on:
-  schedule:
-    # 한국 시간 07:00 → UTC 22:00
-    - cron: '0 22 * * *'
-    # 한국 시간 17:00 → UTC 08:00
-    - cron: '0 8 * * *'
+  # schedule:
+  #   # 한국 시간 07:00 → UTC 22:00
+  #   - cron: '0 22 * * *'
+  #   # 한국 시간 17:00 → UTC 08:00
+  #   - cron: '0 8 * * *'
   workflow_dispatch:  # 수동 실행 가능
 
 jobs:

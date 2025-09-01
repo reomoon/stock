@@ -3,7 +3,7 @@ import requests
 import os
 from dotenv import load_dotenv
 from datetime import datetime
-load_dotenv()
+load_dotenv() # env 호출
 from PublicDataReader import Kbland
 from PublicDataReader import TransactionPrice
 import pandas as pd
@@ -41,8 +41,8 @@ else:
         "41117": "경기 수원시 영통구",
         "41115": "경기 수원시 팔달구",
         "41360": "경기 남양주시",
-        "41285": "경기 고양시 일산동구",
-        "41192": "경기 부천시 원미구",
+        "41280": "경기 고양시",
+        "41190": "경기 부천시",
         "41570": "경기 김포시",
         "41390": "경기 시흥시",
         "41150": "경기 의정부시",
@@ -56,7 +56,7 @@ else:
         "43113": "청주 흥덕구",
     }
 
-def realestate():
+def get_real_estate_data():
     try:
         # 현재 시간
         now = datetime.now().strftime("%Y-%m-%d %H:%M")
@@ -367,12 +367,7 @@ def get_weekly_real_estate_data():
         print("KB부동산 주간 데이터 가져오는 중...")
         
         # 공공데이터 API 키 설정 (URL 디코딩)
-        api_key_encoded = os.environ.get("PUBLICDATA_API_KEY")
-        if not api_key_encoded:
-            raise ValueError("환경 변수 PUBLICDATA_API_KEY가 설정되어 있지 않습니다. .env 파일에 PUBLICDATA_API_KEY=여기에_인증키 형식으로 추가하세요.")
-        api_key = urllib.parse.unquote(api_key_encoded)
-        # Kbland 객체 생성 (API 키 전달)
-        api = Kbland(api_key)
+        api = Kbland()
         
         price_index_data = []
         
@@ -487,35 +482,35 @@ def get_weekly_real_estate_data():
             return {
                 "price_index": price_index_data
             }
-        else:
-            print("KB부동산 주간 데이터 가져오기 실패")
-            return None
-            
-    except Exception as e:
-        print(f"PublicDataReader 주간 데이터 오류: {e}")
-        return None
-
-def get_real_estate_data():
-    """PublicDataReader를 사용해서 실제 KB부동산 데이터 가져오기"""
-    try:
-        print("KB부동산 데이터 가져오는 중...")
-        
-        # 공공데이터 API 키 설정 (URL 디코딩)
-        api_key_encoded = os.environ.get("PUBLICDATA_API_KEY")
-        if not api_key_encoded:
-            raise ValueError("환경 변수 PUBLICDATA_API_KEY가 설정되어 있지 않습니다. .env 파일에 PUBLICDATA_API_KEY=여기에_인증키 형식으로 추가하세요.")
-        api_key = urllib.parse.unquote(api_key_encoded)
-        print(f"API 키 디코딩 완료 (환경 변수에서 불러옴)")
-        
-        # Kbland 객체 생성
-        api = Kbland()
-        
-        # TransactionPrice 객체 생성 (거래량 데이터용)
         try:
-            transaction_api = TransactionPrice(api_key)
-            print("TransactionPrice API 초기화 성공")
-        except Exception as init_e:
-            print(f"TransactionPrice API 초기화 실패: {init_e}")
+            print("KB부동산 주간 데이터 가져오는 중...")
+            api = Kbland()
+            price_index_data = []
+            # 각 지역별로 주간 데이터 가져오기
+            for area_code, area_name in REGION_CODES.items():
+                try:
+                    # KB부동산 주간 매매 가격지수 데이터 가져오기
+                    price_df = api.get_price_index(
+                        지역코드=area_code,
+                        월간주간구분코드='02',  # 주간
+                        매물종별구분='01',      # 아파트
+                        매매전세코드='01'       # 매매
+                    )
+                    # ...existing code...
+                except Exception as e:
+                    print(f"{area_name} 주간 데이터 가져오기 실패: {e}")
+                    continue
+            if price_index_data:
+                print("KB부동산 주간 실시간 데이터 가져오기 성공!")
+                return {
+                    "price_index": price_index_data
+                }
+            else:
+                print("KB부동산 주간 데이터 가져오기 실패")
+                return None
+        except Exception as e:
+            print(f"PublicDataReader 주간 데이터 오류: {e}")
+            return None
             transaction_api = None
         
         price_index_data = []
@@ -793,12 +788,14 @@ def get_transaction_volume(area_code):
         raise ValueError("환경 변수 PUBLICDATA_API_KEY가 설정되어 있지 않습니다. .env 파일에 PUBLICDATA_API_KEY=여기에_인증키 형식으로 추가하세요.")
     api_key = urllib.parse.unquote(api_key_encoded)
     try:
-        transaction_api = TransactionPrice(api_key)
+        transaction_api = TransactionPrice()
     except Exception as e:
         print(f"TransactionPrice API 초기화 실패: {e}")
         return monthly_volumes
 
     # 최근 13개월 거래량 데이터 가져오기
+    import time
+    import random
     for i in range(13):
         month = current_month - i
         year = current_year
@@ -806,12 +803,22 @@ def get_transaction_volume(area_code):
             month += 12
             year -= 1
         month_key = f"{month}월"
-        # 거래량 데이터 요청
+        # 요청 간격을 1~3초 사이 랜덤하게 분산
+        sleep_sec = random.uniform(1, 3)
+        time.sleep(sleep_sec)
         try:
-            # TransactionPrice.get_transaction_volume(지역코드, 연도, 월)
-            df = transaction_api.get_transaction_volume(지역코드=area_code, 연도=year, 월=month)
-            if not df.empty and '거래량' in df.columns:
+            deal_ymd = f"{year}{month:02d}"
+            df = transaction_api.get_data(
+                property_type="아파트",
+                trade_type="매매",
+                lawd_cd=area_code,
+                sigungu_code=area_code,
+                deal_ymd=deal_ymd
+            )
+            if df is not None and hasattr(df, "empty") and not df.empty and hasattr(df, "columns") and '거래량' in df.columns:
                 volume = int(df['거래량'].sum())
+            elif df is not None and hasattr(df, "empty") and not df.empty:
+                volume = len(df)
             else:
                 volume = 0
         except Exception as e:

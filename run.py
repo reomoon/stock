@@ -7,7 +7,12 @@ import json
 from page.market import stock
 from page.plot_averages import make_nasdaq_ma_graphs
 from page.news import economy_news, realestate_news
-from page.realestate import realestate, get_weekly_real_estate_data, get_apt2me_transaction_volume
+from page.realestate import get_real_estate_data, get_weekly_real_estate_data, get_transaction_volume
+import pandas as pd
+from dotenv import load_dotenv
+import os
+load_dotenv()
+api_key = os.getenv("PUBLICDATA_API_KEY")
 
 # 정적 HTML 파일 생성 (GitHub Actions용)
 def generate_static_html():
@@ -36,11 +41,11 @@ def generate_static_html():
             {
                 "area_code": code,
                 "area": name,
-                "monthly_volumes": get_apt2me_transaction_volume(code)
+                "monthly_volumes": get_transaction_volume(code)
             }
             for code, name in REGION_CODES.items()
         ]
-        realestate_data = realestate()
+        realestate_data = get_real_estate_data()
         print("실제 데이터 사용")
         print("weekly_data:", weekly_data)
         print("monthly_data:", monthly_data)
