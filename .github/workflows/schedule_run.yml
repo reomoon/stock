@@ -7,7 +7,7 @@ on:
     # 한국 시간 07:00 → UTC 22:00
     - cron: '0 22 * * *'
     # 한국 시간 17:00 → UTC 08:00
-    - cron: '0 8 * * *'
+    # - cron: '0 8 * * *'
   workflow_dispatch:  # 수동 실행 가능
 
 jobs:
