@@ -1,1 +1,3 @@
 *.pyc
+page\_cache/
+public\main.html
