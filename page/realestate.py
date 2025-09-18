@@ -1,5 +1,3 @@
-# ...기존 import...
-import requests
 import os
 from datetime import datetime
 from PublicDataReader import Kbland
@@ -7,6 +5,22 @@ from PublicDataReader import TransactionPrice
 import pandas as pd
 import urllib.parse
 from bs4 import BeautifulSoup
+
+import requests
+"""
+requests의 모든 HTTP 요청에 User-Agent 헤더를 강제로 추가하는 코드 ---
+PublicDataReader 등에서 requests를 내부적으로 사용할 때도 User-Agent가 항상 포함되도록 함
+(일부 서버는 User-Agent가 없으면 차단하거나 오류를 반환할 수 있음)
+"""
+original_request = requests.Session.request  # requests의 원래 request 메서드 백업
+def patched_request(self, method, url, **kwargs):
+    # 기존 headers가 있으면 복사, 없으면 새로 생성
+    headers = kwargs.get("headers", {})
+    headers["User-Agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"  # User-Agent 강제 지정
+    kwargs["headers"] = headers
+    # 원래 request 메서드 호출 (User-Agent가 항상 포함됨)
+    return original_request(self, method, url, **kwargs)
+requests.Session.request = patched_request  # requests의 request 메서드를 패치
 
 # TEST_MODE 환경 변수에 따라 REGION_CODES 다르게 설정
 # 터미널에서 $env:TEST_MODE="True" 실행 후 run.py 실행하면 테스트 모드 2개만 수집
@@ -225,20 +239,20 @@ def realestate():
             for month_header in month_headers:
                 volume = monthly_volumes.get(month_header, 0)
                 html += f"<td>{volume:,}건</td>"
-            # 저번달과 1년전(13개월 전) 증감 표시 (month_headers[1] = 저번달, month_headers[13] = 1년전)
-            last_month = month_headers[1] if len(month_headers) > 1 else None
-            year_ago_month = month_headers[13] if len(month_headers) > 13 else None
-            last_month_vol = monthly_volumes.get(last_month, 0) if last_month else 0
-            year_ago_vol = monthly_volumes.get(year_ago_month, 0) if year_ago_month else 0
-            diff = last_month_vol - year_ago_vol
-            if diff > 0:
-                trend = '▲'
-            elif diff < 0:
-                trend = '▼'
-            else:
-                trend = '→'
-            html += f"<td class='{'up' if diff>0 else 'down' if diff<0 else 'same'}'>{trend} {diff:+,}건</td>"
-            html += "</tr>"
+            # # 저번달과 1년전(13개월 전) 증감 표시 (month_headers[1] = 저번달, month_headers[13] = 1년전)
+            # last_month = month_headers[1] if len(month_headers) > 1 else None
+            # year_ago_month = month_headers[13] if len(month_headers) > 13 else None
+            # last_month_vol = monthly_volumes.get(last_month, 0) if last_month else 0
+            # year_ago_vol = monthly_volumes.get(year_ago_month, 0) if year_ago_month else 0
+            # diff = last_month_vol - year_ago_vol
+            # if diff > 0:
+            #     trend = '▲'
+            # elif diff < 0:
+            #     trend = '▼'
+            # else:
+            #     trend = '→'
+            # html += f"<td class='{'up' if diff>0 else 'down' if diff<0 else 'same'}'>{trend} {diff:+,}건</td>"
+            # html += "</tr>"
         
         html += """
         </table>
