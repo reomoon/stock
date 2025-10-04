@@ -21,7 +21,7 @@ function initMainTabs() {
             }
             
             // 부동산맵 탭이 선택되면 지도 초기화
-            if (targetTab === 'realestate-tab') {
+            if (targetTab === 'realestate-map-main-tab') {
                 setTimeout(() => {
                     console.log('부동산맵 탭 선택됨, 네이버맵 초기화 시작');
                     if (typeof initNaverMap === 'function') {

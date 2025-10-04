@@ -996,3 +996,66 @@ ul {
     margin-top: 5px;
     font-style: italic;
 }
+
+/* 메인 탭 네비게이션 */
+.main-nav {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    padding: 8px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    border: 1px solid #e2e8f0;
+}
+
+.main-tab-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.main-tab-button {
+    flex: 1;
+    padding: 16px 24px;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.main-tab-button:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.main-tab-button.active {
+    background: white;
+    color: #667eea;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
+}
+
+/* 메인 탭 콘텐츠 */
+.main-tab-content {
+    display: none;
+}
+
+.main-tab-content.active {
+    display: block;
+}
+
+/* 부동산맵 탭의 섹션들 */
+.map-section,
+.monthly-data-section,
+.monthly-volume-section,
+.weekly-index-section {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e2e8f0;
+}

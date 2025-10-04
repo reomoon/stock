@@ -67,6 +67,8 @@ def generate_static_html():
     <header>
         <h1>오늘의 주가 및 주요 뉴스</h1>
     </header>
+    
+    <!-- 기본 주식 정보 -->
     <section id=\"stock\">
         <h2>주식 정보</h2>
         {stock_data}
@@ -75,66 +77,83 @@ def generate_static_html():
             {ma_graphs_html}
         </div>
     </section>
-    <section id=\"economy\">
-        <h2>경제 뉴스</h2>
-        {economy_news_data}
-    </section>
-    <section id=\"realestate-news\">
-        <h2>부동산 뉴스</h2>
-        {realestate_news_data}
-    </section>
-    <!-- 탭 기반 부동산 섹션 -->
-    <section id=\"realestate-tabs\">
-        <div class="tabs-container">
-            <div class="tab-buttons">
-                <button class="tab-button active" data-tab="economy-tab">경제</button>
-                <button class="tab-button" data-tab="realestate-map-tab">부동산맵</button>
-            </div>
-            
-            <!-- 경제 탭 콘텐츠 -->
-            <div id="economy-tab" class="tab-content active">
-                <div class="weekly-chart">주간 매매지수 차트</div>
-                <div id=\"weekly-index-chart\"></div>
-                <div class="monthly-chart">월간 거래량 차트</div>
-                <div id=\"monthly-transaction-chart\"></div>
-                <h2>부동산 매매 가격지수 현황</h2>
-                {realestate_data}
-            </div>
-            
-            <!-- 부동산맵 탭 콘텐츠 -->
-            <div id="realestate-map-tab" class="tab-content">
-                <div class="map-controls">
-                    <div class="map-type-buttons">
-                        <button class="map-type-btn active" onclick="changeMapDisplay('index')">매매지수</button>
-                        <button class="map-type-btn" onclick="changeMapDisplay('weekly_change')">지난주 대비</button>
-                        <button class="map-type-btn" onclick="changeMapDisplay('monthly_change')">지난달 대비</button>
-                    </div>
-                    <div class="map-legend">
-                        <div class="legend-item">
-                            <div class="legend-color" style="background: #ff4444;"></div>
-                            <span>높음/상승</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-color" style="background: #ffaa00;"></div>
-                            <span>보통</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-color" style="background: #44ff44;"></div>
-                            <span>낮음/하락</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="naver-map-container">
-                    <div id="naver-map"></div>
-                </div>
-                <div class="map-info">
-                    <p>※ 지역을 클릭하면 상세 정보를 확인할 수 있습니다</p>
-                    <p>※ 매매지수: 2020년 1월 = 100.0 기준</p>
-                    <p>※ 데이터 출처: KB부동산 통계</p>
-                </div>
-            </div>
+    
+    <!-- 메인 탭 네비게이션 -->
+    <nav class="main-nav">
+        <div class="main-tab-buttons">
+            <button class="main-tab-button active" data-tab="economy-main-tab">경제</button>
+            <button class="main-tab-button" data-tab="realestate-map-main-tab">부동산맵</button>
         </div>
-    </section>
+    </nav>
+    
+    <!-- 경제 메인 탭 (주식 + 경제뉴스 + 부동산뉴스) -->
+    <div id="economy-main-tab" class="main-tab-content active">
+        <section id=\"economy\">
+            <h2>경제 뉴스</h2>
+            {economy_news_data}
+        </section>
+        <section id=\"realestate-news\">
+            <h2>부동산 뉴스</h2>
+            {realestate_news_data}
+        </section>
+    </div>
+    
+    <!-- 부동산맵 메인 탭 -->
+    <div id="realestate-map-main-tab" class="main-tab-content">
+        <!-- 네이버 지도 우선 배치 -->
+        <section class="map-section">
+            <h2>부동산 매매지수 지도</h2>
+            <div class="map-controls">
+                <div class="map-type-buttons">
+                    <button class="map-type-btn active" onclick="changeMapDisplay('index')">매매지수</button>
+                    <button class="map-type-btn" onclick="changeMapDisplay('weekly_change')">지난주 대비</button>
+                    <button class="map-type-btn" onclick="changeMapDisplay('monthly_change')">지난달 대비</button>
+                </div>
+                <div class="map-legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #ff4444;"></div>
+                        <span>높음/상승</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #ffaa00;"></div>
+                        <span>보통</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #44ff44;"></div>
+                        <span>낮음/하락</span>
+                    </div>
+                </div>
+            </div>
+            <div class="naver-map-container">
+                <div id="naver-map"></div>
+            </div>
+            <div class="map-info">
+                <p>※ 지역을 클릭하면 상세 정보를 확인할 수 있습니다</p>
+                <p>※ 매매지수: 2020년 1월 = 100.0 기준</p>
+                <p>※ 데이터 출처: KB부동산 통계</p>
+            </div>
+        </section>
+        
+        <!-- 월간매매지수 -->
+        <section class="monthly-data-section">
+            <h2>부동산 매매 가격지수 현황</h2>
+            {realestate_data}
+        </section>
+        
+        <!-- 전세매매지수는 realestate_data에 포함됨 -->
+        
+        <!-- 월간 거래량 차트 -->
+        <section class="monthly-volume-section">
+            <h2>월간 거래량</h2>
+            <div id=\"monthly-transaction-chart\"></div>
+        </section>
+        
+        <!-- 주간 매매지수 차트 -->
+        <section class="weekly-index-section">
+            <h2>주간 매매지수</h2>
+            <div id=\"weekly-index-chart\"></div>
+        </section>
+    </div>
     <!-- JS 및 데이터는 body 끝에서 로드 -->
     <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
     <script>
@@ -145,8 +164,8 @@ def generate_static_html():
     <script src="js/nasdaq_chart.js"></script>
     <script src="js/weekly_index_chart.js"></script>
     <script src="js/monthly_transaction_chart.js"></script>
-    <!-- 탭 및 네이버맵 스크립트 -->
-    <script src="js/tabs.js"></script>
+    <!-- 메인 탭 및 네이버맵 스크립트 -->
+    <script src="js/main_tabs.js"></script>
     <script src="js/naver_map.js"></script>
 </body>
 </html>
