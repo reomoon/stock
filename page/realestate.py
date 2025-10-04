@@ -935,3 +935,67 @@ def get_fallback_data():
         ]
     }
 
+
+def generate_realestate_map():
+    """부동산 매매지수 지도 HTML 생성"""
+    try:
+        # 현재 시간
+        now = datetime.now().strftime("%Y-%m-%d %H:%M")
+        
+        # 실제 부동산 데이터 가져오기
+        real_data = get_real_estate_data()
+        
+        if real_data:
+            latest_data = real_data
+            data_source = "실시간 KB부동산 데이터"
+        else:
+            latest_data = get_fallback_data()
+            data_source = "기본 데이터"
+
+        # 지도용 데이터를 JSON으로 변환
+        import json
+        map_data_json = json.dumps(latest_data, ensure_ascii=False)
+
+        # 지도 HTML 생성
+        html = f"""
+    <section id="realestate-map-section">
+        <div class="map-container">
+            <h2>지역별 매매지수 지도</h2>
+            <div class="map-controls">
+                <button class="map-type-btn active" onclick="changeMapType('index')">매매지수</button>
+                <button class="map-type-btn" onclick="changeMapType('rate')">변동률</button>
+            </div>
+            <div id="realestate-map"></div>
+            <div class="map-legend-container">
+                <div id="map-legend"></div>
+                <div class="map-info">
+                    <h4>지도 사용법</h4>
+                    <p>• 지역을 클릭하면 상세 정보를 확인할 수 있습니다</p>
+                    <p>• 매매지수: 2020년 1월을 100으로 하는 상대적 가격 수준</p>
+                    <p>• 변동률: 전월 대비 증감률 (%)</p>
+                    <p>• 색상이 진할수록 지수가 높음을 의미합니다</p>
+                </div>
+            </div>
+        </div>
+        
+        <script>
+        // 지도용 데이터 설정
+        window.realestateMapData = {map_data_json};
+        </script>
+        <script src="js/realestate_map.js"></script>
+    </section>"""
+
+        return html
+
+    except Exception as e:
+        return f"""
+    <section id="realestate-map-section">
+        <div class='map-container'>
+            <h2>지역별 매매지수 지도</h2>
+            <div class='error-message'>
+                <p>지도 데이터를 불러오는 중 오류가 발생했습니다.</p>
+                <p>오류 내용: {str(e)}</p>
+            </div>
+        </div>
+    </section>"""
+
