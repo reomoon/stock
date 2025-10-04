@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>지도 테스트</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 20px;
+        }
+        .map-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .map-controls {
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .map-type-btn {
+            background: #f1f3f4;
+            border: 1px solid #dadce0;
+            color: #3c4043;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 0 5px;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        .map-type-btn:hover {
+            background: #e8eaed;
+        }
+        .map-type-btn.active {
+            background: #1a73e8;
+            color: white;
+            border-color: #1a73e8;
+        }
+        #realestate-map {
+            height: 500px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="map-container">
+        <h2>지역별 매매지수 지도 테스트</h2>
+        <div class="map-controls">
+            <button class="map-type-btn active" onclick="changeMapType('index')">매매지수</button>
+            <button class="map-type-btn" onclick="changeMapType('rate')">변동률</button>
+        </div>
+        <div id="realestate-map"></div>
+    </div>
+
+    <script>
+    // 테스트용 데이터
+    window.realestateMapData = {
+        "price_index": [
+            {"area": "서울 강남구", "index": 119.5, "change": 1.04, "rate": 0.87},
+            {"area": "서울 마포구", "index": 106.1, "change": 0.89, "rate": 0.85}
+        ],
+        "jeonse_index": [
+            {"area": "서울 강남구", "index": 91.9, "change": 0.17, "rate": 0.18},
+            {"area": "서울 마포구", "index": 97.8, "change": 0.15, "rate": 0.15}
+        ]
+    };
+    </script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <script src="js/realestate_map.js"></script>
+</body>
+</html>

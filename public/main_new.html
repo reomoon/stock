@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Stock & Real Estate Dashboard</title>
+    <link rel="stylesheet" href="./style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 네이버 클라우드 플랫폼 Maps API -->
+    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=wohmf5ntoz"></script>
+</head>
+<body>
+    <header>
+        <h1>Stock & Real Estate Dashboard</h1>
+        <!-- 메인 탭 네비게이션 -->
+        <nav class="main-nav">
+            <div class="main-tab-buttons">
+                <button class="main-tab-button active" data-tab="stock-tab">Stock</button>
+                <button class="main-tab-button" data-tab="realestate-tab">부동산맵</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- 메인 탭 컨테이너 -->
+    <main class="main-content">
+        <!-- Stock 탭 콘텐츠 -->
+        <div id="stock-tab" class="main-tab-content active">
+            <section id="stock">
+                <h2>주식 정보</h2>
+                {{STOCK_DATA}}
+                <h2>나스닥 이동평균선</h2>
+                <div id="ma-graphs">
+                    <!-- 나스닥 차트 영역 -->
+                    <div id="nasdaqChart" style="width:100%; height:350px;"></div>
+                    <!-- Plotly.js CDN -->
+                    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+                    <!-- 파이썬에서 JS로 데이터 전달 -->
+                    <script>
+                    {{NASDAQ_DATA_JS}}
+                    </script>
+                    <!-- 차트 렌더링 및 이벤트는 nasdaq_chart.js에서 처리 -->
+                    <script src="nasdaq_chart.js"></script>
+                </div>
+            </section>
+            <section id="economy">
+                <h2>경제 뉴스</h2>
+                {{ECONOMY_NEWS}}
+            </section>
+        </div>
+        
+        <!-- 부동산맵 탭 콘텐츠 -->
+        <div id="realestate-tab" class="main-tab-content">
+            <section id="realestate-news">
+                <h2>부동산 뉴스</h2>
+                {{REALESTATE_NEWS}}
+            </section>
+            
+            <!-- 부동산 데이터 및 차트 -->
+            <section id="realestate-data">
+                <div class="tabs-container">
+                    <div class="tab-buttons">
+                        <button class="tab-button active" data-tab="data-tab">데이터</button>
+                        <button class="tab-button" data-tab="map-tab">지도</button>
+                    </div>
+                    
+                    <!-- 부동산 데이터 탭 -->
+                    <div id="data-tab" class="tab-content active">
+                        <div class="weekly-chart">주간 매매지수 차트</div>
+                        <div id="weekly-index-chart"></div>
+                        <div class="monthly-chart">월간 거래량 차트</div>
+                        <div id="monthly-transaction-chart"></div>
+                        <h2>부동산 매매 가격지수 현황</h2>
+                        {{REALESTATE_DATA}}
+                    </div>
+                    
+                    <!-- 부동산 지도 탭 -->
+                    <div id="map-tab" class="tab-content">
+                        <div class="map-controls">
+                            <div class="map-type-buttons">
+                                <button class="map-type-btn active" onclick="changeMapDisplay('index')">매매지수</button>
+                                <button class="map-type-btn" onclick="changeMapDisplay('weekly_change')">지난주 대비</button>
+                                <button class="map-type-btn" onclick="changeMapDisplay('monthly_change')">지난달 대비</button>
+                            </div>
+                            <div class="map-legend">
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background: #ff4444;"></div>
+                                    <span>높음/상승</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background: #ffaa00;"></div>
+                                    <span>보통</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background: #44ff44;"></div>
+                                    <span>낮음/하락</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="naver-map-container">
+                            <div id="naver-map"></div>
+                        </div>
+                        <div class="map-info">
+                            <p>※ 지역을 클릭하면 상세 정보를 확인할 수 있습니다</p>
+                            <p>※ 매매지수: 2020년 1월 = 100.0 기준</p>
+                            <p>※ 데이터 출처: KB부동산 통계</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <!-- JS 및 데이터는 body 끝에서 로드 -->
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <script>
+    {{WEEKLY_DATA_JS}}
+    {{MONTHLY_DATA_JS}}
+    </script>
+    <script src="js/nasdaq_chart.js"></script>
+    <script src="js/weekly_index_chart.js"></script>
+    <script src="js/monthly_transaction_chart.js"></script>
+    <!-- 메인 탭 및 서브 탭 스크립트 -->
+    <script src="js/main_tabs.js"></script>
+    <script src="js/naver_map.js"></script>
+</body>
+</html>
