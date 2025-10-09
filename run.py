@@ -22,36 +22,22 @@ def generate_static_html():
     economy_news_data = economy_news()
     realestate_news_data = realestate_news()
 
-    # FAST_LOCAL 환경변수로 빠른 로컬 테스트 지원
-    # FAST_LOCAL=1 이면 데이터 API 호출 없이 최소/임시 데이터만 사용
-    import os
-    if os.environ.get("FAST_LOCAL") == "1":
-        # 빠른 로컬 테스트: 최소 구조의 임시 데이터
-        # 터미널에서 $env:FAST_LOCAL="1" 실행 후 run.py 실행하면 Front만 빠르게 확인 가능
-        weekly_data = {"price_index": []}
-        monthly_data = []
-        realestate_data = "<div style='color:#888'>임시 부동산 데이터 (FAST_LOCAL)</div>"
-        realestate_map_data = "<div style='color:#888'>임시 지도 데이터 (FAST_LOCAL)</div>"
-        print("FAST_LOCAL=1: 임시 데이터 사용")
-        print("weekly_data:", weekly_data)
-        print("monthly_data:", monthly_data)
-    else:
-        # 실제 데이터 호출
-        weekly_data = get_weekly_real_estate_data()
-        from page.realestate import REGION_CODES
-        monthly_data = [
-            {
-                "area_code": code,
-                "area": name,
-                "monthly_volumes": get_apt2me_transaction_volume(code)
-            }
-            for code, name in REGION_CODES.items()
-        ]
-        realestate_data = realestate()
-        realestate_map_data = generate_realestate_map()
-        print("실제 데이터 사용")
-        print("weekly_data:", weekly_data)
-        print("monthly_data:", monthly_data)
+    # 실제 데이터 호출
+    weekly_data = get_weekly_real_estate_data()
+    from page.realestate import REGION_CODES
+    monthly_data = [
+        {
+            "area_code": code,
+            "area": name,
+            "monthly_volumes": get_apt2me_transaction_volume(code)
+        }
+        for code, name in REGION_CODES.items()
+    ]
+    realestate_data = realestate()
+    realestate_map_data = generate_realestate_map()
+    print("실제 데이터 사용")
+    print("weekly_data:", weekly_data)
+    print("monthly_data:", monthly_data)
     with open("public/main.html", "w", encoding="utf-8") as f:
         f.write(f"""<!DOCTYPE html>
 <html lang=\"ko\">
