@@ -30,7 +30,7 @@ if os.environ.get("TEST_MODE") == "True":
         "11440": "서울 마포구"
     }
 else:
-# 주요 지역의 행정구역 코드와 한글 지역명 매핑 딕셔너리는 위의 환경 변수 분기에서 선언된 REGION_CODES를 사용합니다.
+    # 주요 지역의 행정구역 코드와 한글 지역명 매핑 딕셔너리
     REGION_CODES = {
         "11680": "서울 강남구",
         "11650": "서울 서초구",
@@ -41,7 +41,6 @@ else:
         "11110": "서울 종로구",
         "11320": "서울 광진구",
         "11140": "서울 중구",
-        "11215": "서울 광진구",
         "11560": "서울 영등포구", 
         "11470": "서울 양천구",
         "11740": "서울 강동구",
@@ -437,7 +436,7 @@ def get_weekly_real_estate_data():
                     매매전세코드='01'       # 매매
                 )
                 
-                if not price_df.empty:
+                if price_df is not None and not price_df.empty:
                     print(f"{area_name} 주간 가격지수 데이터 수신 성공!")
                     
                     # 해당 지역코드로 필터링
@@ -582,7 +581,7 @@ def get_real_estate_data():
                     매매전세코드='01'       # 매매
                 )
                 
-                if not price_df.empty:
+                if price_df is not None and not price_df.empty:
                     print(f"{area_name} 가격지수 데이터 수신 성공!")
                     print(f"전체 데이터 개수: {len(price_df)}")
                     
@@ -688,21 +687,22 @@ def get_real_estate_data():
                     else:
                         print(f"{area_name}: 해당 지역 데이터를 찾을 수 없음 - 전체 데이터 사용")
                         # 전체 데이터의 최신값 사용 (fallback)
-                        latest_values = price_df.tail(2)
-                        if len(latest_values) >= 2 and '가격지수' in price_df.columns:
-                            latest_index = float(latest_values.iloc[-1]['가격지수'])
-                            prev_index = float(latest_values.iloc[-2]['가격지수'])
-                            change = latest_index - prev_index
-                            rate = (change / prev_index) * 100 if prev_index != 0 else 0
-                            
-                            price_index_data.append({
-                                "area": area_name,
-                                "index": latest_index,
-                                "change": change,
-                                "rate": rate
-                            })
-                        else:
-                            print(f"{area_name}: '가격지수' 컬럼을 찾을 수 없음")
+                        if price_df is not None:
+                            latest_values = price_df.tail(2)
+                            if len(latest_values) >= 2 and '가격지수' in price_df.columns:
+                                latest_index = float(latest_values.iloc[-1]['가격지수'])
+                                prev_index = float(latest_values.iloc[-2]['가격지수'])
+                                change = latest_index - prev_index
+                                rate = (change / prev_index) * 100 if prev_index != 0 else 0
+                                
+                                price_index_data.append({
+                                    "area": area_name,
+                                    "index": latest_index,
+                                    "change": change,
+                                    "rate": rate
+                                })
+                            else:
+                                print(f"{area_name}: '가격지수' 컬럼을 찾을 수 없음")
                         
                 # 전세 가격지수 데이터 가져오기
                 try:
@@ -713,7 +713,7 @@ def get_real_estate_data():
                         매매전세코드='02'       # 전세
                     )
                     
-                    if not jeonse_df.empty:
+                    if jeonse_df is not None and not jeonse_df.empty:
                         print(f"{area_name} 전세지수 데이터 수신 성공!")
                         
                         # 해당 지역코드로 필터링
