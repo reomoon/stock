@@ -10,8 +10,8 @@ from page.plot_averages import make_nasdaq_ma_graphs
 from page.news import economy_news, realestate_news
 from page.realestate import realestate, get_weekly_real_estate_data, get_apt2me_transaction_volume, generate_realestate_map
 
-# 네이버 클라우드 플랫폼 Maps API 클라이언트 ID (환경변수에서 가져오거나 기본값 사용)
-NAVER_CLIENT_ID = os.environ.get("NAVER_CLIENT_ID", "wohmf5ntoz")
+# 네이버 클라우드 플랫폼 Maps API 클라이언트 ID (직접 지정)
+NAVER_CLIENT_ID = "wohmf5ntoz"
 
 
 
