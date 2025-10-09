@@ -11,7 +11,7 @@ from page.news import economy_news, realestate_news
 from page.realestate import realestate, get_weekly_real_estate_data, get_apt2me_transaction_volume, generate_realestate_map
 
 # 네이버 클라우드 플랫폼 Maps API 클라이언트 ID (환경변수에서 가져오거나 기본값 사용)
-NAVER_CLIENT_ID = os.environ.get("NAVER_CLIENT_ID", "DMms6WX87oNj3HCDrBACMFnxxhnrNDwEtk8kNk4J")
+NAVER_CLIENT_ID = os.environ.get("NAVER_CLIENT_ID", "wohmf5ntoz")
 
 
 
@@ -68,16 +68,6 @@ def generate_static_html():
         <h1>오늘의 주가 및 주요 뉴스</h1>
     </header>
     
-    <!-- 기본 주식 정보 -->
-    <section id=\"stock\">
-        <h2>주식 정보</h2>
-        {stock_data}
-        <h2>나스닥 이동평균선</h2>
-        <div id=\"ma-graphs\">
-            {ma_graphs_html}
-        </div>
-    </section>
-    
     <!-- 메인 탭 네비게이션 -->
     <nav class="main-nav">
         <div class="main-tab-buttons">
@@ -86,15 +76,21 @@ def generate_static_html():
         </div>
     </nav>
     
-    <!-- 경제 메인 탭 (주식 + 경제뉴스 + 부동산뉴스) -->
+    <!-- 경제 메인 탭 (주식 + 경제뉴스) -->
     <div id="economy-main-tab" class="main-tab-content active">
+        <!-- 기본 주식 정보 -->
+        <section id=\"stock\">
+            <h2>주식 정보</h2>
+            {stock_data}
+            <h2>나스닥 이동평균선</h2>
+            <div id=\"ma-graphs\">
+                {ma_graphs_html}
+            </div>
+        </section>
+        
         <section id=\"economy\">
             <h2>경제 뉴스</h2>
             {economy_news_data}
-        </section>
-        <section id=\"realestate-news\">
-            <h2>부동산 뉴스</h2>
-            {realestate_news_data}
         </section>
     </div>
     
@@ -134,13 +130,17 @@ def generate_static_html():
             </div>
         </section>
         
+        <!-- 부동산 뉴스 섹션 -->
+        <section id=\"realestate-news\">
+            <h2>부동산 뉴스</h2>
+            {realestate_news_data}
+        </section>
+        
         <!-- 월간매매지수 -->
         <section class="monthly-data-section">
             <h2>부동산 매매 가격지수 현황</h2>
             {realestate_data}
         </section>
-        
-        <!-- 전세매매지수는 realestate_data에 포함됨 -->
         
         <!-- 월간 거래량 차트 -->
         <section class="monthly-volume-section">
@@ -153,6 +153,8 @@ def generate_static_html():
             <h2>주간 매매지수</h2>
             <div id=\"weekly-index-chart\"></div>
         </section>
+
+        <!-- 전세매매지수는 realestate_data에 포함됨 -->
     </div>
     <!-- JS 및 데이터는 body 끝에서 로드 -->
     <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>

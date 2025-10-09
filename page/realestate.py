@@ -33,36 +33,70 @@ else:
 # 주요 지역의 행정구역 코드와 한글 지역명 매핑 딕셔너리는 위의 환경 변수 분기에서 선언된 REGION_CODES를 사용합니다.
     REGION_CODES = {
         "11680": "서울 강남구",
+        "11650": "서울 서초구",
         "11170": "서울 용산구",
         "11710": "서울 송파구",
         "11200": "서울 성동구",
         "11440": "서울 마포구",
+        "11110": "서울 종로구",
+        "11320": "서울 광진구",
+        "11140": "서울 중구",
+        "11215": "서울 광진구",
         "11560": "서울 영등포구", 
-        "11590": "서울 동작구",
+        "11470": "서울 양천구",
         "11740": "서울 강동구",
+        "11590": "서울 동작구",
         "11230": "서울 동대문구",
         "11500": "서울 강서구",
         "11410": "서울 서대문구",
+        "11620": "서울 관악구",
         "11290": "서울 성북구",
+        "11530": "서울 구로구",
+        "11380": "서울 은평구",
+        "11260": "서울 중랑구",
+        "11350": "서울 노원구",
         "11305": "서울 강북구",
+        "11545": "서울 금천구",
+        "11320": "서울 도봉구",
         "41135": "경기 성남시 분당구",
+        "41290": "경기 과천시",
         "41210": "경기 광명시",
         "41450": "경기 하남시",
         "41465": "경기 용인시 수지구",
+        "41131": "경기 성남시 수정구",
+        "41310": "경기 구리시",
         "41173": "경기 안양시 동안구",
         "41117": "경기 수원시 영통구",
         "41115": "경기 수원시 팔달구",
+        "41171": "경기 안양시 만안구",
+        "41590": "경기 화성시",
+        "41430": "경기 의왕시",
         "41360": "경기 남양주시",
+        "41610": "경기 광주시",
         "41285": "경기 고양시 일산동구",
         "41192": "경기 부천시 원미구",
+        "41194": "경기 부천시 소사구",
         "41570": "경기 김포시",
         "41390": "경기 시흥시",
         "41150": "경기 의정부시",
-        "41590": "경기 화성시",
+        "41270": "경기 안산시",
         "41220": "경기 평택시",
-        "28237": "인천 부평구",
+        "41480": "경기 파주시",
+        "41630": "경기 양주시",
+        "41370": "경기 오산시",
+        "41500": "경기 이천시",
+        "41550": "경기 안성시",
+        "41670": "경기 여주시", 
+        "41650": "경기 포천시",
+        "41250": "경기 동두천시",
         "28185": "인천 연수구",
         "28260": "인천 서구",
+        "28237": "인천 부평구",
+        "28245": "인천 계양구",
+        "28200": "인천 남동구",
+        "28177": "인천 미추홀구",
+        "28140": "인천 동구",
+        "28110": "인천 중구",
         "44133": "충남 서북구",
         "44200": "충남 아산시",
         "43113": "청주 흥덕구",
@@ -130,18 +164,25 @@ def realestate():
             trend_class_1y = 'up' if change_1y > 0 else 'down' if change_1y < 0 else 'same'
             arrow_1y = '▲' if change_1y > 0 else '▼' if change_1y < 0 else '→'
             
+            # 매매지수 1% 이상일 때 보라색 클래스 추가
+            index_class = 'high-index' if data["index"] >= 101.0 else ''
+            rate_class = 'high-index' if abs(rate) >= 1.0 else ''
+            rate_3m_class = 'high-index' if abs(rate_3m) >= 1.0 else ''
+            rate_6m_class = 'high-index' if abs(rate_6m) >= 1.0 else ''
+            rate_1y_class = 'high-index' if abs(rate_1y) >= 1.0 else ''
+            
             html += f"""
             <tr>
                 <td>{data["area"]}</td>
-                <td>{data["index"]:.2f}</td>
+                <td class='{index_class}'>{data["index"]:.2f}</td>
                 <td class='{trend_class}'>{arrow} {abs(change):.2f}</td>
-                <td class='{trend_class}'>{rate:+.2f}%</td>
+                <td class='{trend_class} {rate_class}'>{rate:+.2f}%</td>
                 <td class='{trend_class_3m}'>{arrow_3m} {abs(change_3m):.2f}</td>
-                <td class='{trend_class_3m}'>{rate_3m:+.2f}%</td>
+                <td class='{trend_class_3m} {rate_3m_class}'>{rate_3m:+.2f}%</td>
                 <td class='{trend_class_6m}'>{arrow_6m} {abs(change_6m):.2f}</td>
-                <td class='{trend_class_6m}'>{rate_6m:+.2f}%</td>
+                <td class='{trend_class_6m} {rate_6m_class}'>{rate_6m:+.2f}%</td>
                 <td class='{trend_class_1y}'>{arrow_1y} {abs(change_1y):.2f}</td>
-                <td class='{trend_class_1y}'>{rate_1y:+.2f}%</td>
+                <td class='{trend_class_1y} {rate_1y_class}'>{rate_1y:+.2f}%</td>
             </tr>"""
         
         html += """
@@ -238,7 +279,9 @@ def realestate():
             # 현재 월부터 12개월 역순으로 데이터 표시
             for month_header in month_headers:
                 volume = monthly_volumes.get(month_header, 0)
-                html += f"<td>{volume:,}건</td>"
+                # 거래량 500건 이상일 때 빨간색 클래스 추가
+                volume_class = 'high-volume' if volume >= 500 else ''
+                html += f"<td class='{volume_class}'>{volume:,}건</td>"
             # # 저번달과 1년전(13개월 전) 증감 표시 (month_headers[1] = 저번달, month_headers[13] = 1년전)
             # last_month = month_headers[1] if len(month_headers) > 1 else None
             # year_ago_month = month_headers[13] if len(month_headers) > 13 else None
