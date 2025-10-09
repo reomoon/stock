@@ -1059,3 +1059,51 @@ ul {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
     border: 1px solid #e2e8f0;
 }
+
+/* 매매지수 1% 이상일 때 보라색 표시 */
+.high-index {
+    color: #8b5cf6;
+    font-weight: 600;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(139, 92, 246, 0.05) 100%);
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+/* 거래량 500건 이상일 때 빨간색 표시 */
+.high-volume {
+    color: #dc2626;
+    font-weight: 600;
+    background: linear-gradient(135deg, rgba(220, 38, 38, 0.1) 0%, rgba(220, 38, 38, 0.05) 100%);
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid rgba(220, 38, 38, 0.3);
+}
+
+/* 매매지수와 거래량 모두 높을 때 */
+.high-index.high-volume {
+    color: #7c2d12;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(220, 38, 38, 0.1) 100%);
+    border: 1px solid rgba(124, 45, 18, 0.4);
+}
+
+/* 데이터 테이블에서 강조 표시 */
+.data-table .high-index {
+    animation: pulse-purple 2s infinite;
+}
+
+.data-table .high-volume {
+    animation: pulse-red 2s infinite;
+}
+
+@keyframes pulse-purple {
+    0% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4); }
+    70% { box-shadow: 0 0 0 4px rgba(139, 92, 246, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0); }
+}
+
+@keyframes pulse-red {
+    0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4); }
+    70% { box-shadow: 0 0 0 4px rgba(220, 38, 38, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+}
