@@ -10,7 +10,7 @@ from page.plot_averages import make_nasdaq_ma_graphs
 from page.news import economy_news, realestate_news
 from page.realestate import realestate, get_weekly_real_estate_data, get_apt2me_transaction_volume, generate_realestate_map
 
-# 네이버 클라우드 플랫폼 Maps API 클라이언트 ID (직접 지정)
+# 네이버 클라우드 플랫폼 Maps API 클라이언트 ID
 NAVER_CLIENT_ID = "wohmf5ntoz"
 
 
@@ -61,7 +61,7 @@ def generate_static_html():
     <link rel=\"stylesheet\" href=\"./style.css\">
     <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
     <!-- 네이버 클라우드 플랫폼 Maps API -->
-    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId={NAVER_CLIENT_ID}"></script>
+    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId={NAVER_CLIENT_ID}&callback=initNaverMap"></script>
 </head>
 <body>
     <header>
@@ -92,45 +92,44 @@ def generate_static_html():
             <h2>경제 뉴스</h2>
             {economy_news_data}
         </section>
-    </div>
-    
-    <!-- 부동산맵 메인 탭 -->
-    <div id="realestate-map-main-tab" class="main-tab-content">
-        <!-- 네이버 지도 우선 배치 -->
-        <section class="map-section">
+        
+        <!-- 부동산 매매지수 지도 (마지막에 배치) -->
+        <section class=\"map-section\">
             <h2>부동산 매매지수 지도</h2>
-            <div class="map-controls">
-                <div class="map-type-buttons">
-                    <button class="map-type-btn active" onclick="changeMapDisplay('index')">매매지수</button>
-                    <button class="map-type-btn" onclick="changeMapDisplay('weekly_change')">지난주 대비</button>
-                    <button class="map-type-btn" onclick="changeMapDisplay('monthly_change')">지난달 대비</button>
+            <div class=\"map-controls\">
+                <div class=\"map-type-buttons\">
+                    <button class=\"map-type-btn active\" onclick=\"changeMapDisplay('index')\">매매지수<br>지난달 대비</button>
+                    <button class=\"map-type-btn\" onclick=\"changeMapDisplay('weekly_change')\">지난주 대비</button>
                 </div>
-                <div class="map-legend">
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #ff4444;"></div>
-                        <span>높음/상승</span>
+                <div class=\"map-legend\">
+                    <div class=\"legend-item\">
+                        <div class=\"legend-color\" style=\"background: #ff4444;\"></div>
+                        <span>높음</span>
                     </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #ffaa00;"></div>
+                    <div class=\"legend-item\">
+                        <div class=\"legend-color\" style=\"background: #ffaa00;\"></div>
                         <span>보통</span>
                     </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #44ff44;"></div>
-                        <span>낮음/하락</span>
+                    <div class=\"legend-item\">
+                        <div class=\"legend-color\" style=\"background: #44ff44;\"></div>
+                        <span>낮음</span>
                     </div>
                 </div>
             </div>
-            <div class="naver-map-container">
-                <div id="naver-map"></div>
+            <div class=\"naver-map-container\">
+                <div id=\"naver-map-economy\"></div>
             </div>
-            <div class="map-info">
+            <div class=\"map-info\">
                 <p>※ 지역을 클릭하면 상세 정보를 확인할 수 있습니다</p>
                 <p>※ 매매지수: 2020년 1월 = 100.0 기준</p>
                 <p>※ 데이터 출처: KB부동산 통계</p>
             </div>
         </section>
-        
-        <!-- 부동산 뉴스 섹션 -->
+    </div>
+    
+    <!-- 부동산맵 메인 탭 -->
+    <div id="realestate-map-main-tab" class="main-tab-content">
+       <!-- 부동산 뉴스 섹션 -->
         <section id=\"realestate-news\">
             <h2>부동산 뉴스</h2>
             {realestate_news_data}
@@ -159,8 +158,8 @@ def generate_static_html():
     <!-- JS 및 데이터는 body 끝에서 로드 -->
     <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
     <script>
-    window.weeklyIndexData = {json.dumps(weekly_data, ensure_ascii=True, separators=(',', ':'))};
-    window.monthlyIndexData = {json.dumps(monthly_data, ensure_ascii=True, separators=(',', ':'))};
+    window.weeklyIndexData = {json.dumps(weekly_data, ensure_ascii=False, separators=(',', ':'))};
+    window.monthlyIndexData = {json.dumps(monthly_data, ensure_ascii=False, separators=(',', ':'))};
     window.monthly_volume_data = window.monthlyIndexData;
     </script>
     <script src="js/nasdaq_chart.js"></script>
