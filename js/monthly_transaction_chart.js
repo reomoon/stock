@@ -34,15 +34,27 @@ function renderMonthlyTransactionChartMulti(codes) {
             });
             return found || 0;
         });
+        // 거래량 500건 이상일 때 빨간색으로 표시
+        const markerColors = xData.map(volume => volume >= 500 ? '#dc2626' : '#3b82f6');
+        const customText = monthLabels.map((label, i) => {
+            const volume = xData[i];
+            const indicator = volume >= 500 ? ' 🔴' : '';
+            return `${regionData.area}${indicator}`;
+        });
+        
         traces.push({
             x: monthLabels,
             y: xData,
             type: 'scatter',
             orientation: 'h',
             name: regionData.area,
-            marker: {line: {width: 1}},
+            marker: {
+                color: markerColors,
+                line: {width: 1},
+                size: xData.map(volume => volume >= 500 ? 8 : 6)  // 500건 이상이면 더 큰 마커
+            },
             hovertemplate: `%{text}<br>%{y}: <b>%{x:,}건</b><extra></extra>`,
-            text: monthLabels.map((label, i) => `${regionData.area}`)
+            text: customText
         });
     });
     const layout = {
