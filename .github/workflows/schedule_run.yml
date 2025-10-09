@@ -10,9 +10,10 @@ on:
     - cron: '0 8 * * *'
   workflow_dispatch:  # 수동 실행 가능
 
-  push:
-    branches:
-      - main
+  # push 할 때 자동 github action 실행
+  # push: 
+  #   branches:
+  #     - main
 
 jobs:
   build:
