@@ -46,22 +46,42 @@ const REGION_COORDINATES = {
 function initNaverMap() {
     console.log("네이버맵 초기화 시작...");
     
+    // 네이버맵 API 확인
+    console.log("window.naver 상태:", window.naver);
+    console.log("window.naver.maps 상태:", window.naver?.maps);
+    
     if (!window.naver || !window.naver.maps) {
         console.error("네이버맵 API가 로드되지 않았습니다.");
+        const mapContainer = document.getElementById('naver-map');
+        if (mapContainer) {
+            mapContainer.innerHTML = '<div style="color: red; text-align: center; padding: 50px;">네이버맵 API 로딩 실패</div>';
+        }
         return;
     }
     
+    // 데이터 확인
+    console.log("weeklyIndexData 상태:", window.weeklyIndexData);
     if (!window.weeklyIndexData) {
         console.error("부동산 데이터가 없습니다.");
+        const mapContainer = document.getElementById('naver-map');
+        if (mapContainer) {
+            mapContainer.innerHTML = '<div style="color: orange; text-align: center; padding: 50px;">부동산 데이터 없음</div>';
+        }
         return;
     }
     
     // 지도 컨테이너
     const mapContainer = document.getElementById('naver-map');
+    console.log("지도 컨테이너 상태:", mapContainer);
     if (!mapContainer) {
         console.error("지도 컨테이너를 찾을 수 없습니다.");
         return;
     }
+    
+    // 컨테이너 크기 설정
+    mapContainer.style.width = '100%';
+    mapContainer.style.height = '500px';
+    console.log("지도 컨테이너 크기 설정 완료:", mapContainer.style.width, mapContainer.style.height);
     
     // 지도 옵션
     const mapOptions = {
@@ -80,11 +100,23 @@ function initNaverMap() {
     };
     
     // 지도 생성
-    naverMap = new naver.maps.Map(mapContainer, mapOptions);
-    console.log("네이버맵 생성 완료");
-    
-    // 지역별 마커 생성
-    createRegionMarkers();
+    try {
+        naverMap = new naver.maps.Map(mapContainer, mapOptions);
+        console.log("네이버맵 생성 완료:", naverMap);
+        
+        // 지도 로딩 완료 이벤트 리스너
+        naver.maps.Event.addListener(naverMap, 'tilesloaded', function() {
+            console.log("네이버맵 타일 로딩 완료");
+        });
+        
+        // 지역별 마커 생성
+        createRegionMarkers();
+        
+    } catch (error) {
+        console.error("네이버맵 생성 실패:", error);
+        mapContainer.innerHTML = '<div style="color: red; text-align: center; padding: 50px;">지도 생성 실패: ' + error.message + '</div>';
+        return;
+    }
 }
 
 // 지역별 마커 생성
@@ -337,6 +369,21 @@ document.addEventListener('DOMContentLoaded', function() {
         } else if (checkCount > 50) { // 5초 후 타임아웃
             clearInterval(checkInterval);
             console.error("네이버맵 API 로딩 타임아웃");
+            
+            // 타임아웃 시 대체 메시지 표시
+            const mapContainer = document.getElementById('naver-map');
+            if (mapContainer) {
+                mapContainer.innerHTML = `
+                    <div style="color: #e74c3c; text-align: center; padding: 50px; background: #f8f9fa;">
+                        <h3>🗺️ 네이버 지도 로딩 실패</h3>
+                        <p>네이버 지도 API를 불러올 수 없습니다.</p>
+                        <p>잠시 후 다시 시도해 주세요.</p>
+                        <button onclick="location.reload()" style="padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                            새로고침
+                        </button>
+                    </div>
+                `;
+            }
         }
     }, 100);
 });
