@@ -380,21 +380,22 @@ ul {
 .map-controls {
     display: flex;
     justify-content: center;
-    gap: 8px;
+    gap: 6px;
     margin-bottom: 16px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
 }
 
 .map-type-btn {
     background: #f8f9fa;
     border: 1px solid #dee2e6;
     color: #495057;
-    padding: 8px 16px;
+    padding: 6px 12px;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 500;
     transition: all 0.2s ease;
+    white-space: nowrap;
 }
 
 .map-type-btn:hover {
@@ -484,6 +485,70 @@ ul {
     line-height: 1.4;
 }
 
+/* 네이버맵 마커 스타일 */
+.region-marker {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.region-marker:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+.region-name {
+    font-size: 10px;
+    font-weight: 600;
+    margin-bottom: 2px;
+    line-height: 1;
+}
+
+.region-value {
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.region-change {
+    position: absolute;
+    bottom: -8px;
+    right: -8px;
+    font-size: 8px;
+    font-weight: 600;
+    padding: 2px 4px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.9);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    min-width: 20px;
+    text-align: center;
+    line-height: 1;
+}
+
+.region-change.up {
+    color: #dc3545;
+}
+
+.region-change.down {
+    color: #28a745;
+}
+
+.region-change.same {
+    color: #6c757d;
+}
+
 /* 반응형 지도 스타일 */
 @media (max-width: 768px) {
     .map-container {
@@ -542,8 +607,9 @@ ul {
     }
     
     .map-type-btn {
-        padding: 5px 10px;
-        font-size: 12px;
+        padding: 4px 8px;
+        font-size: 11px;
+        white-space: nowrap;
     }
     
     #map-legend, .map-info {
