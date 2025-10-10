@@ -50,9 +50,9 @@ def generate_static_html():
     <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId={NAVER_CLIENT_ID}&callback=initNaverMap"></script>
 </head>
 <body>
-    <header>
+    <!-- <header>
         <h1>오늘의 주가 및 주요 뉴스</h1>
-    </header>
+    </header> -->
     
     <!-- 메인 탭 네비게이션 -->
     <nav class="main-nav">
@@ -79,13 +79,23 @@ def generate_static_html():
             {economy_news_data}
         </section>
         
-        <!-- 부동산 매매지수 지도 (마지막에 배치) -->
+        <!-- 부동산 뉴스 섹션 -->
+        <section id=\"realestate-news\">
+            <h2>부동산 뉴스</h2>
+            {realestate_news_data}
+        </section>
+    </div>
+    
+    <!-- 부동산맵 메인 탭 -->
+    <div id="realestate-map-main-tab" class="main-tab-content">
+        <!-- 부동산 매매지수 지도 -->
         <section class=\"map-section\">
             <h2>부동산 매매지수 지도</h2>
             <div class=\"map-controls\">
                 <div class=\"map-type-buttons\">
-                    <button class=\"map-type-btn active\" onclick=\"changeMapDisplay('index')\">매매지수<br>지난달 대비</button>
+                    <button class=\"map-type-btn active\" onclick=\"changeMapDisplay('index')\">매매지수</button>
                     <button class=\"map-type-btn\" onclick=\"changeMapDisplay('weekly_change')\">지난주 대비</button>
+                    <button class=\"map-type-btn\" onclick=\"changeMapDisplay('monthly_change')\">지난달 대비</button>
                 </div>
                 <div class=\"map-legend\">
                     <div class=\"legend-item\">
@@ -103,22 +113,13 @@ def generate_static_html():
                 </div>
             </div>
             <div class=\"naver-map-container\">
-                <div id=\"naver-map-economy\"></div>
+                <div id=\"naver-map-realestate\"></div>
             </div>
             <div class=\"map-info\">
                 <p>※ 지역을 클릭하면 상세 정보를 확인할 수 있습니다</p>
                 <p>※ 매매지수: 2020년 1월 = 100.0 기준</p>
                 <p>※ 데이터 출처: KB부동산 통계</p>
             </div>
-        </section>
-    </div>
-    
-    <!-- 부동산맵 메인 탭 -->
-    <div id="realestate-map-main-tab" class="main-tab-content">
-       <!-- 부동산 뉴스 섹션 -->
-        <section id=\"realestate-news\">
-            <h2>부동산 뉴스</h2>
-            {realestate_news_data}
         </section>
         
         <!-- 월간매매지수 -->
@@ -138,8 +139,6 @@ def generate_static_html():
             <h2>주간 매매지수</h2>
             <div id=\"weekly-index-chart\"></div>
         </section>
-
-        <!-- 전세매매지수는 realestate_data에 포함됨 -->
     </div>
     <!-- JS 및 데이터는 body 끝에서 로드 -->
     <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>

@@ -298,7 +298,13 @@ function createMarkerContent(regionData, displayType) {
             changeValue = '주간';
             changeClass = weeklyRate >= 0 ? 'up' : 'down';
             break;
-
+        case 'monthly_change':
+            // 월간 변동률
+            const monthlyRate = regionData.rate || 0;
+            mainValue = `${monthlyRate >= 0 ? '+' : ''}${monthlyRate.toFixed(2)}%`;
+            changeValue = '월간';
+            changeClass = monthlyRate >= 0 ? 'up' : 'down';
+            break;
         default:
             mainValue = `${regionData.index.toFixed(1)}`;
             changeValue = `${(regionData.rate || 0) >= 0 ? '+' : ''}${(regionData.rate || 0).toFixed(2)}%`;
@@ -308,8 +314,8 @@ function createMarkerContent(regionData, displayType) {
     const backgroundColor = getMarkerColor(regionData, displayType);
     const shortName = regionData.area.replace('서울 ', '').replace('경기 ', '').replace('인천 ', '').replace('시 ', '').substring(0, 4);
     
-    // 매매지수 표시일 때만 우측 아래에 변동률 표시
-    const showChangeValue = displayType === 'index';
+    // 매매지수 표시일 때는 변동률 표시하지 않음
+    const showChangeValue = false; // 변경: 매매지수에서 변동률 표시 제거
     const changeDisplay = showChangeValue ? `<div class="region-change ${changeClass}">${changeValue}</div>` : '';
     
     return `
@@ -340,7 +346,14 @@ function createInfoWindowContent(regionData, displayType) {
             changeClass = weeklyRate >= 0 ? 'up' : 'down';
             description = '최근 2주간 가격 변동률';
             break;
-
+        case 'monthly_change':
+            // 월간 변동률
+            const monthlyRate = regionData.rate || 0;
+            mainValue = `월간 변동률: ${monthlyRate >= 0 ? '+' : ''}${monthlyRate.toFixed(2)}%`;
+            changeValue = '전월 대비 변동';
+            changeClass = monthlyRate >= 0 ? 'up' : 'down';
+            description = '전월 대비 가격 변동률';
+            break;
         default:
             mainValue = `매매지수: ${regionData.index.toFixed(1)}`;
             changeValue = `${(regionData.rate || 0) >= 0 ? '+' : ''}${(regionData.rate || 0).toFixed(2)}%`;
@@ -377,9 +390,13 @@ function getMarkerColor(regionData, displayType) {
             if (value <= -0.3) return '#28a745'; // 녹색 (하락)
             else if (value <= 0.3) return '#ffc107'; // 노랑 (보합)
             else return '#dc3545'; // 빨강 (상승)
-            
-
-            
+        case 'monthly_change':
+            // 월간 변동률
+            value = regionData.rate || 0;
+            // 변동률 기준
+            if (value <= -0.5) return '#28a745'; // 녹색 (하락)
+            else if (value <= 0.5) return '#ffc107'; // 노랑 (보합)
+            else return '#dc3545'; // 빨강 (상승)
         default:
             return '#ffc107'; // 기본 노랑
     }
@@ -401,7 +418,12 @@ function getMarkerSize(regionData, displayType) {
             if (absWeeklyRate > 1.0) size = 70;
             else if (absWeeklyRate > 0.5) size = 65;
             break;
-
+        case 'monthly_change':
+            // 월간 변동률 절댓값이 클수록 크게
+            const absMonthlyRate = Math.abs(regionData.rate || 0);
+            if (absMonthlyRate > 1.5) size = 70;
+            else if (absMonthlyRate > 0.8) size = 65;
+            break;
     }
     
     return { width: size, height: size };
