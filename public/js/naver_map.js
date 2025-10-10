@@ -83,7 +83,7 @@ function initNaverMap() {
     if (typeof window.navermap_authFailure !== 'function') {
         window.navermap_authFailure = function() {
             console.error('naver_map.js: window.navermap_authFailure 호출됨 — 인증 실패');
-            const containers = ['naver-map', 'naver-map-economy'];
+            const containers = ['naver-map', 'naver-map-economy', 'naver-map-realestate'];
             containers.forEach(id => {
                 const container = document.getElementById(id);
                 if (container) {
@@ -101,7 +101,7 @@ function initNaverMap() {
         console.error("네이버맵 API가 로드되지 않았습니다.");
         
         // 모든 지도 컨테이너에 에러 메시지 표시
-        const containers = ['naver-map', 'naver-map-economy'];
+        const containers = ['naver-map', 'naver-map-economy', 'naver-map-realestate'];
         containers.forEach(id => {
             const container = document.getElementById(id);
             if (container) {
@@ -124,7 +124,7 @@ function initNaverMap() {
         console.error("부동산 데이터가 없습니다.");
         
         // 모든 지도 컨테이너에 데이터 없음 메시지 표시
-        const containers = ['naver-map', 'naver-map-economy'];
+        const containers = ['naver-map', 'naver-map-economy', 'naver-map-realestate'];
         containers.forEach(id => {
             const container = document.getElementById(id);
             if (container) {
@@ -141,9 +141,12 @@ function initNaverMap() {
     }
     
     // 지도 컨테이너 (부동산맵 탭용)
-    let mapContainer = document.getElementById('naver-map');
+    let mapContainer = document.getElementById('naver-map-realestate');
     
-    // 경제 탭용 지도 컨테이너도 확인
+    // 다른 지도 컨테이너도 확인
+    if (!mapContainer) {
+        mapContainer = document.getElementById('naver-map');
+    }
     if (!mapContainer) {
         mapContainer = document.getElementById('naver-map-economy');
     }
@@ -467,7 +470,7 @@ function showRealEstateCards() {
         return;
     }
     
-    const containers = ['naver-map', 'naver-map-economy'];
+    const containers = ['naver-map', 'naver-map-economy', 'naver-map-realestate'];
     containers.forEach(containerId => {
         const container = document.getElementById(containerId);
         if (!container) return;
@@ -542,7 +545,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // 타임아웃 시 대체 표시 (부동산 데이터 카드)
             showRealEstateCards();
             
-            const containers = ['naver-map', 'naver-map-economy'];
+            const containers = ['naver-map', 'naver-map-economy', 'naver-map-realestate'];
             containers.forEach(id => {
                 const container = document.getElementById(id);
                 if (container) {
