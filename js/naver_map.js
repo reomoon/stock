@@ -268,8 +268,8 @@ function createRegionMarker(regionData, coordinate) {
         content: createInfoWindowContent(regionData, currentMapType),
         maxWidth: 300,
         backgroundColor: "#ffffff",
-        borderColor: "#007bff",
-        borderWidth: 2,
+        borderColor: "transparent",
+        borderWidth: 0,
         anchorSize: new naver.maps.Size(10, 10)
     });
     
@@ -295,17 +295,17 @@ function createMarkerContent(regionData, displayType) {
             changeClass = (regionData.rate || 0) >= 0 ? 'up' : 'down';
             break;
         case 'weekly_change':
-            // 주간 변동률 - rate_2w (2주전 대비) 사용
+            // 지난주 대비 (주간 변동률)
             const weeklyRate = regionData.rate_2w || regionData.rate || 0;
             mainValue = `${weeklyRate >= 0 ? '+' : ''}${weeklyRate.toFixed(2)}%`;
-            changeValue = '주간';
+            changeValue = '지난주';
             changeClass = weeklyRate >= 0 ? 'up' : 'down';
             break;
         case 'monthly_change':
-            // 월간 변동률
+            // 지난달 대비 (월간 변동률) - 전월대비
             const monthlyRate = regionData.rate || 0;
             mainValue = `${monthlyRate >= 0 ? '+' : ''}${monthlyRate.toFixed(2)}%`;
-            changeValue = '월간';
+            changeValue = '지난달';
             changeClass = monthlyRate >= 0 ? 'up' : 'down';
             break;
         default:
@@ -342,20 +342,20 @@ function createInfoWindowContent(regionData, displayType) {
             description = '2020년 1월 기준 100';
             break;
         case 'weekly_change':
-            // 주간 변동률 - rate_2w 사용
+            // 지난주 대비 변동률
             const weeklyRate = regionData.rate_2w || regionData.rate || 0;
-            mainValue = `주간 변동률: ${weeklyRate >= 0 ? '+' : ''}${weeklyRate.toFixed(2)}%`;
-            changeValue = '2주 기간 변동';
+            mainValue = `지난주 대비: ${weeklyRate >= 0 ? '+' : ''}${weeklyRate.toFixed(2)}%`;
+            changeValue = '주간 변동';
             changeClass = weeklyRate >= 0 ? 'up' : 'down';
-            description = '최근 2주간 가격 변동률';
+            description = '지난주 대비 가격 변동률';
             break;
         case 'monthly_change':
-            // 월간 변동률
+            // 지난달 대비 변동률
             const monthlyRate = regionData.rate || 0;
-            mainValue = `월간 변동률: ${monthlyRate >= 0 ? '+' : ''}${monthlyRate.toFixed(2)}%`;
-            changeValue = '전월 대비 변동';
+            mainValue = `지난달 대비: ${monthlyRate >= 0 ? '+' : ''}${monthlyRate.toFixed(2)}%`;
+            changeValue = '월간 변동';
             changeClass = monthlyRate >= 0 ? 'up' : 'down';
-            description = '전월 대비 가격 변동률';
+            description = '지난달 대비 가격 변동률';
             break;
         default:
             mainValue = `매매지수: ${regionData.index.toFixed(1)}`;
@@ -387,14 +387,14 @@ function getMarkerColor(regionData, displayType) {
             else return '#dc3545'; // 빨강 (높음)
             
         case 'weekly_change':
-            // 주간 변동률 - rate_2w 사용
+            // 지난주 대비 변동률
             value = regionData.rate_2w || regionData.rate || 0;
             // 변동률 기준
             if (value <= -0.3) return '#28a745'; // 녹색 (하락)
             else if (value <= 0.3) return '#ffc107'; // 노랑 (보합)
             else return '#dc3545'; // 빨강 (상승)
         case 'monthly_change':
-            // 월간 변동률
+            // 지난달 대비 변동률
             value = regionData.rate || 0;
             // 변동률 기준
             if (value <= -0.5) return '#28a745'; // 녹색 (하락)
@@ -416,16 +416,16 @@ function getMarkerSize(regionData, displayType) {
             else if (regionData.index > 100) size = 65;
             break;
         case 'weekly_change':
-            // 주간 변동률 절댓값이 클수록 크게
+            // 지난주 대비 변동률 절댓값이 클수록 크게
             const absWeeklyRate = Math.abs(regionData.rate_2w || regionData.rate || 0);
-            if (absWeeklyRate > 1.0) size = 70;
-            else if (absWeeklyRate > 0.5) size = 65;
+            if (absWeeklyRate > 0.5) size = 70;
+            else if (absWeeklyRate > 0.3) size = 65;
             break;
         case 'monthly_change':
-            // 월간 변동률 절댓값이 클수록 크게
+            // 지난달 대비 변동률 절댓값이 클수록 크게
             const absMonthlyRate = Math.abs(regionData.rate || 0);
-            if (absMonthlyRate > 1.5) size = 70;
-            else if (absMonthlyRate > 0.8) size = 65;
+            if (absMonthlyRate > 1.0) size = 70;
+            else if (absMonthlyRate > 0.5) size = 65;
             break;
     }
     
