@@ -291,41 +291,43 @@ function createMarkerContent(regionData, displayType) {
     switch (displayType) {
         case 'index':
             mainValue = `${regionData.index.toFixed(1)}`;
-            changeValue = `${(regionData.rate || 0) >= 0 ? '+' : ''}${(regionData.rate || 0).toFixed(2)}%`;
+            const rateValue = (regionData.rate || 0);
+            changeValue = `<span style="font-size: 10px;">${rateValue >= 0 ? '+' : ''}${rateValue.toFixed(2)}</span><span style="font-size: 8px;">%</span>`;
             changeClass = (regionData.rate || 0) >= 0 ? 'up' : 'down';
             break;
         case 'weekly_change':
             // 지난주 대비 (1주전 변동률)
             const weeklyRate = regionData.rate || 0;
-            mainValue = `${weeklyRate >= 0 ? '+' : ''}${weeklyRate.toFixed(2)}%`;
+            mainValue = `<span style="font-size: 10px;">${weeklyRate >= 0 ? '+' : ''}${weeklyRate.toFixed(2)}</span><span style="font-size: 8px;">%</span>`;
             changeValue = '지난주';
             changeClass = weeklyRate >= 0 ? 'up' : 'down';
             break;
         case 'monthly_change':
             // 지난달 대비 (2주전 변동률로 월간 대용)
             const monthlyRate = regionData.rate_2w || 0;
-            mainValue = `${monthlyRate >= 0 ? '+' : ''}${monthlyRate.toFixed(2)}%`;
+            mainValue = `<span style="font-size: 10px;">${monthlyRate >= 0 ? '+' : ''}${monthlyRate.toFixed(2)}</span><span style="font-size: 8px;">%</span>`;
             changeValue = '지난달';
             changeClass = monthlyRate >= 0 ? 'up' : 'down';
             break;
         default:
             mainValue = `${regionData.index.toFixed(1)}`;
-            changeValue = `${(regionData.rate || 0) >= 0 ? '+' : ''}${(regionData.rate || 0).toFixed(2)}%`;
+            const defaultRateValue = (regionData.rate || 0);
+            changeValue = `<span style="font-size: 10px;">${defaultRateValue >= 0 ? '+' : ''}${defaultRateValue.toFixed(2)}</span><span style="font-size: 8px;">%</span>`;
             changeClass = (regionData.rate || 0) >= 0 ? 'up' : 'down';
     }
     
     const backgroundColor = getMarkerColor(regionData, displayType);
     const shortName = regionData.area.replace('서울 ', '').replace('경기 ', '').replace('인천 ', '').replace('시 ', '').substring(0, 4);
     
-    // 매매지수 표시일 때는 변동률 표시하지 않음
-    const showChangeValue = false; // 변경: 매매지수에서 변동률 표시 제거
+    // 매매지수에서도 변동률 표시
+    const showChangeValue = true; // 모든 경우에 변동률 표시
     const changeDisplay = showChangeValue ? `<div class="region-change ${changeClass}">${changeValue}</div>` : '';
     
     return `
-        <div class="region-marker" style="background-color: ${backgroundColor};">
-            <div class="region-name">${shortName}</div>
-            <div class="region-value">${mainValue}</div>
-            ${changeDisplay}
+        <div class="region-marker" style="background-color: ${backgroundColor}; width: 60px; height: 60px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.3); font-family: Arial, sans-serif; position: relative;">
+            <div style="font-size: 12px; font-weight: bold; color: white; text-shadow: 1px 1px 1px rgba(0,0,0,0.5); line-height: 1;">${shortName}</div>
+            <div style="font-size: 11px; font-weight: bold; color: white; text-shadow: 1px 1px 1px rgba(0,0,0,0.5); line-height: 1; margin: 1px 0;">${mainValue}</div>
+            <div style="position: absolute; bottom: 5px; right: 10px; font-size: 8px; font-weight: bold; color: white; text-shadow: 1px 1px 1px rgba(0,0,0,0.5); line-height: 1;">${changeValue}</div>
         </div>
     `;
 }
