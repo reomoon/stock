@@ -94,8 +94,8 @@ def generate_static_html():
             <div class=\"map-controls\">
                 <div class=\"map-type-buttons\">
                     <button class=\"map-type-btn active\" onclick=\"changeMapDisplay('index')\">매매지수</button>
-                    <button class=\"map-type-btn\" onclick=\"changeMapDisplay('weekly_change')\">지난주 대비</button>
-                    <button class=\"map-type-btn\" onclick=\"changeMapDisplay('monthly_change')\">지난달 대비</button>
+                    <button class=\"map-type-btn\" onclick=\"changeMapDisplay('weekly_change')\">주간변동</button>
+                    <button class=\"map-type-btn\" onclick=\"changeMapDisplay('monthly_change')\">월간변동</button>
                 </div>
                 <div class=\"map-legend\">
                     <div class=\"legend-item\">
