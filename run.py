@@ -113,13 +113,17 @@ def generate_static_html():
                 </div>
             </div>
             <div class=\"naver-map-container\">
-                <div id=\"naver-map-realestate\"></div>
+                <div id=\"naver-map-realestate\" style=\"margin-bottom: 10px;\"></div>
             </div>
-            <div class=\"map-info\">
+            <div style=\"text-align: left; margin-top: 10px;\">
+                <small style=\"font-size: 13px; color: #4a5568;\">업데이트: <span id=\"update-date\"></span></small>
+            </div>
+            <div class=\"map-info\" style=\"margin-top: 10px;\">
                 <p>※ 지역을 클릭하면 상세 정보를 확인할 수 있습니다</p>
                 <p>※ 매매지수: 2020년 1월 = 100.0 기준</p>
                 <p>※ 데이터 출처: KB부동산 통계</p>
             </div>
+
         </section>
         
         <!-- 월간매매지수 -->
@@ -153,6 +157,20 @@ def generate_static_html():
     <!-- 메인 탭 및 네이버맵 스크립트 -->
     <script src="js/main_tabs.js"></script>
     <script src="js/naver_map.js"></script>
+    
+    <!-- 오늘 날짜 표시 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {{
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            const updateDateElement = document.getElementById('update-date');
+            if (updateDateElement) {{
+                updateDateElement.textContent = `${{year}}년 ${{month}}월 ${{day}}일`;
+            }}
+        }});
+    </script>
 </body>
 </html>
 """)

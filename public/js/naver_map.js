@@ -70,7 +70,7 @@ const REGION_COORDINATES = {
     "28177": { lat: 37.4633, lng: 126.6505, name: "인천 미추홀구" },
     "28140": { lat: 37.4739, lng: 126.6321, name: "인천 동구" },
     "28110": { lat: 37.4738, lng: 126.6210, name: "인천 중구" },
-    "44133": { lat: 36.8151, lng: 127.1139, name: "충남 천안시 서북구" },
+    "44133": { lat: 36.8095, lng: 127.1522, name: "충남 천안시 서북구" },
     "44200": { lat: 36.7898, lng: 127.0017, name: "충남 아산시" },
     "43113": { lat: 36.6424, lng: 127.4890, name: "청주 흥덕구" }
 };
@@ -337,9 +337,9 @@ function createInfoWindowContent(regionData, displayType) {
     switch (displayType) {
         case 'index':
             mainValue = `매매지수: ${regionData.index.toFixed(1)}`;
-            changeValue = `전월 대비: ${(regionData.rate || 0) >= 0 ? '+' : ''}${(regionData.rate || 0).toFixed(2)}%`;
+            changeValue = `지난주 대비: ${(regionData.rate || 0) >= 0 ? '+' : ''}${(regionData.rate || 0).toFixed(2)}%`;
             changeClass = (regionData.rate || 0) >= 0 ? 'up' : 'down';
-            description = '2020년 1월 기준 100';
+            description = '';
             break;
         case 'weekly_change':
             // 지난주 대비 변동률 (1주전 대비)
@@ -389,16 +389,16 @@ function getMarkerColor(regionData, displayType) {
         case 'weekly_change':
             // 지난주 대비 변동률 (1주전 대비)
             value = regionData.rate || 0;
-            // 변동률 기준
-            if (value <= -0.3) return '#28a745'; // 녹색 (하락)
-            else if (value <= 0.3) return '#ffc107'; // 노랑 (보합)
+            // 변동률 기준: 0.5% 넘으면 빨간색, 0.5% 이하 노란색, 0% 이하 초록색
+            if (value <= 0) return '#28a745'; // 녹색 (하락)
+            else if (value < 0.5) return '#ffc107'; // 노랑 (보합)
             else return '#dc3545'; // 빨강 (상승)
         case 'monthly_change':
             // 지난달 대비 변동률 (2주전 대비로 월간 대용)
             value = regionData.rate_2w || 0;
-            // 변동률 기준
-            if (value <= -0.5) return '#28a745'; // 녹색 (하락)
-            else if (value <= 0.5) return '#ffc107'; // 노랑 (보합)
+            // 변동률 기준: 1.0% 넘으면 빨간색, 1.0% 이하 노란색, 0% 이하 초록색
+            if (value <= 0) return '#28a745'; // 녹색 (하락)
+            else if (value < 1.0) return '#ffc107'; // 노랑 (보합)
             else return '#dc3545'; // 빨강 (상승)
         default:
             return '#ffc107'; // 기본 노랑
