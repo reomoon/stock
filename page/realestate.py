@@ -188,63 +188,6 @@ def realestate():
         </table>
         </div>
         
-        <h3>전세 가격지수</h3>
-        <div class='table-scroll'>
-        <table class='realestate-table'>
-            <tr>
-                <th>지역</th>
-                <th>최신지수</th>
-                <th>전월대비</th>
-                <th>변동률</th>
-                <th>3개월전</th>
-                <th>변동률</th>
-                <th>6개월전</th>
-                <th>변동률</th>
-                <th>1년전</th>
-                <th>변동률</th>
-            </tr>"""
-        
-        # 전세 가격지수 데이터 표시
-        for data in latest_data.get("jeonse_index", []):
-            change = data["change"]
-            rate = data["rate"]
-            trend_class = 'up' if change > 0 else 'down' if change < 0 else 'same'
-            arrow = '▲' if change > 0 else '▼' if change < 0 else '→'
-            
-            # 3개월전, 6개월전, 1년전 데이터
-            change_3m = data.get("change_3m", 0)
-            rate_3m = data.get("rate_3m", 0)
-            trend_class_3m = 'up' if change_3m > 0 else 'down' if change_3m < 0 else 'same'
-            arrow_3m = '▲' if change_3m > 0 else '▼' if change_3m < 0 else '→'
-            
-            change_6m = data.get("change_6m", 0)
-            rate_6m = data.get("rate_6m", 0)
-            trend_class_6m = 'up' if change_6m > 0 else 'down' if change_6m < 0 else 'same'
-            arrow_6m = '▲' if change_6m > 0 else '▼' if change_6m < 0 else '→'
-            
-            change_1y = data.get("change_1y", 0)
-            rate_1y = data.get("rate_1y", 0)
-            trend_class_1y = 'up' if change_1y > 0 else 'down' if change_1y < 0 else 'same'
-            arrow_1y = '▲' if change_1y > 0 else '▼' if change_1y < 0 else '→'
-            
-            html += f"""
-            <tr>
-                <td>{data["area"]}</td>
-                <td>{data["index"]:.2f}</td>
-                <td class='{trend_class}'>{arrow} {abs(change):.2f}</td>
-                <td class='{trend_class}'>{rate:+.2f}%</td>
-                <td class='{trend_class_3m}'>{arrow_3m} {abs(change_3m):.2f}</td>
-                <td class='{trend_class_3m}'>{rate_3m:+.2f}%</td>
-                <td class='{trend_class_6m}'>{arrow_6m} {abs(change_6m):.2f}</td>
-                <td class='{trend_class_6m}'>{rate_6m:+.2f}%</td>
-                <td class='{trend_class_1y}'>{arrow_1y} {abs(change_1y):.2f}</td>
-                <td class='{trend_class_1y}'>{rate_1y:+.2f}%</td>
-            </tr>"""
-        
-        html += """
-        </table>
-        </div>
-        
         <h3>주택 매매 거래량 (월별)</h3>
         <div class='table-scroll'>
         <table class='realestate-table'>
@@ -388,6 +331,63 @@ def realestate():
                 <td class='{trend_class_3w}'>{rate_3w:+.2f}%</td>
                 <td class='{trend_class_4w}'>{arrow_4w} {abs(change_4w):.2f}</td>
                 <td class='{trend_class_4w}'>{rate_4w:+.2f}%</td>
+            </tr>"""
+        
+        html += f"""
+        </table>
+        </div>
+        
+        <h3>전세 가격지수</h3>
+        <div class='table-scroll'>
+        <table class='realestate-table'>
+            <tr>
+                <th>지역</th>
+                <th>최신지수</th>
+                <th>전월대비</th>
+                <th>변동률</th>
+                <th>3개월전</th>
+                <th>변동률</th>
+                <th>6개월전</th>
+                <th>변동률</th>
+                <th>1년전</th>
+                <th>변동률</th>
+            </tr>"""
+        
+        # 전세 가격지수 데이터 표시
+        for data in latest_data.get("jeonse_index", []):
+            change = data["change"]
+            rate = data["rate"]
+            trend_class = 'up' if change > 0 else 'down' if change < 0 else 'same'
+            arrow = '▲' if change > 0 else '▼' if change < 0 else '→'
+            
+            # 3개월전, 6개월전, 1년전 데이터
+            change_3m = data.get("change_3m", 0)
+            rate_3m = data.get("rate_3m", 0)
+            trend_class_3m = 'up' if change_3m > 0 else 'down' if change_3m < 0 else 'same'
+            arrow_3m = '▲' if change_3m > 0 else '▼' if change_3m < 0 else '→'
+            
+            change_6m = data.get("change_6m", 0)
+            rate_6m = data.get("rate_6m", 0)
+            trend_class_6m = 'up' if change_6m > 0 else 'down' if change_6m < 0 else 'same'
+            arrow_6m = '▲' if change_6m > 0 else '▼' if change_6m < 0 else '→'
+            
+            change_1y = data.get("change_1y", 0)
+            rate_1y = data.get("rate_1y", 0)
+            trend_class_1y = 'up' if change_1y > 0 else 'down' if change_1y < 0 else 'same'
+            arrow_1y = '▲' if change_1y > 0 else '▼' if change_1y < 0 else '→'
+            
+            html += f"""
+            <tr>
+                <td>{data["area"]}</td>
+                <td>{data["index"]:.2f}</td>
+                <td class='{trend_class}'>{arrow} {abs(change):.2f}</td>
+                <td class='{trend_class}'>{rate:+.2f}%</td>
+                <td class='{trend_class_3m}'>{arrow_3m} {abs(change_3m):.2f}</td>
+                <td class='{trend_class_3m}'>{rate_3m:+.2f}%</td>
+                <td class='{trend_class_6m}'>{arrow_6m} {abs(change_6m):.2f}</td>
+                <td class='{trend_class_6m}'>{rate_6m:+.2f}%</td>
+                <td class='{trend_class_1y}'>{arrow_1y} {abs(change_1y):.2f}</td>
+                <td class='{trend_class_1y}'>{rate_1y:+.2f}%</td>
             </tr>"""
         
         html += f"""

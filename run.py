@@ -120,7 +120,7 @@ def generate_static_html():
             </div>
             <div class=\"map-info\" style=\"margin-top: 10px;\">
                 <p>※ 지역을 클릭하면 상세 정보를 확인할 수 있습니다</p>
-                <p>※ 매매지수: 2020년 1월 = 100.0 기준</p>
+                <p>※ 매매지수: 2022년 1월 = 100.0 기준</p>
                 <p>※ 데이터 출처: KB부동산 통계</p>
             </div>
 
