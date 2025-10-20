@@ -11,7 +11,9 @@ async def capture_realestate_sections():
     """부동산맵 섹션들을 캡처"""
     
     # 스크린샷 저장 디렉토리
-    screenshot_dir = "screenshots"
+    # 오늘 날짜 폴더 생성(YYYY-MM-DD 형식)
+    today_folder = datetime.now().strftime("%Y-%m-%d")
+    screenshot_dir = f"screenshots/{today_folder}"
     os.makedirs(screenshot_dir, exist_ok=True)
     
     # 현재 날짜
