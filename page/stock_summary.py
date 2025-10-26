@@ -26,7 +26,7 @@ def summarize_text(text: str) -> str:
     
     if not text:
         return "요약할 내용이 없습니다."
-    
+    # 로컬 및 사이트 조건 추가
     api_key = os.getenv('OPENAI_API_KEY') or os.getenv('CHATGPT_API_KEY')
     if not api_key:
         return "❌ 오류: OPENAI_API_KEY 또는 CHATGPT_API_KEY 환경 변수를 설정해야 ChatGPT API를 사용할 수 있습니다."
