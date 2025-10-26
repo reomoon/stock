@@ -1,0 +1,12 @@
+# Vercel 배포에서 제외할 파일/폴더 목록
+# 대용량 캐시, 데이터, 이미지, 불필요한 파일 등
+
+data/
+public/data/
+screenshots/
+down/
+*.pkl
+*.csv
+*.png
+*.ipynb
+__pycache__/
