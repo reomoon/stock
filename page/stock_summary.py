@@ -22,14 +22,14 @@ DATE_SELECTOR = '.txt-date'
 # =================================================
 
 def summarize_text(text: str) -> str:
-    """Gemini API를 사용하여 원하는 형식으로 텍스트를 요약합니다."""
+    """ChatGPTAPI를 사용하여 원하는 형식으로 텍스트를 요약합니다."""
     
     if not text:
         return "요약할 내용이 없습니다."
     
-    api_key = os.getenv('CHATGPT_API_KEY')
+    api_key = os.getenv('OPENAI_API_KEY') or os.getenv('CHATGPT_API_KEY')
     if not api_key:
-        return "❌ 오류: CHATGPT_API_KEY 환경 변수를 .env 파일에 설정해야 ChatGPT API를 사용할 수 있습니다."
+        return "❌ 오류: OPENAI_API_KEY 또는 CHATGPT_API_KEY 환경 변수를 설정해야 ChatGPT API를 사용할 수 있습니다."
 
     prompt = (
         "다음 [기사 본문]을 한국어로 읽고, 핵심 내용을 3~4개의 주요 주제로 나누어 요약해 주세요. "
@@ -183,8 +183,8 @@ async def main_async():
             content = await get_article_content_playwright(page, article['url'])
             
             if content:
-                # 3. Gemini API를 사용하여 요약 수행
-                print("[정보] Gemini API를 사용하여 요약을 요청 중...")
+                # 3. ChatGPTAPI를 사용하여 요약 수행
+                print("[정보] ChatGPTAPI를 사용하여 요약을 요청 중...")
                 summary = summarize_text(content)
                 
                 # 4. 결과 출력: 구분선을 제거하고 깔끔한 시작/끝 태그만 남깁니다.
