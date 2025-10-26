@@ -1,5 +1,4 @@
 openai
-playwright
 beautifulsoup4
 markdown
 python-dotenv
