@@ -3,8 +3,7 @@ from playwright.async_api import async_playwright
 from bs4 import BeautifulSoup
 from datetime import datetime
 import os
-from google import genai
-from google.genai.errors import APIError
+import openai
 from typing import Optional, Dict, Any
 from dotenv import load_dotenv
 
@@ -28,37 +27,42 @@ def summarize_text(text: str) -> str:
     if not text:
         return "요약할 내용이 없습니다."
     
-    api_key = os.getenv('GEMINI_API_KEY')
+    api_key = os.getenv('CHATGPT_API_KEY')
     if not api_key:
-        return "❌ 오류: GEMINI_API_KEY 환경 변수를 .env 파일에 설정해야 Gemini API를 사용할 수 있습니다."
-    
-    try:
-        client = genai.Client(api_key=api_key)
+        return "❌ 오류: CHATGPT_API_KEY 환경 변수를 .env 파일에 설정해야 ChatGPT API를 사용할 수 있습니다."
 
-        prompt = (
-            "다음 [기사 본문]을 한국어로 읽고, 핵심 내용을 3~4개의 주요 주제로 나누어 요약해 주세요. "
-            "요약은 아래 예시와 같이 [주제]와 [주제에 대한 2~3줄의 핵심 내용]의 구조를 따라야 합니다. "
-            "불필요한 서론이나 결론 없이, 바로 주제와 요약 내용만 출력하세요. 내용은 간결하게 작성하세요.\n\n"
-            "[예시 형식]\n"
-            "9월 CPI 발표와 금리 인하 기대\n"
-            "9월 CPI 데이터가 예상보다 좋았으며, 관세 인플레이션 우려가 없음을 보여줬다고 분석했습니다.\n"
-            "상품 물가 상승에도 불구하고 서비스 물가가 안정되면서, 연준(Fed)의 금리 인하가 확정적이라는 기대가 높아졌습니다.\n"
-            "\n"
-            "[기사 본문]\n"
-            f"{text}"
+    prompt = (
+        "다음 [기사 본문]을 한국어로 읽고, 핵심 내용을 3~4개의 주요 주제로 나누어 요약해 주세요. "
+        "각 주제는 반드시 '1. 2. 3.'과 같이 번호로 시작해야 하며, [ ] 괄호 없이 작성해 주세요. "
+        "요약은 아래 예시와 같이 '번호. 주제'와 그에 대한 2~3줄의 핵심 내용 구조를 따라야 합니다. "
+        "불필요한 서론이나 결론 없이, 바로 주제와 요약 내용만 출력하세요. 내용은 간결하게 작성하세요. "
+        "모든 요약 문장은 존대말(공손한 말투)로 작성해 주세요.\n\n"
+        "[예시 형식]\n"
+        "1. 9월 CPI 발표와 금리 인하 기대\n"
+        "9월 CPI 데이터가 예상보다 좋았으며, 관세 인플레이션 우려가 없음을 보여줬다고 분석했습니다.\n"
+        "상품 물가 상승에도 불구하고 서비스 물가가 안정되면서, 연준(Fed)의 금리 인하가 확정적이라는 기대가 높아졌습니다.\n"
+        "\n"
+        "[기사 본문]\n"
+        f"{text}"
+    )
+    try:
+        client = openai.OpenAI(api_key=api_key)
+        response = client.chat.completions.create(
+            model="gpt-4-1106-preview",
+            messages=[
+                {"role": "system", "content": "당신은 한국어 요약 경제 전문가입니다."},
+                {"role": "user", "content": prompt}
+            ],
+            max_tokens=1200, # chatgpt-3.5-turbo 모델의 최대 토큰 수
+            temperature=0.5,
         )
-        
-        response = client.models.generate_content(
-            model='gemini-2.5-flash',
-            contents=prompt,
-        )
-        
-        return response.text.strip()
-        
-    except APIError as e:
-        return f"❌ Gemini API 호출 오류가 발생했습니다: {e}"
+        content = response.choices[0].message.content if response.choices and response.choices[0].message else None
+        if content:
+            return content.strip()
+        else:
+            return "❌ ChatGPT API 응답이 비어 있습니다."
     except Exception as e:
-        return f"❌ 요약 중 알 수 없는 오류가 발생했습니다: {e}"
+        return f"❌ ChatGPT API 호출 오류가 발생했습니다: {e}"
 
 async def get_latest_article_playwright(page) -> Optional[Dict[str, Any]]:
     """

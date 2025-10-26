@@ -27,7 +27,6 @@ requests.Session.request = patched_request  # requests의 request 메서드를 �
 if os.environ.get("TEST_MODE") == "True":
     REGION_CODES = {
         "11680": "서울 강남구",
-        "11440": "서울 마포구"
     }
 else:
     # 주요 지역의 행정구역 코드와 한글 지역명 매핑 딕셔너리

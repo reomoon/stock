@@ -20,62 +20,121 @@ import subprocess
 import re # 정규식은 제거하지만, subprocess를 위해 필요할 수 있습니다.
 
 def get_stock_summary():
+    script_path = os.path.join(os.path.dirname(__file__), "page", "stock_summary.py")
     try:
-        script_path = os.path.join(os.path.dirname(__file__), "page", "stock_summary.py")
         result = subprocess.run(
             ["python", "-X", "utf8", script_path],
             capture_output=True, text=True, encoding="utf-8", timeout=60
         )
-        # 여기서 인코딩 에러가 나면 cp949로 강제 변환
-        try:
-            stdout = result.stdout
-        except UnicodeDecodeError:
-            stdout = result.stdout.encode('cp949').decode('utf-8', errors='replace')
-
-        # 디버깅
-        print("==== stock_summary.py 출력 ====")
-        print("stock_summary.py 전체 출력:\n", stdout)
-        print("stderr (오류 출력):\n", result.stderr)
-        print("==== end ====")
-
-        
-        # 1. 요약 본문 시작/끝 구분자를 기준으로 분리
-        start_tag = "START_SUMMARY_BODY"
-        end_tag = "END_SUMMARY_BODY"
-        
-        if start_tag not in stdout or end_tag not in stdout:
-             print("❗ 요약 결과를 찾지 못했습니다. stock_summary.py 출력:\n", stdout)
-             return ""
-             
-        # 요약 본문 추출
-        summary_start = stdout.find(start_tag) + len(start_tag)
-        summary_end = stdout.find(end_tag)
-        
-        summary = stdout[summary_start:summary_end].strip()
-        
-        # 2. URL 추출 (stdout의 끝 부분에서 'URL: '을 찾습니다)
-        # url_match = re.search(r"URL:\s*(.+)", stdout)
-        # url = url_match.group(1).strip() if url_match else "#"
-
-        if summary:
-            return f"""
-            <section class=\"stock-summary-section\" style=\"margin-bottom:24px;\">
-                <h2 style=\"font-size:1.1em; margin-bottom:8px;\">오늘의 미국 주식 요약</h2>
-                <div style=\"font-size:0.98em; line-height:1.7; background:#f8fafc; border-radius:8px; padding:16px; border:1px solid #e2e8f0;\">
-                    <pre style=\"white-space:pre-wrap; font-family:inherit; background:none; border:none; margin:0;\">{summary}</pre>
-                </div>
-            </section>
-            """
-        else:
-            print("❗ 요약 결과를 찾지 못했습니다. 디버깅 정보:")
-            return ""
     except Exception as e:
         print("stock_summary.py 실행 오류:", e)
         return ""
 
-# 정적 HTML 파일 생성 (GitHub Actions용)
+    # 여기서 인코딩 에러가 나면 cp949로 강제 변환
+    try:
+        stdout = result.stdout
+    except UnicodeDecodeError:
+        stdout = result.stdout.encode('cp949').decode('utf-8', errors='replace')
+
+    # 디버깅
+    print("==== stock_summary.py 출력 ====")
+    print("stock_summary.py 전체 출력:\n", stdout)
+    print("stderr (오류 출력):\n", result.stderr)
+    print("==== end ====")
+
+    # 1. 요약 본문 시작/끝 구분자를 기준으로 분리
+    start_tag = "START_SUMMARY_BODY"
+    end_tag = "END_SUMMARY_BODY"
+
+    if start_tag not in stdout or end_tag not in stdout:
+        print("❗ 요약 결과를 찾지 못했습니다. stock_summary.py 출력:\n", stdout)
+        return ""
+
+    # 요약 본문 추출
+    summary_start = stdout.find(start_tag) + len(start_tag)
+    summary_end = stdout.find(end_tag)
+
+    summary = stdout[summary_start:summary_end].strip()
+
+    # 2. URL 추출 (stdout의 끝 부분에서 'URL: '을 찾습니다)
+    url_match = re.search(r"URL:\s*(.+)", stdout)
+    url = url_match.group(1).strip() if url_match else None
+
+    if summary:
+        # 번호가 없는 경우 1. 2. 3. 형식으로 강제 번호 붙이기
+        import re as _re
+        lines = summary.strip().splitlines()
+        numbered_lines = []
+        num = 1
+        prev_blank = True
+        for line in lines:
+            # 이미 번호가 붙은 경우는 그대로
+            if _re.match(r"^\d+\. ", line.strip()):
+                numbered_lines.append(line)
+                prev_blank = False
+                num += 1
+            elif line.strip() != "":
+                # 제목(주제)로 추정되는 줄에만 번호 붙이기: 빈 줄 다음이거나 첫 줄이면서 '-'로 시작하지 않는 줄
+                if prev_blank and not line.strip().startswith("-"):
+                    numbered_lines.append(f"{num}. {line.strip()}")
+                    num += 1
+                    prev_blank = False
+                else:
+                    numbered_lines.append(line)
+                    prev_blank = False
+            else:
+                numbered_lines.append(line)
+                prev_blank = True
+        summary_numbered = "\n".join(numbered_lines)
+        url_html = f"<div style=\"text-align:left; margin-top:8px;\"><a href=\"{url}\" target=\"_blank\" rel=\"noopener\" style=\"color:#2563eb; text-decoration:underline; font-size:0.8em;\">기사 원문 바로가기</a></div>" if url else ""
+        return f"""
+        <section class=\"stock-summary-section\" style=\"margin-bottom:24px;\">
+            <h2 style=\"font-size:1.1em; margin-bottom:8px;\">오늘의 미국 주식 요약</h2>
+            <div style=\"font-size:0.98em; line-height:1.7; background:#f8fafc; border-radius:8px; padding:16px; border:1px solid #e2e8f0; position:relative;\">
+                <button id=\"copy-summary-btn\" title=\"요약 복사\" style=\"position:absolute; top:10px; right:10px; background:none; border:none; cursor:pointer; padding:2px;\">
+                    <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"18\" height=\"18\" fill=\"#888\" viewBox=\"0 0 20 20\"><rect x=\"6\" y=\"2\" width=\"9\" height=\"14\" rx=\"2\" fill=\"#e2e8f0\" stroke=\"#888\" stroke-width=\"1\"/><rect x=\"3\" y=\"5\" width=\"9\" height=\"13\" rx=\"2\" fill=\"none\" stroke=\"#888\" stroke-width=\"1\"/></svg>
+                </button>
+                <pre id=\"stock-summary-pre\" style=\"white-space:pre-wrap; font-family:inherit; background:none; border:none; margin:0;\">{summary_numbered}</pre>
+                {url_html}
+            </div>
+            <div id=\"stock-summary-toast\" style=\"display:none; position:fixed; bottom:40px; left:50%; transform:translateX(-50%); background:#222; color:#fff; padding:10px 22px; border-radius:6px; font-size:1em; z-index:9999; opacity:0.95; box-shadow:0 2px 8px rgba(0,0,0,0.15);\">복사 되었습니다.</div>
+            <script>
+            function showToast(msg) {{
+                var toast = document.getElementById('stock-summary-toast');
+                if (!toast) return;
+                toast.textContent = msg;
+                toast.style.display = 'block';
+                toast.style.opacity = '0.95';
+                setTimeout(function() {{ toast.style.opacity = '0'; }}, 1200);
+                setTimeout(function() {{ toast.style.display = 'none'; }}, 1600);
+            }}
+            document.addEventListener('DOMContentLoaded', function() {{
+                var btn = document.getElementById('copy-summary-btn');
+                var handler = function() {{
+                    var pre = document.getElementById('stock-summary-pre');
+                    if (pre) {{
+                        var text = pre.innerText;
+                        navigator.clipboard.writeText(text).then(function() {{
+                            showToast('복사 되었습니다.');
+                            btn.title = '복사됨!';
+                            btn.style.opacity = '0.6';
+                            setTimeout(function() {{ btn.title = '요약 복사'; btn.style.opacity = '1'; }}, 1200);
+                        }});
+                    }}
+                }};
+                if (btn) {{
+                    btn.addEventListener('click', handler);
+                    btn.addEventListener('touchstart', handler);
+                }}
+            }});
+            </script>
+        </section>
+        """
+    else:
+        print("❗ 요약 결과를 찾지 못했습니다. 디버깅 정보:")
+        return ""
+
 def generate_static_html():
-    # public 폴더가 없으면 생성
     if not os.path.exists("public"):
         os.makedirs("public")
 

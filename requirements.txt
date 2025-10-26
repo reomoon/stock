@@ -1,3 +1,11 @@
+openai
+playwright
+beautifulsoup4
+markdown
+python-dotenv
+requests
+pandas
+PublicDataReader
 yfinance
 beautifulsoup4
 requests
