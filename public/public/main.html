@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Stock & News Dashboard</title>
+    <link rel="stylesheet" href="./style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 네이버 클라우드 플랫폼 Maps API -->
+    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=wohmf5ntoz&callback=initNaverMap"></script>
+</head>
+<body>
+    <!-- <header>
+        <h1>오늘의 주가 및 주요 뉴스</h1>
+    </header> -->
+    
+    <!-- 메인 탭 네비게이션 -->
+    <nav class="main-nav">
+        <div class="main-tab-buttons">
+            <button class="main-tab-button active" data-tab="economy-main-tab">경제</button>
+            <button class="main-tab-button" data-tab="realestate-map-main-tab">부동산맵</button>
+        </div>
+    </nav>
+    
+    <!-- 경제 메인 탭 (주식 + 경제뉴스) -->
+    <div id="economy-main-tab" class="main-tab-content active">
+        <!-- 기본 주식 정보 -->
+        <section id="stock">
+            <h2>주식 정보</h2>
+            <div class='stock-table-wrap'><div>주요 미국 주식 종가 변동(2025-10-26 18:14)</div><table class='stock-table'><tr><th>종목</th><th>종가</th><th>변동</th></tr><tr><td>NASDAQ</td><td>23204.87</td><td class='up'>&#9650; (+1.1%, +263.07)</td></tr><tr><td>AAPL</td><td>262.82</td><td class='up'>&#9650; (+1.2%, +3.24)</td></tr><tr><td>MSFT</td><td>523.61</td><td class='up'>&#9650; (+0.6%, +3.05)</td></tr><tr><td>NVDA</td><td>186.26</td><td class='up'>&#9650; (+2.3%, +4.10)</td></tr><tr><td>AMZN</td><td>224.21</td><td class='up'>&#9650; (+1.4%, +3.12)</td></tr><tr><td>META</td><td>738.36</td><td class='up'>&#9650; (+0.6%, +4.36)</td></tr><tr><td>GOOGL</td><td>259.92</td><td class='up'>&#9650; (+2.7%, +6.84)</td></tr><tr><td>TSLA</td><td>433.72</td><td class='down'>&#9660; (-3.4%, -15.26)</td></tr><tr><td>BTC(Upbit)</td><td>166,395,000원</td><td class='up'>&#9650; (+0.1%, +85000)</td></tr><tr><td>KOSPI</td><td>3,941.59</td><td class='up'>&#9650; (+2.5%, +96.03)</td></tr></table></div>
+            <h2>나스닥 이동평균선</h2>
+            <div id="ma-graphs">
+                
+    <!-- 나스닥 차트 영역 -->
+    <div id="nasdaqChart" style="width:100%; height:350px;"></div>
+    <!-- Plotly.js CDN -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <!-- 파이썬에서 JS로 데이터 전달 -->
+    <script>
+    window.nasdaqData = {
+        "labels": ["2025-04-03", "2025-04-04", "2025-04-07", "2025-04-08", "2025-04-09", "2025-04-10", "2025-04-11", "2025-04-14", "2025-04-15", "2025-04-16", "2025-04-17", "2025-04-21", "2025-04-22", "2025-04-23", "2025-04-24", "2025-04-25", "2025-04-28", "2025-04-29", "2025-04-30", "2025-05-01", "2025-05-02", "2025-05-05", "2025-05-06", "2025-05-07", "2025-05-08", "2025-05-09", "2025-05-12", "2025-05-13", "2025-05-14", "2025-05-15", "2025-05-16", "2025-05-19", "2025-05-20", "2025-05-21", "2025-05-22", "2025-05-23", "2025-05-27", "2025-05-28", "2025-05-29", "2025-05-30", "2025-06-02", "2025-06-03", "2025-06-04", "2025-06-05", "2025-06-06", "2025-06-09", "2025-06-10", "2025-06-11", "2025-06-12", "2025-06-13", "2025-06-16", "2025-06-17", "2025-06-18", "2025-06-20", "2025-06-23", "2025-06-24", "2025-06-25", "2025-06-26", "2025-06-27", "2025-06-30", "2025-07-01", "2025-07-02", "2025-07-03", "2025-07-07", "2025-07-08", "2025-07-09", "2025-07-10", "2025-07-11", "2025-07-14", "2025-07-15", "2025-07-16", "2025-07-17", "2025-07-18", "2025-07-21", "2025-07-22", "2025-07-23", "2025-07-24", "2025-07-25", "2025-07-28", "2025-07-29", "2025-07-30", "2025-07-31", "2025-08-01", "2025-08-04", "2025-08-05", "2025-08-06", "2025-08-07", "2025-08-08", "2025-08-11", "2025-08-12", "2025-08-13", "2025-08-14", "2025-08-15", "2025-08-18", "2025-08-19", "2025-08-20", "2025-08-21", "2025-08-22", "2025-08-25", "2025-08-26", "2025-08-27", "2025-08-28", "2025-08-29", "2025-09-02", "2025-09-03", "2025-09-04", "2025-09-05", "2025-09-08", "2025-09-09", "2025-09-10", "2025-09-11", "2025-09-12", "2025-09-15", "2025-09-16", "2025-09-17", "2025-09-18", "2025-09-19", "2025-09-22", "2025-09-23", "2025-09-24", "2025-09-25", "2025-09-26", "2025-09-29", "2025-09-30", "2025-10-01", "2025-10-02", "2025-10-03", "2025-10-06", "2025-10-07", "2025-10-08", "2025-10-09", "2025-10-10"],
+        "close_data": [16550.61, 15587.79, 15603.26, 15267.91, 17124.97, 16387.31, 16724.46, 16831.48, 16823.17, 16307.16, 16286.45, 15870.9, 16300.42, 16708.05, 17166.04, 17382.94, 17366.13, 17461.32, 17446.34, 17710.74, 17977.73, 17844.24, 17689.66, 17738.16, 17928.14, 17928.92, 18708.34, 19010.09, 19146.81, 19112.32, 19211.1, 19215.46, 19142.71, 18872.64, 18925.74, 18737.21, 19199.16, 19100.94, 19175.87, 19113.77, 19242.61, 19398.96, 19460.49, 19298.45, 19529.95, 19591.24, 19714.99, 19615.88, 19662.49, 19406.83, 19701.21, 19521.09, 19546.27, 19447.41, 19630.97, 19912.53, 19973.55, 20167.91, 20273.46, 20369.73, 20202.89, 20393.13, 20601.1, 20412.52, 20418.46, 20611.34, 20630.66, 20585.53, 20640.33, 20677.8, 20730.49, 20885.65, 20895.65, 20974.18, 20892.69, 21020.02, 21057.96, 21108.32, 21178.58, 21098.29, 21129.67, 21122.45, 20650.13, 21053.58, 20916.55, 21169.42, 21242.7, 21450.02, 21385.4, 21681.9, 21713.14, 21710.67, 21622.98, 21629.77, 21314.95, 21172.86, 21100.31, 21496.54, 21449.29, 21544.27, 21590.14, 21705.16, 21455.55, 21279.63, 21497.73, 21707.69, 21700.39, 21798.7, 21879.49, 21886.06, 22043.07, 22141.1, 22348.75, 22333.96, 22261.33, 22470.72, 22631.48, 22788.98, 22573.47, 22497.86, 22384.7, 22484.07, 22591.15, 22660.01, 22755.16, 22844.05, 22780.51, 22941.67, 22788.36, 23043.38, 23024.63, 22204.43],
+        "ma120": [18977.74, 18955.29, 18932.45, 18905.5, 18895.58, 18879.08, 18865.34, 18851.52, 18837.21, 18818.27, 18801.69, 18780.48, 18762.0, 18746.5, 18733.62, 18723.41, 18717.33, 18710.84, 18704.73, 18698.66, 18690.28, 18678.4, 18665.09, 18652.09, 18640.81, 18629.96, 18626.63, 18629.38, 18632.34, 18633.38, 18635.42, 18637.45, 18638.61, 18637.09, 18635.02, 18632.32, 18632.17, 18629.64, 18627.1, 18621.92, 18618.11, 18614.27, 18611.97, 18608.73, 18604.52, 18601.92, 18600.16, 18595.51, 18591.79, 18591.9, 18594.64, 18594.21, 18592.39, 18587.53, 18584.28, 18585.87, 18589.92, 18597.07, 18605.34, 18611.57, 18614.39, 18621.92, 18631.27, 18641.69, 18652.78, 18665.84, 18675.17, 18685.56, 18693.98, 18701.65, 18707.66, 18714.6, 18722.44, 18736.04, 18745.7, 18757.27, 18768.73, 18781.08, 18795.96, 18808.0, 18819.98, 18831.06, 18840.45, 18851.61, 18862.22, 18874.88, 18885.69, 18897.55, 18908.75, 18922.3, 18936.89, 18955.11, 18974.58, 18996.27, 19014.94, 19036.84, 19055.62, 19081.84, 19108.2, 19133.13, 19162.47, 19191.72, 19224.94, 19256.97, 19289.05, 19325.76, 19358.64, 19391.89, 19428.35, 19462.81, 19499.08, 19535.38, 19570.05, 19603.9, 19640.26, 19679.14, 19723.38, 19769.13, 19811.83, 19852.63, 19901.25, 19958.72, 20016.95, 20078.55, 20125.47, 20179.28, 20229.74, 20280.66, 20330.37, 20386.51, 20442.66, 20495.44],
+        "ma200": [18452.19, 18440.85, 18429.55, 18417.28, 18414.46, 18408.91, 18403.95, 18399.08, 18393.9, 18386.78, 18378.81, 18368.02, 18358.58, 18350.36, 18344.17, 18338.94, 18332.53, 18328.42, 18323.66, 18319.85, 18317.19, 18316.43, 18315.52, 18315.58, 18315.18, 18314.84, 18321.67, 18330.81, 18339.76, 18348.47, 18358.79, 18366.87, 18376.61, 18387.09, 18400.72, 18412.57, 18427.59, 18439.79, 18451.94, 18463.61, 18473.89, 18484.92, 18494.25, 18502.58, 18510.85, 18519.72, 18528.7, 18538.68, 18547.6, 18556.01, 18565.74, 18575.57, 18585.72, 18594.39, 18606.86, 18621.0, 18635.23, 18652.61, 18669.56, 18686.28, 18700.32, 18714.43, 18729.02, 18743.12, 18757.07, 18772.26, 18785.35, 18798.53, 18811.86, 18824.88, 18838.12, 18851.6, 18865.48, 18879.4, 18894.31, 18909.79, 18925.49, 18940.34, 18956.61, 18971.19, 18985.38, 18999.58, 19011.12, 19023.87, 19036.88, 19050.89, 19065.23, 19080.03, 19094.26, 19109.77, 19126.95, 19143.43, 19158.95, 19174.27, 19187.28, 19200.1, 19215.13, 19231.41, 19247.76, 19263.28, 19276.32, 19288.49, 19299.34, 19309.24, 19320.32, 19332.71, 19345.67, 19361.27, 19376.7, 19391.2, 19406.58, 19422.42, 19439.15, 19455.55, 19470.98, 19488.03, 19505.1, 19522.02, 19537.49, 19551.3, 19564.72, 19577.84, 19592.12, 19606.98, 19620.58, 19635.29, 19649.56, 19663.4, 19676.79, 19695.05, 19713.3, 19726.46]
+    };
+    </script>
+    <!-- 차트 렌더링 및 이벤트는 nasdaq_chart.js에서 처리 -->
+    <script src="nasdaq_chart.js"></script>
+    
+            </div>
+        </section>
+        
+        <!-- 오늘의 미국 주식 요약 -->
+        <section id="stock-summary">
+            <h2>오늘의 미국 주식 요약</h2>
+            
+                <section class="stock-summary-section" style="margin-bottom:24px;">
+                    <h2 style="font-size:1.1em; margin-bottom:8px;">오늘의 미국 주식 요약</h2>
+                    <div style="font-size:0.98em; line-height:1.7; background:#f8fafc; border-radius:8px; padding:16px; border:1px solid #e2e8f0;">
+                        <pre style="white-space:pre-wrap; font-family:inherit; background:none; border:none; margin:0;">9월 CPI 발표와 Fed 금리 인하 기대
+9월 CPI 데이터가 월가 예상보다 좋게 나오며 인플레이션 우려를 낮췄습니다. 특히 서비스 물가 안정과 주거비 둔화가 돋보여, Fed의 10월 및 12월 금리 인하 가능성이 더욱 확고해졌고, 양적 긴축(QT) 조기 종료에 대한 기대도 커졌습니다.
+
+견조한 미국 경제 성장세
+S&P글로벌의 10월 구매관리자지수(PMI)는 제조업과 서비스업 모두 확장 국면을 보이며, 미국 경제가 연율 약 2.5%의 견조한 성장세를 지속하고 있음을 시사합니다. 관세 영향으로 투입 물가는 높지만, 판매 가격 둔화는 경쟁 심화를 반영하며 전반적인 경제 모멘텀이 강화되고 있습니다.
+
+주요 이벤트와 연말 시장 전망
+다음 주 FOMC, 미·중 정상회담, 애플/아마존/MS 등 주요 빅테크 실적 발표가 집중되어 있어 시장의 큰 관심이 쏠리고 있습니다. 현재 3분기 어닝시즌은 S&P500 기업의 87%가 예상치를 상회하며 긍정적인 흐름을 보이는 가운데, 이들 이벤트가 긍정적으로 마무리될 경우 연말 랠리에 대한 기대가 높습니다.</pre>
+                    </div>
+                </section>
+                
+        </section>
+        
+        <section id="economy">
+            <h2>경제 뉴스</h2>
+            
+    <div class='news-header'>주요 경제 뉴스(2025-10-26 18:14)</div>
+    <ul class='news-list'>
+    <li><a href='https://n.news.naver.com/mnews/article/015/0005202042' target='_blank'>• '반도체보다 잘 나간다'…수익률 상위권 '싹쓸이' 잭팟</a></li><li><a href='https://n.news.naver.com/mnews/article/015/0005202041' target='_blank'>• 에이피알, MSCI 편입되면 반등할까</a></li><li><a href='https://n.news.naver.com/mnews/article/015/0005202040' target='_blank'>• "中 휴머노이드 여전히 저평가…성장 초기 투자 비중 확대해야"</a></li><li><a href='https://n.news.naver.com/mnews/article/015/0005202039' target='_blank'>• 포스코인터·한국전력 SK하이닉스 집중매수</a></li><li><a href='https://n.news.naver.com/mnews/article/015/0005202038' target='_blank'>• 외국인 매수에 한달 새 42% 뛴 일진전기</a></li><li><a href='https://n.news.naver.com/mnews/article/015/0005202037' target='_blank'>• 이노테크 일반청약…더핑크퐁 등 수요예측</a></li></ul></div>
+        </section>
+
+
+    </div>
+    
+    <!-- 부동산맵 메인 탭 -->
+    <div id="realestate-map-main-tab" class="main-tab-content">
+        <!-- 부동산 매매지수 지도 -->
+        <section class="map-section">
+            <h2>부동산 매매지수 지도</h2>
+            <div class="map-controls">
+                <div class="map-type-buttons">
+                    <button class="map-type-btn active" onclick="changeMapDisplay('index')">매매지수</button>
+                    <button class="map-type-btn" onclick="changeMapDisplay('weekly_change')">주간변동</button>
+                    <button class="map-type-btn" onclick="changeMapDisplay('monthly_change')">월간변동</button>
+                </div>
+                <div class="map-legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #ff4444;"></div>
+                        <span>높음</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #ffaa00;"></div>
+                        <span>보통</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #44ff44;"></div>
+                        <span>낮음</span>
+                    </div>
+                </div>
+            </div>
+            <div class="naver-map-container">
+                <div id="naver-map-realestate" style="margin-bottom: 10px;"></div>
+            </div>
+            <div style="text-align: left; margin-top: 10px;">
+                <small style="font-size: 13px; color: #4a5568;">업데이트: <span id="update-date"></span></small>
+            </div>
+            <div class="map-info" style="margin-top: 10px;">
+                <p>※ 지역을 클릭하면 상세 정보를 확인할 수 있습니다</p>
+                <p>※ 매매지수: 2022년 1월 = 100.0 기준</p>
+                <p>※ 데이터 출처: KB부동산 통계</p>
+            </div>
+
+        </section>
+        
+        <!-- 월간매매지수 -->
+        <section class="monthly-data-section">
+            <h2>부동산 매매 가격지수 현황</h2>
+            
+    <div class='news-header'>부동산 매매 가격지수 현황(2025년 10월 26일)</div>
+    <div class='realestate-data'>
+        <h3>매매 가격지수</h3>
+        <div class='table-scroll'>
+        <table class='realestate-table'>
+            <tr>
+                <th>지역</th>
+                <th>최신지수</th>
+                <th>전월대비</th>
+                <th>변동률</th>
+                <th>3개월전</th>
+                <th>변동률</th>
+                <th>6개월전</th>
+                <th>변동률</th>
+                <th>1년전</th>
+                <th>변동률</th>
+            </tr>
+            <tr>
+                <td>서울 강남구</td>
+                <td class='high-index'>120.90</td>
+                <td class='up'>▲ 1.39</td>
+                <td class='up high-index'>+1.16%</td>
+                <td class='up'>▲ 4.19</td>
+                <td class='up high-index'>+3.59%</td>
+                <td class='up'>▲ 13.64</td>
+                <td class='up high-index'>+12.72%</td>
+                <td class='up'>▲ 19.04</td>
+                <td class='up high-index'>+18.69%</td>
+            </tr>
+            <tr>
+                <td>서울 마포구</td>
+                <td class='high-index'>107.19</td>
+                <td class='up'>▲ 1.09</td>
+                <td class='up high-index'>+1.03%</td>
+                <td class='up'>▲ 4.70</td>
+                <td class='up high-index'>+4.58%</td>
+                <td class='up'>▲ 8.20</td>
+                <td class='up high-index'>+8.28%</td>
+                <td class='up'>▲ 10.05</td>
+                <td class='up high-index'>+10.34%</td>
+            </tr>
+        </table>
+        </div>
+        
+        <h3>주택 매매 거래량 (월별)</h3>
+        <div class='table-scroll'>
+        <table class='realestate-table'>
+            <tr>
+                <th>지역</th><th>10월</th><th>9월</th><th>8월</th><th>7월</th><th>6월</th><th>5월</th><th>4월</th><th>3월</th><th>2월</th><th>1월</th><th>12월</th><th>11월</th></tr>
+            <tr>
+                <td>서울 강남구</td><td class=''>170건</td><td class=''>199건</td><td class=''>112건</td><td class=''>319건</td><td class='high-volume'>506건</td><td class=''>248건</td><td class=''>98건</td><td class='high-volume'>812건</td><td class='high-volume'>580건</td><td class=''>193건</td><td class=''>89건</td><td class=''>76건</td>
+            <tr>
+                <td>서울 마포구</td><td class=''>128건</td><td class='high-volume'>515건</td><td class=''>180건</td><td class=''>123건</td><td class='high-volume'>651건</td><td class=''>429건</td><td class=''>333건</td><td class='high-volume'>540건</td><td class=''>339건</td><td class=''>157건</td><td class=''>195건</td><td class=''>118건</td>
+        </table>
+        </div>
+        
+        <h3>주간별 매매 가격지수</h3>
+        <div class='table-scroll'>
+        <table class='realestate-table'>
+            <tr>
+                <th>지역</th>
+                <th>최신지수</th>
+                <th>1주전</th>
+                <th>변동률</th>
+                <th>2주전</th>
+                <th>변동률</th>
+                <th>3주전</th>
+                <th>변동률</th>
+                <th>4주전</th>
+                <th>변동률</th>
+            </tr>
+            <tr>
+                <td>서울 강남구</td>
+                <td>123.26</td>
+                <td class='up'>▲ 0.60</td>
+                <td class='up'>+0.49%</td>
+                <td class='up'>▲ 1.51</td>
+                <td class='up'>+1.24%</td>
+                <td class='up'>▲ 1.96</td>
+                <td class='up'>+1.62%</td>
+                <td class='up'>▲ 2.36</td>
+                <td class='up'>+1.95%</td>
+            </tr>
+            <tr>
+                <td>서울 마포구</td>
+                <td>111.96</td>
+                <td class='up'>▲ 1.60</td>
+                <td class='up'>+1.45%</td>
+                <td class='up'>▲ 3.43</td>
+                <td class='up'>+3.16%</td>
+                <td class='up'>▲ 4.21</td>
+                <td class='up'>+3.90%</td>
+                <td class='up'>▲ 4.77</td>
+                <td class='up'>+4.45%</td>
+            </tr>
+        </table>
+        </div>
+        
+        <h3>전세 가격지수</h3>
+        <div class='table-scroll'>
+        <table class='realestate-table'>
+            <tr>
+                <th>지역</th>
+                <th>최신지수</th>
+                <th>전월대비</th>
+                <th>변동률</th>
+                <th>3개월전</th>
+                <th>변동률</th>
+                <th>6개월전</th>
+                <th>변동률</th>
+                <th>1년전</th>
+                <th>변동률</th>
+            </tr>
+            <tr>
+                <td>서울 강남구</td>
+                <td>92.25</td>
+                <td class='up'>▲ 0.34</td>
+                <td class='up'>+0.37%</td>
+                <td class='up'>▲ 0.72</td>
+                <td class='up'>+0.78%</td>
+                <td class='up'>▲ 1.51</td>
+                <td class='up'>+1.66%</td>
+                <td class='up'>▲ 3.92</td>
+                <td class='up'>+4.44%</td>
+            </tr>
+            <tr>
+                <td>서울 마포구</td>
+                <td>98.01</td>
+                <td class='up'>▲ 0.17</td>
+                <td class='up'>+0.18%</td>
+                <td class='up'>▲ 0.48</td>
+                <td class='up'>+0.50%</td>
+                <td class='up'>▲ 0.94</td>
+                <td class='up'>+0.96%</td>
+                <td class='up'>▲ 2.74</td>
+                <td class='up'>+2.88%</td>
+            </tr>
+        </table>
+        </div>
+        
+        <div class='data-info'>
+            <p>※ 데이터 출처: KB부동산 통계, 국토교통부 실거래가 공개시스템</p>
+            <p>※ 매매/전세 가격지수 기준: 2020년 1월 = 100.0</p>
+            <p>※ 거래량: 국토교통부 아파트 실거래 데이터 기준</p>
+            <p>※ 월간 데이터: 전월대비 / 주간 데이터: 전주대비</p>
+            <p>※ 업데이트: 2025-10-26 18:15</p>
+            <p>※ 데이터 제공: <a href='https://data.kbland.kr/kbstats/data-comparison' target='_blank'>KB부동산</a>, <a href='https://rt.molit.go.kr' target='_blank'>국토교통부</a></p>
+        </div>
+    </div>
+        </section>
+        
+        <!-- 월간 거래량 차트 -->
+        <section class="monthly-volume-section">
+            <h2>월간 거래량</h2>
+            <div id="monthly-transaction-chart"></div>
+        </section>
+        
+        <!-- 주간 매매지수 차트 -->
+        <section class="weekly-index-section">
+            <h2>주간 매매지수</h2>
+            <div id="weekly-index-chart"></div>
+        </section>
+    </div>
+    <!-- JS 및 데이터는 body 끝에서 로드 -->
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <script>
+    window.weeklyIndexData = {"price_index":[{"area":"서울 강남구","index":123.2577229059,"change":0.6040460896999917,"rate":0.49248102900752977,"change_2w":1.5070423802999926,"rate_2w":1.2378102313630297,"change_3w":1.961809552600002,"rate_3w":1.6173748136805044,"change_4w":2.355422926199992,"rate_4w":1.9482035714750483,"indices":[120.9022999797,121.2959133533,121.7506805256,122.6536768162,123.2577229059]},{"area":"서울 마포구","index":111.9606735009,"change":1.6035907610999942,"rate":1.453092743381901,"change_2w":3.432948278300003,"rate_2w":3.1631993311006212,"change_3w":4.2070923136000005,"rate_3w":3.9043642607915983,"change_4w":4.771355054200001,"rate_4w":4.451334445766219,"indices":[107.1893184467,107.7535811873,108.5277252226,110.3570827398,111.9606735009]}]};
+    window.monthlyIndexData = [{"area_code":"11680","area":"서울 강남구","monthly_volumes":{"10월":119,"9월":199,"8월":112,"7월":319,"6월":506,"5월":248,"4월":98,"3월":812,"2월":580,"1월":193,"12월":112,"11월":163}},{"area_code":"11440","area":"서울 마포구","monthly_volumes":{"10월":176,"9월":515,"8월":180,"7월":123,"6월":651,"5월":429,"4월":333,"3월":540,"2월":339,"1월":157,"12월":186,"11월":127}}];
+    window.monthly_volume_data = window.monthlyIndexData;
+    </script>
+    <script src="js/nasdaq_chart.js"></script>
+    <script src="js/weekly_index_chart.js"></script>
+    <script src="js/monthly_transaction_chart.js"></script>
+    <!-- 메인 탭 및 네이버맵 스크립트 -->
+    <script src="js/main_tabs.js"></script>
+    <script src="js/naver_map.js"></script>
+    
+    <!-- 오늘 날짜 표시 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            const updateDateElement = document.getElementById('update-date');
+            if (updateDateElement) {
+                updateDateElement.textContent = `${year}년 ${month}월 ${day}일`;
+            }
+        });
+    </script>
+</body>
+</html>
