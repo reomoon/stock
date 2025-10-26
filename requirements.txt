@@ -10,4 +10,3 @@ yfinance
 beautifulsoup4
 requests
 PublicDataReader
-pandas
