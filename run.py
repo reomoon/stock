@@ -5,6 +5,8 @@
 """
 import json
 import os
+import subprocess
+import re
 from page.market import stock
 from page.plot_averages import make_nasdaq_ma_graphs
 from page.news import economy_news, realestate_news
@@ -13,14 +15,75 @@ from page.realestate import realestate, get_weekly_real_estate_data, get_apt2me_
 # 네이버 클라우드 플랫폼 Maps API 클라이언트 ID
 NAVER_CLIENT_ID = "wohmf5ntoz"
 
+# 미국주식 stock_summary.py 실행하여 요약문 가져오기
+import subprocess
+import re # 정규식은 제거하지만, subprocess를 위해 필요할 수 있습니다.
 
+def get_stock_summary():
+    try:
+        script_path = os.path.join(os.path.dirname(__file__), "page", "stock_summary.py")
+        result = subprocess.run(
+            ["python", "-X", "utf8", script_path],
+            capture_output=True, text=True, encoding="utf-8", timeout=60
+        )
+        # 여기서 인코딩 에러가 나면 cp949로 강제 변환
+        try:
+            stdout = result.stdout
+        except UnicodeDecodeError:
+            stdout = result.stdout.encode('cp949').decode('utf-8', errors='replace')
+
+        # 디버깅
+        print("==== stock_summary.py 출력 ====")
+        print("stock_summary.py 전체 출력:\n", stdout)
+        print("stderr (오류 출력):\n", result.stderr)
+        print("==== end ====")
+
+        
+        # 1. 요약 본문 시작/끝 구분자를 기준으로 분리
+        start_tag = "START_SUMMARY_BODY"
+        end_tag = "END_SUMMARY_BODY"
+        
+        if start_tag not in stdout or end_tag not in stdout:
+             print("❗ 요약 결과를 찾지 못했습니다. stock_summary.py 출력:\n", stdout)
+             return ""
+             
+        # 요약 본문 추출
+        summary_start = stdout.find(start_tag) + len(start_tag)
+        summary_end = stdout.find(end_tag)
+        
+        summary = stdout[summary_start:summary_end].strip()
+        
+        # 2. URL 추출 (stdout의 끝 부분에서 'URL: '을 찾습니다)
+        # url_match = re.search(r"URL:\s*(.+)", stdout)
+        # url = url_match.group(1).strip() if url_match else "#"
+
+        if summary:
+            return f"""
+            <section class=\"stock-summary-section\" style=\"margin-bottom:24px;\">
+                <h2 style=\"font-size:1.1em; margin-bottom:8px;\">오늘의 미국 주식 요약</h2>
+                <div style=\"font-size:0.98em; line-height:1.7; background:#f8fafc; border-radius:8px; padding:16px; border:1px solid #e2e8f0;\">
+                    <pre style=\"white-space:pre-wrap; font-family:inherit; background:none; border:none; margin:0;\">{summary}</pre>
+                </div>
+            </section>
+            """
+        else:
+            print("❗ 요약 결과를 찾지 못했습니다. 디버깅 정보:")
+            return ""
+    except Exception as e:
+        print("stock_summary.py 실행 오류:", e)
+        return ""
 
 # 정적 HTML 파일 생성 (GitHub Actions용)
 def generate_static_html():
+    # public 폴더가 없으면 생성
+    if not os.path.exists("public"):
+        os.makedirs("public")
+
     ma_graphs_html = make_nasdaq_ma_graphs()
     stock_data = stock()
     economy_news_data = economy_news()
     realestate_news_data = realestate_news()
+    stock_summary_html = get_stock_summary()
 
     # 실제 데이터 호출
     weekly_data = get_weekly_real_estate_data()
@@ -74,16 +137,15 @@ def generate_static_html():
             </div>
         </section>
         
+        <!-- 오늘의 미국 주식 요약 -->
+        {stock_summary_html}    
+        
         <section id=\"economy\">
             <h2>경제 뉴스</h2>
             {economy_news_data}
         </section>
-        
-        <!-- 부동산 뉴스 섹션 -->
-        <section id=\"realestate-news\">
-            <h2>부동산 뉴스</h2>
-            {realestate_news_data}
-        </section>
+
+
     </div>
     
     <!-- 부동산맵 메인 탭 -->

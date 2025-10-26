@@ -1,0 +1,198 @@
+import asyncio
+from playwright.async_api import async_playwright
+from bs4 import BeautifulSoup
+from datetime import datetime
+import os
+from google import genai
+from google.genai.errors import APIError
+from typing import Optional, Dict, Any
+from dotenv import load_dotenv
+
+# .env 파일에서 환경 변수를 로드합니다.
+load_dotenv()
+
+# --- 설정값 ---
+BASE_URL = "https://www.hankyung.com"
+NEWS_WALL_URL = f"{BASE_URL}/globalmarket/news-wallstreet-now"
+ARTICLE_BODY_SELECTOR = '#articletxt' 
+
+# === 최종 확정된 핵심 선택자 그룹 (사용자 제공 HTML 기반) ===
+ARTICLE_ITEM_SELECTOR = 'ul.news-list li' 
+TITLE_SELECTOR = '.news-tit a'
+DATE_SELECTOR = '.txt-date' 
+# =================================================
+
+def summarize_text(text: str) -> str:
+    """Gemini API를 사용하여 원하는 형식으로 텍스트를 요약합니다."""
+    
+    if not text:
+        return "요약할 내용이 없습니다."
+    
+    api_key = os.getenv('GEMINI_API_KEY')
+    if not api_key:
+        return "❌ 오류: GEMINI_API_KEY 환경 변수를 .env 파일에 설정해야 Gemini API를 사용할 수 있습니다."
+    
+    try:
+        client = genai.Client(api_key=api_key)
+
+        prompt = (
+            "다음 [기사 본문]을 한국어로 읽고, 핵심 내용을 3~4개의 주요 주제로 나누어 요약해 주세요. "
+            "요약은 아래 예시와 같이 [주제]와 [주제에 대한 2~3줄의 핵심 내용]의 구조를 따라야 합니다. "
+            "불필요한 서론이나 결론 없이, 바로 주제와 요약 내용만 출력하세요. 내용은 간결하게 작성하세요.\n\n"
+            "[예시 형식]\n"
+            "9월 CPI 발표와 금리 인하 기대\n"
+            "9월 CPI 데이터가 예상보다 좋았으며, 관세 인플레이션 우려가 없음을 보여줬다고 분석했습니다.\n"
+            "상품 물가 상승에도 불구하고 서비스 물가가 안정되면서, 연준(Fed)의 금리 인하가 확정적이라는 기대가 높아졌습니다.\n"
+            "\n"
+            "[기사 본문]\n"
+            f"{text}"
+        )
+        
+        response = client.models.generate_content(
+            model='gemini-2.5-flash',
+            contents=prompt,
+        )
+        
+        return response.text.strip()
+        
+    except APIError as e:
+        return f"❌ Gemini API 호출 오류가 발생했습니다: {e}"
+    except Exception as e:
+        return f"❌ 요약 중 알 수 없는 오류가 발생했습니다: {e}"
+
+async def get_latest_article_playwright(page) -> Optional[Dict[str, Any]]:
+    """
+    Playwright 페이지 객체를 사용하여 동적 로딩된 페이지에서 최신 기사를 추출합니다.
+    (오늘 날짜 기사를 우선 찾고, 없으면 목록의 맨 위 기사를 가져옵니다.)
+    """
+    today_date = datetime.now().strftime("%Y.%m.%d")
+    print(f"[정보] 오늘 ({today_date}) 날짜 기사를 우선 찾고 있습니다.")
+
+    try:
+        await page.goto(NEWS_WALL_URL, wait_until='domcontentloaded') 
+        await page.locator(ARTICLE_ITEM_SELECTOR).first.wait_for(state="attached", timeout=15000)
+
+        content = await page.content()
+        soup = BeautifulSoup(content, 'html.parser')
+
+        news_list = soup.select(ARTICLE_ITEM_SELECTOR) 
+        
+        if not news_list:
+            print("❌ 기사 목록 요소를 찾지 못했습니다. 최종 선택자 확인이 필요합니다.")
+            return None
+        
+        # --- 기사 정보 추출 및 로직 수정 ---
+        target_article = None
+        
+        for i, item in enumerate(news_list):
+            title_tag = item.select_one(TITLE_SELECTOR)
+            date_tag = item.select_one(DATE_SELECTOR)
+            
+            if title_tag and date_tag:
+                title = title_tag.get_text(strip=True)
+                relative_url = title_tag.get('href')
+                
+                article_url = relative_url
+                if not article_url.startswith('http'):
+                    article_url = BASE_URL + article_url
+
+                full_date_time = date_tag.get_text(strip=True)
+                article_date = full_date_time.split()[0]
+                
+                current_article = {
+                    'title': title,
+                    'url': article_url,
+                    'date': article_date
+                }
+
+                # 1. 목록의 맨 위에 있는 기사를 무조건 저장 (가장 최신 기사)
+                if i == 0:
+                    target_article = current_article
+                
+                # 2. 오늘 날짜 기사를 발견하면 그것을 최종 타겟으로 설정하고 반복 종료
+                if article_date == today_date:
+                    target_article = current_article
+                    break # 오늘 기사를 찾았으니 반복을 멈춥니다.
+        
+        if target_article:
+            if target_article['date'] == today_date:
+                 print(f"✅ 오늘 날짜 기사({today_date})를 발견했습니다.")
+            else:
+                 print(f"⚠️ 오늘 날짜 기사가 없어, 가장 최신 날짜({target_article['date']}) 기사를 가져옵니다.")
+            return target_article
+        
+        return None
+
+    except Exception as e:
+        print(f"❌ 웹 크롤링 중 오류 발생: {e}")
+        return None
+
+
+async def get_article_content_playwright(page, url: str) -> Optional[str]:
+    """Playwright를 사용하여 개별 기사 본문을 추출합니다."""
+    try:
+        await page.goto(url, wait_until='domcontentloaded')
+        
+        await page.locator(ARTICLE_BODY_SELECTOR).wait_for(state="attached", timeout=15000)
+
+        content = await page.content()
+        soup = BeautifulSoup(content, 'html.parser')
+        content_element = soup.select_one(ARTICLE_BODY_SELECTOR)
+        
+        if content_element:
+            for ad_tag in content_element.find_all(class_='atc-ad-area'):
+                ad_tag.decompose()
+            for script_tag in content_element.find_all('script'):
+                script_tag.decompose()
+                
+            content = content_element.get_text('\n', strip=True)
+            return content
+        else:
+            return None
+
+    except Exception as e:
+        print(f"❌ 기사 본문 접속 또는 추출 오류 ({url}): {e}")
+        return None
+
+async def main_async():
+    """메인 비동기 함수: Playwright로 기사를 가져와 요약합니다."""
+    print("📰 한경 월스트리트나우 요약 스크립트 (Playwright) 실행 시작")
+    
+    async with async_playwright() as p:
+        browser = await p.chromium.launch(headless=True)
+        page = await browser.new_page()
+
+        try:
+            # 1. 오늘 또는 가장 최신 기사 가져오기
+            article = await get_latest_article_playwright(page)
+
+            if not article:
+                print("\n[완료] 크롤링할 기사를 찾지 못했습니다. 스크립트를 종료합니다.")
+                return
+
+            print(f"\n✅ 기사 1개를 발견했습니다. (날짜: {article['date']})")
+            print(f"  └ 제목: {article['title']}")
+            print(f"  └ URL: {article['url']}")
+            
+            # 2. 기사 본문 가져오기
+            print("\n[정보] 기사 본문을 추출 중...")
+            content = await get_article_content_playwright(page, article['url'])
+            
+            if content:
+                # 3. Gemini API를 사용하여 요약 수행
+                print("[정보] Gemini API를 사용하여 요약을 요청 중...")
+                summary = summarize_text(content)
+                
+                # 4. 결과 출력: 구분선을 제거하고 깔끔한 시작/끝 태그만 남깁니다.
+                print("START_SUMMARY_BODY", flush=True)
+                print(summary, flush=True)
+                print("END_SUMMARY_BODY", flush=True)
+                print(f"URL: {article['url']}", flush=True)
+            else:
+                print("\n❌ 기사 본문을 가져오는 데 실패하여 요약할 수 없습니다.")
+        
+        finally:
+            await browser.close()
+            
+if __name__ == "__main__":
+    asyncio.run(main_async())
