@@ -2,4 +2,4 @@
 page\_cache/
 public\main.html
 screenshots/
-.env
+*.env
