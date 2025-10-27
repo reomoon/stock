@@ -39,7 +39,10 @@ def get_stock_summary():
     # 디버깅
     print("==== stock_summary.py 출력 ====")
     print("stock_summary.py 전체 출력:\n", stdout)
-    print("stderr (오류 출력):\n", result.stderr)
+    if result.stderr.strip():
+        print("stderr (오류 출력):\n", result.stderr)
+    else:
+        print("stderr (오류 출력): 오류 없음")
     print("==== end ====")
 
     # 1. 요약 본문 시작/끝 구분자를 기준으로 분리
@@ -177,10 +180,14 @@ def generate_static_html():
     </header> -->
     
     <!-- 메인 탭 네비게이션 -->
+
     <nav class="main-nav">
         <div class="main-tab-buttons">
-            <button class="main-tab-button active" data-tab="economy-main-tab">경제</button>
-            <button class="main-tab-button" data-tab="realestate-map-main-tab">부동산맵</button>
+            <button class="main-tab-button active" data-tab="economy-main-tab" style="height: 40px; padding: 2px 10px; font-size: 1.2em;">경제</button>
+            <button class="main-tab-button" data-tab="realestate-map-main-tab" style="height: 40px; padding: 2px 10px; font-size: 1.2em;">부동산맵</button>
+        </div>
+        <div class="main-nav-extra-buttons" style="display: flex; gap: 8px; justify-content: flex-end; align-items: center; margin: 0; padding: 0; background: none; box-shadow: none; border: none; font-size: 0.95em; line-height: 1;">
+            <!-- 필요시 버튼 추가 -->
         </div>
     </nav>
     
@@ -210,7 +217,7 @@ def generate_static_html():
     <!-- 부동산맵 메인 탭 -->
     <div id="realestate-map-main-tab" class="main-tab-content">
         <!-- 부동산 매매지수 지도 -->
-        <section class=\"map-section\">
+        <section class=\"map-s<section class="map-section" style="padding-right: 5px;padding-left: 5px;padding-top: 5px;">
             <h2>부동산 매매지수 지도</h2>
             <div class=\"map-controls\">
                 <div class=\"map-type-buttons\">
@@ -218,26 +225,27 @@ def generate_static_html():
                     <button class=\"map-type-btn\" onclick=\"changeMapDisplay('weekly_change')\">주간변동</button>
                     <button class=\"map-type-btn\" onclick=\"changeMapDisplay('monthly_change')\">월간변동</button>
                 </div>
-                <div class=\"map-legend\">
-                    <div class=\"legend-item\">
-                        <div class=\"legend-color\" style=\"background: #ff4444;\"></div>
-                        <span>높음</span>
-                    </div>
-                    <div class=\"legend-item\">
-                        <div class=\"legend-color\" style=\"background: #ffaa00;\"></div>
-                        <span>보통</span>
-                    </div>
-                    <div class=\"legend-item\">
-                        <div class=\"legend-color\" style=\"background: #44ff44;\"></div>
-                        <span>낮음</span>
-                    </div>
-                </div>
+                <!-- map-legend moved below -->
             </div>
             <div class=\"naver-map-container\">
                 <div id=\"naver-map-realestate\" style=\"margin-bottom: 10px;\"></div>
             </div>
-            <div style=\"text-align: left; margin-top: 10px;\">
+            <div style=\"display: flex; justify-content: space-between; align-items: center; margin-top: 10px;\">
                 <small style=\"font-size: 13px; color: #4a5568;\">업데이트: <span id=\"update-date\"></span></small>
+                <div class=\"map-legend\" style=\"display: flex; gap: 10px; align-items: center;\">
+                    <div class=\"legend-item\" style=\"display: flex; align-items: center; gap: 4px;\">
+                        <div class=\"legend-color\" style=\"background: #ff4444; width: 16px; height: 16px; border-radius: 50%; border: 2px solid #fff;\"></div>
+                        <span style=\"font-size: 12px; color: #333;\">높음</span>
+                    </div>
+                    <div class=\"legend-item\" style=\"display: flex; align-items: center; gap: 4px;\">
+                        <div class=\"legend-color\" style=\"background: #ffaa00; width: 16px; height: 16px; border-radius: 50%; border: 2px solid #fff;\"></div>
+                        <span style=\"font-size: 12px; color: #333;\">보통</span>
+                    </div>
+                    <div class=\"legend-item\" style=\"display: flex; align-items: center; gap: 4px;\">
+                        <div class=\"legend-color\" style=\"background: #44ff44; width: 16px; height: 16px; border-radius: 50%; border: 2px solid #fff;\"></div>
+                        <span style=\"font-size: 12px; color: #333;\">낮음</span>
+                    </div>
+                </div>
             </div>
             <div class=\"map-info\" style=\"margin-top: 10px;\">
                 <p>※ 지역을 클릭하면 상세 정보를 확인할 수 있습니다</p>
@@ -254,13 +262,21 @@ def generate_static_html():
         </section>
         
         <!-- 월간 거래량 차트 -->
-        <section class="monthly-volume-section">
+        <section class="monthly-volume-section" 
+                    style="
+                padding-left: 5px;
+                padding-right: 5px;
+            ">
             <h2>월간 거래량</h2>
             <div id=\"monthly-transaction-chart\"></div>
         </section>
         
         <!-- 주간 매매지수 차트 -->
-        <section class="weekly-index-section">
+        <section class="weekly-index-section"
+            style="
+                padding-left: 5px;
+                padding-right: 5px;
+            ">
             <h2>주간 매매지수</h2>
             <div id=\"weekly-index-chart\"></div>
         </section>

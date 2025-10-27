@@ -78,8 +78,12 @@
         modeBarButtonsToRemove: ['pan2d', 'select2d', 'lasso2d', 'resetScale2d', 'zoomIn2d', 'zoomOut2d']
     };
 
-    // 7. 차트 그리기
+    // 7. 차트 그리기 (반응형)
     Plotly.newPlot('nasdaqChart', data, layout, config);
+    // 리사이즈 이벤트: 모바일 회전/브라우저 크기 변경 시 차트 리플로우
+    window.addEventListener('resize', function() {
+        Plotly.Plots.resize('nasdaqChart');
+    });
 
     // 8. 터치/펜 드래그 중에도 hover 유지 이벤트
     var nasdaqDiv = document.getElementById('nasdaqChart');
