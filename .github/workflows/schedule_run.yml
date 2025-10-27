@@ -18,12 +18,17 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    # env:
-      # OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }} # git 시크릿 키 추가
+    # FIX: GitHub Actions 토큰에 쓰기 권한을 명시적으로 부여
+    permissions: 
+      contents: write  # 파일(main.html)을 커밋하고 푸시할 권한
+      pull-requests: write # (선택 사항: PR 작업 시 필요)
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }} # 기본 토큰 사용 명시
+          fetch-depth: 0 # 모든 기록을 가져오도록 설정 (커밋/푸시 안정화)
 
       - name: Set up Python
         uses: actions/setup-python@v3
