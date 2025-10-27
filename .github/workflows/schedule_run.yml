@@ -55,6 +55,9 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           TEST_MODE: "True"
         run: |
+          echo "DEBUG: CHATGPT_API_KEY=$CHATGPT_API_KEY"
+          echo "DEBUG: OPENAI_API_KEY=$OPENAI_API_KEY"
+          echo "DEBUG: TEST_MODE=$TEST_MODE"
           python -X utf8 run.py
 
       - name: Commit and push changes
