@@ -52,7 +52,7 @@ jobs:
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add public/main.html
           git commit -m "Auto update main.html" || echo "No changes to commit"
-          git push
+          git push --force
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
