@@ -45,17 +45,12 @@ jobs:
 
       - name: Run Python Script with API Keys 
         # API 키를 'run.py'가 실행하는 'stock_summary.py'에 환경 변수로 주입합니다.
+        env:
+          CHATGPT_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          TEST_MODE: "True"
         run: |
-          OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
-          CHATGPT_API_KEY=${{ secrets.OPENAI_API_KEY }} \
-          TEST_MODE=True 
           python -X utf8 run.py
-          
-      # 💡 만약 'stock_summary.py'를 직접 실행하는 경우:
-      # run: |
-      #   OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
-      #   CHATGPT_API_KEY=${{ secrets.OPENAI_API_KEY }} \
-      #   python page/stock_summary.py
 
       - name: Commit and push changes
         run: |
