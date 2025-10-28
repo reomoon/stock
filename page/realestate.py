@@ -29,7 +29,8 @@ if os.environ.get("TEST_MODE") == "True":
         "11680": "서울 강남구",
     }
 else:
-    # 주요 지역의 행정구역 코드와 한글 지역명 매핑 딕셔너리
+    # 주요 지역의 행정구역 코드와 한글 지역명 매핑
+    # 네이버 맵 코드 위치(public/js/realestate-map.js의 pu 변수 참고)
     REGION_CODES = {
         "11680": "서울 강남구",
         "11650": "서울 서초구",
@@ -74,6 +75,7 @@ else:
         "41285": "경기 고양시 일산동구",
         "41192": "경기 부천시 원미구",
         "41194": "경기 부천시 소사구",
+        "41287": "경기 고양시 일산서구",
         "41570": "경기 김포시",
         "41390": "경기 시흥시",
         "41150": "경기 의정부시",
@@ -121,7 +123,7 @@ def realestate():
         current_date = datetime.now().strftime("%Y년 %m월 %d일")
         
         html = f"""
-    <div class='news-header'>부동산 매매 가격지수 현황({current_date})</div>
+    <div class='news-header'>업데이트: {current_date}</div>
     <div class='realestate-data'>
         <h3>매매 가격지수</h3>
         <div class='table-scroll'>

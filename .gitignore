@@ -1,5 +1,7 @@
 *.pyc
 page\_cache/
-public\main.html
+public\main.html/
+public\public\main.html/
 screenshots/
 *.env
+main.html
