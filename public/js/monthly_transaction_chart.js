@@ -8,8 +8,8 @@ function getMonthLabels() {
     // 최근 12개월 (좌측이 1년전, 우측이 저번달)
     const now = new Date();
     let labels = [];
-    for (let i = 12; i >= 0; i--) {
-        let d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    for (let i = 12; i >= 1; i--) { // 이번달 제외
+        let d = new Date(now.getFullYear(), now.getMonth() - i +1, 1);
         labels.push(`${d.getFullYear()}-${d.getMonth() + 1}월`);
     }
     return labels;
