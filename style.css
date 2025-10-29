@@ -278,7 +278,7 @@ section {
 }
 
 .down {
-    color: #3182ce;
+    color: #3182ce !important; /* 주식표에서 하락 색상 */
     font-weight: 600;
         color: #222;
         font-family: 'NanumSquare', 'NanumGothic', 'Noto Sans KR', 'Apple SD Gothic Neo', Arial, sans-serif;
