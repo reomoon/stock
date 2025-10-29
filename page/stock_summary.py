@@ -47,7 +47,7 @@ def summarize_text(text: str) -> str:
     try:
         client = openai.OpenAI(api_key=api_key)
         response = client.chat.completions.create(
-            model="gpt-3.5-turbo-16k",
+            model="gpt-4o",
             messages=[
                 {"role": "system", "content": "당신은 한국어 요약 경제 전문가입니다."},
                 {"role": "user", "content": prompt}
