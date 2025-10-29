@@ -32,18 +32,17 @@ def summarize_text(text: str) -> str:
         return "❌ 오류: OPENAI_API_KEY 또는 CHATGPT_API_KEY 환경 변수를 설정해야 ChatGPT API를 사용할 수 있습니다."
 
     prompt = (
-        "다음 [기사 본문]을 한국어로 읽고, 핵심 내용을 3~4개의 주요 주제로 나누어 요약해 주세요. "
-        "각 주제는 반드시 '1. 2. 3.'과 같이 번호로 시작해야 하며, [ ] 괄호 없이 작성해 주세요. "
-        "요약은 아래 예시와 같이 '번호. 주제'와 그에 대한 2~3줄의 핵심 내용 구조를 따라야 합니다. "
-        "불필요한 서론이나 결론 없이, 바로 주제와 요약 내용만 출력하세요. 모든 내용은 간결하고, 존대말(공송한 말투)작성하세요."
-        "전체 요약 결과가 600 토큰 이내로 나오도록 분량을 조절해 주세요.\n\n"
+        "다음 [기사 본문]을 한국어로 읽고, 핵심 내용을 3~4개의 주요 주제로 나누어 요약해. "
+        "각 주제는 반드시 '1. 2. 3.'과 같이 번호로 시작해야 하며, [ ] 괄호 없이 작성해. "
+        "요약은 아래 예시와 같이 '번호. 주제'와 그에 대한 2~3줄의 핵심 내용 구조를 따라. "
+        "불필요한 서론이나 결론 없이, 바로 주제와 요약 내용만 출력하세요. 모든 내용은 간결하고, 존대말(공송한 말투)작성."
+        "전체 요약 결과가 600 토큰 이내로 나오도록 분량을 조절.\n\n"
         "[예시 형식]\n"
         "1. 9월 CPI 발표와 금리 인하 기대\n"
         "9월 CPI 데이터가 예상보다 좋았으며, 관세 인플레이션 우려가 없음을 보여줬다고 분석했습니다.\n"
-        "\n"
-        "[기사 본문]\n"
         f"{text}"
     )
+    
     try:
         client = openai.OpenAI(api_key=api_key)
         response = client.chat.completions.create(
@@ -52,7 +51,7 @@ def summarize_text(text: str) -> str:
                 {"role": "system", "content": "당신은 한국어 요약 경제 전문가입니다."},
                 {"role": "user", "content": prompt}
             ],
-            max_tokens=900, # 요약 결과가 900 토큰 이내로 제한
+            max_tokens=600, # 요약 결과가 600 토큰 이내로 제한
             temperature=0.5,
         )
         content = response.choices[0].message.content if response.choices and response.choices[0].message else None
