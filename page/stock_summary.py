@@ -36,7 +36,8 @@ def summarize_text(text: str) -> str:
         "각 주제는 반드시 '1. 2. 3.'과 같이 번호로 시작해야 하며, [ ] 괄호 없이 작성해 주세요. "
         "요약은 아래 예시와 같이 '번호. 주제'와 그에 대한 2~3줄의 핵심 내용 구조를 따라야 합니다. "
         "불필요한 서론이나 결론 없이, 바로 주제와 요약 내용만 출력하세요. 내용은 간결하게 작성하세요. "
-        "모든 요약 문장은 존대말(공손한 말투)로 작성해 주세요.\n\n"
+        "모든 요약 문장은 존대말(공손한 말투)로 작성해 주세요.\n"
+        "전체 요약 결과가 600 토큰 이내로 나오도록 분량을 조절해 주세요.\n\n"
         "[예시 형식]\n"
         "1. 9월 CPI 발표와 금리 인하 기대\n"
         "9월 CPI 데이터가 예상보다 좋았으며, 관세 인플레이션 우려가 없음을 보여줬다고 분석했습니다.\n"
@@ -48,12 +49,12 @@ def summarize_text(text: str) -> str:
     try:
         client = openai.OpenAI(api_key=api_key)
         response = client.chat.completions.create(
-            model="gpt-4-1106-preview",
+            model="gpt-4o",
             messages=[
                 {"role": "system", "content": "당신은 한국어 요약 경제 전문가입니다."},
                 {"role": "user", "content": prompt}
             ],
-            max_tokens=1200, # chatgpt-3.5-turbo 모델의 최대 토큰 수
+            max_tokens=600, # 요약 결과가 600 토큰 이내로 제한
             temperature=0.5,
         )
         content = response.choices[0].message.content if response.choices and response.choices[0].message else None
