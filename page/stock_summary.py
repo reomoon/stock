@@ -49,12 +49,12 @@ def summarize_text(text: str) -> str:
     try:
         client = openai.OpenAI(api_key=api_key)
         response = client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-3.5-turbo-16k",
             messages=[
                 {"role": "system", "content": "당신은 한국어 요약 경제 전문가입니다."},
                 {"role": "user", "content": prompt}
             ],
-            max_tokens=600, # 요약 결과가 600 토큰 이내로 제한
+            max_tokens=900, # 요약 결과가 900 토큰 이내로 제한
             temperature=0.5,
         )
         content = response.choices[0].message.content if response.choices and response.choices[0].message else None

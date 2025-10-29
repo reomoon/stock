@@ -106,8 +106,8 @@ def realestate():
     import pickle
     import os
     # 캐시 파일명
-    monthly_cache_file = 'realestate_data_cache.pkl'
-    weekly_cache_file = 'weekly_realestate_data_cache.pkl'
+    monthly_cache_file = os.path.join('pkl', 'realestate_data_cache.pkl')
+    weekly_cache_file = os.path.join('pkl', 'weekly_realestate_data_cache.pkl')
     today = datetime.now().weekday()  # 월:0, ..., 금:4, 토:5, 일:6
     update_days = [4, 5]  # 금(4), 토(5)
 
@@ -144,7 +144,7 @@ def realestate():
         current_date = datetime.now().strftime("%Y년 %m월 %d일")
         
         html = f"""
-    <div class='news-header'>업데이트: {current_date}</div>
+    <div class='news-header'>업데이트: {current_date} <span style='font-size:0.9em;color:#888;'>({data_source})</span></div>
     <div class='realestate-data'>
         <h3>매매 가격지수</h3>
         <div class='table-scroll'>
@@ -1055,3 +1055,30 @@ def generate_realestate_map():
         </div>
     </section>"""
 
+"""
+캐시 수동 생성용 스크립트
+실행 시 realestate_data_cache.pkl 및 weekly_realestate_data_cache.pkl 파일 생성
+"""
+
+if __name__ == "__main__":
+    import pickle
+
+    # 월간 데이터 강제 생성
+    real_data = get_real_estate_data()
+    monthly_cache_path = os.path.join('pkl', 'realestate_data_cache.pkl')
+    if real_data:
+        with open(monthly_cache_path, 'wb') as f:
+            pickle.dump(real_data, f)
+        print(f"{monthly_cache_path} 생성 완료!")
+    else:
+        print("실시간 월간 데이터 수집 실패")
+
+    # 주간 데이터 강제 생성
+    weekly_data = get_weekly_real_estate_data()
+    weekly_cache_path = os.path.join('pkl', 'weekly_realestate_data_cache.pkl')
+    if weekly_data:
+        with open(weekly_cache_path, 'wb') as f:
+            pickle.dump(weekly_data, f)
+        print(f"{weekly_cache_path} 생성 완료!")
+    else:
+        print("실시간 주간 데이터 수집 실패")
