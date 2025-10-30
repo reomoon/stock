@@ -73,16 +73,15 @@ playwright 없이 파싱하여 기사 본문을 추출
 
 # ...기존 상수 및 summarize_text 함수 유지...
 
-def get_latest_article_requests(target_date: str = None) -> dict | None:
+def get_latest_article_requests(target_date: Optional[str] = None) -> dict | None:
     if target_date is None:
         target_date = datetime.now().strftime("%Y.%m.%d")
-    print(f"[정보] {target_date} 날짜 기사를 우선 찾고 있습니다.")
+    print(f"[정보] {target_date} 날짜 기사를 찾고 있습니다.")
     try:
         resp = requests.get(NEWS_WALL_URL, timeout=10)
         soup = BeautifulSoup(resp.text, "html.parser")
         news_list = soup.select(ARTICLE_ITEM_SELECTOR)
-        latest_article = None
-        for i, item in enumerate(news_list):
+        for item in news_list:
             title_tag = item.select_one(TITLE_SELECTOR)
             date_tag = item.select_one(DATE_SELECTOR)
             if title_tag and date_tag:
@@ -92,19 +91,13 @@ def get_latest_article_requests(target_date: str = None) -> dict | None:
                     continue
                 if not article_url.startswith('http'):
                     article_url = BASE_URL + article_url
-                current_article = {
-                    'title': title_tag.get_text(strip=True),
-                    'url': article_url,
-                    'date': article_date
-                }
-                if i == 0:
-                    latest_article = current_article
                 if article_date == target_date:
-                    return current_article
-        # 원하는 날짜 기사 없으면 최신 기사 반환
-        if latest_article:
-            print(f"{target_date} 기사 없음, 최신 기사로 대체")
-            return latest_article
+                    return {
+                        'title': title_tag.get_text(strip=True),
+                        'url': article_url,
+                        'date': article_date
+                    }
+        # 원하는 날짜 기사 없으면 None 반환
         print(f"{target_date} 기사 없음")
         return None
     except Exception as e:
@@ -135,17 +128,13 @@ def main():
     if len(sys.argv) > 1:
         target_date = sys.argv[1]
     article = get_latest_article_requests(target_date)
-    if not article:
-        print("START_SUMMARY_BODY")
-        print(f"{target_date or '오늘'} 기사 없음")
-        print("END_SUMMARY_BODY")
+    # 오늘 날짜 기사만 요약, 없으면 아무 작업도 하지 않음
+    today_str = target_date or datetime.now().strftime("%Y.%m.%d")
+    if not article or article['date'] != today_str:
         return
-    print(f"\n✅ 기사 1개를 발견했습니다. (날짜: {article['date']})")
-    print(f"  └ 제목: {article['title']}")
-    print(f"  └ URL: {article['url']}")
+    # 오늘 날짜 기사만 요약
     content = get_article_content_requests(article['url'])
     if content:
-        print("[정보] ChatGPTAPI를 사용하여 요약을 요청 중...")
         summary = summarize_text(content)
         print("START_SUMMARY_BODY", flush=True)
         print(summary, flush=True)

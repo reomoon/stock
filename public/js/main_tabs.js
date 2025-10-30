@@ -97,9 +97,25 @@ function handleGesture() {
 
 document.addEventListener('touchstart', function(e) {
     touchStartX = e.changedTouches[0].screenX;
+    // 표 내부에서 스와이프 시작 시 플래그 저장
+    let el = e.target;
+    let insideTable = false;
+    while (el) {
+        if (el.tagName === 'TABLE' || el.tagName === 'TD' || el.tagName === 'TH') {
+            insideTable = true;
+            break;
+        }
+        el = el.parentElement;
+    }
+    document._swipeInsideTable = insideTable;
 }, false);
 
 document.addEventListener('touchend', function(e) {
+    // 표 내부에서 시작된 스와이프는 무시
+    if (document._swipeInsideTable) {
+        document._swipeInsideTable = false;
+        return;
+    }
     touchEndX = e.changedTouches[0].screenX;
     handleGesture();
 }, false);
