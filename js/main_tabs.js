@@ -79,3 +79,27 @@ document.addEventListener('DOMContentLoaded', function() {
     initSubTabs();
     console.log('메인 탭 스크립트 로드 완료');
 });
+
+// 스와이프 탭 전환 기능
+let touchStartX = 0;
+let touchEndX = 0;
+
+function handleGesture() {
+    if (touchEndX < touchStartX - 50) {
+        // 오른쪽에서 왼쪽으로 스와이프 → 다음 탭
+        document.querySelector('.main-tab-button[data-tab="realestate-map-main-tab"]').click();
+    }
+    if (touchEndX > touchStartX + 50) {
+        // 왼쪽에서 오른쪽으로 스와이프 → 이전 탭
+        document.querySelector('.main-tab-button[data-tab="economy-main-tab"]').click();
+    }
+}
+
+document.addEventListener('touchstart', function(e) {
+    touchStartX = e.changedTouches[0].screenX;
+}, false);
+
+document.addEventListener('touchend', function(e) {
+    touchEndX = e.changedTouches[0].screenX;
+    handleGesture();
+}, false);
