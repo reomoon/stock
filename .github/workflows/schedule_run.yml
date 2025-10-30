@@ -48,7 +48,7 @@ jobs:
         run: |
           pip install -r requirements.txt  # 필요한 라이브러리 설치
 
-      - name: Run Python Script with API Keys 
+      - name: Run Python Script with API Keys
         # API 키를 'run.py'가 실행하는 'stock_summary.py'에 환경 변수로 주입합니다.
         env:
           CHATGPT_API_KEY: ${{ secrets.OPENAI_API_KEY }}

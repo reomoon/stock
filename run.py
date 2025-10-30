@@ -137,29 +137,73 @@ def get_stock_summary():
         print("❗ 요약 결과를 찾지 못했습니다. 디버깅 정보:")
         return ""
 
-def generate_static_html():
+
+import datetime
+
+def is_realestate_update_day():
+    # 금(4), 토(5)만 True
+    return datetime.datetime.now().weekday() in [4, 5]
+
+def save_realestate_cache(weekly_data, monthly_data, realestate_data, realestate_map_data):
+    cache_dir = "cache"
+    if not os.path.exists(cache_dir):
+        os.makedirs(cache_dir)
+    with open(os.path.join(cache_dir, "weekly_data.json"), "w", encoding="utf-8") as f:
+        json.dump(weekly_data, f, ensure_ascii=False)
+    with open(os.path.join(cache_dir, "monthly_data.json"), "w", encoding="utf-8") as f:
+        json.dump(monthly_data, f, ensure_ascii=False)
+    with open(os.path.join(cache_dir, "realestate_data.json"), "w", encoding="utf-8") as f:
+        json.dump(realestate_data, f, ensure_ascii=False)
+    with open(os.path.join(cache_dir, "realestate_map_data.json"), "w", encoding="utf-8") as f:
+        json.dump(realestate_map_data, f, ensure_ascii=False)
+
+def load_realestate_cache():
+    cache_dir = "cache"
+    def load_json(name):
+        try:
+            with open(os.path.join(cache_dir, name), "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            return ""
+    return (
+        load_json("weekly_data.json"),
+        load_json("monthly_data.json"),
+        load_json("realestate_data.json"),
+        load_json("realestate_map_data.json")
+    )
+
+def generate_static_html(main_only=False, realestate_only=False):
     if not os.path.exists("public"):
         os.makedirs("public")
 
-    ma_graphs_html = make_nasdaq_ma_graphs()
-    stock_data = stock()
-    economy_news_data = economy_news()
-    realestate_news_data = realestate_news()
-    stock_summary_html = get_stock_summary()
+    # 주식/뉴스 데이터 (realestate_only가 아니면)
+    if not realestate_only:
+        ma_graphs_html = make_nasdaq_ma_graphs()
+        stock_data = stock()
+        economy_news_data = economy_news()
+        realestate_news_data = realestate_news()
+        stock_summary_html = get_stock_summary()
+    else:
+        ma_graphs_html = stock_data = economy_news_data = realestate_news_data = stock_summary_html = ""
 
-    # 실제 데이터 호출
-    weekly_data = get_weekly_real_estate_data()
-    from page.realestate import REGION_CODES
-    monthly_data = [
-        {
-            "area_code": code,
-            "area": name,
-            "monthly_volumes": get_apt2me_transaction_volume(code)
-        }
-        for code, name in REGION_CODES.items()
-    ]
-    realestate_data = realestate()
-    realestate_map_data = generate_realestate_map()
+    # 부동산 데이터: 금/토에는 새로 갱신, 평일에는 캐시에서 읽기
+    if is_realestate_update_day() or realestate_only:
+        weekly_data = get_weekly_real_estate_data()
+        from page.realestate import REGION_CODES
+        monthly_data = [
+            {
+                "area_code": code,
+                "area": name,
+                "monthly_volumes": get_apt2me_transaction_volume(code)
+            }
+            for code, name in REGION_CODES.items()
+        ]
+        realestate_data = realestate()
+        realestate_map_data = generate_realestate_map()
+        save_realestate_cache(weekly_data, monthly_data, realestate_data, realestate_map_data)
+    else:
+        weekly_data, monthly_data, realestate_data, realestate_map_data = load_realestate_cache()
+
     print("실제 데이터 사용")
     print("weekly_data:", weekly_data)
     print("monthly_data:", monthly_data)
@@ -313,5 +357,8 @@ def generate_static_html():
 """)
 
 if __name__ == '__main__':
-    generate_static_html()
+    import sys
+    main_only = '--main-only' in sys.argv
+    realestate_only = '--realestate-only' in sys.argv
+    generate_static_html(main_only=main_only, realestate_only=realestate_only)
     print("HTML 파일이 생성되었습니다.")
