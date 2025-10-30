@@ -1,4 +1,4 @@
-name: Manual Realestate Update
+name: Manual Realestate Only Update
 
 on:
   workflow_dispatch:  # 수동 실행만 가능

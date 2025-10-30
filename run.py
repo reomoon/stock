@@ -176,18 +176,9 @@ def generate_static_html(main_only=False, realestate_only=False):
     if not os.path.exists("public"):
         os.makedirs("public")
 
-    # 주식/뉴스 데이터 (realestate_only가 아니면)
-    if not realestate_only:
-        ma_graphs_html = make_nasdaq_ma_graphs()
-        stock_data = stock()
-        economy_news_data = economy_news()
-        realestate_news_data = realestate_news()
-        stock_summary_html = get_stock_summary()
-    else:
-        ma_graphs_html = stock_data = economy_news_data = realestate_news_data = stock_summary_html = ""
-
-    # 부동산 데이터: 금/토에는 새로 갱신, 평일에는 캐시에서 읽기
-    if is_realestate_update_day() or realestate_only:
+    # 옵션 분기: 부동산만, 주식/뉴스만, 전체
+    if realestate_only:
+        # 부동산 데이터만 새로 생성 및 캐시 저장
         weekly_data = get_weekly_real_estate_data()
         from page.realestate import REGION_CODES
         monthly_data = [
@@ -201,7 +192,22 @@ def generate_static_html(main_only=False, realestate_only=False):
         realestate_data = realestate()
         realestate_map_data = generate_realestate_map()
         save_realestate_cache(weekly_data, monthly_data, realestate_data, realestate_map_data)
+        ma_graphs_html = stock_data = economy_news_data = realestate_news_data = stock_summary_html = ""
+    elif main_only:
+        # 주식/뉴스 데이터만 생성, 부동산 데이터는 캐시에서 불러오기
+        ma_graphs_html = make_nasdaq_ma_graphs()
+        stock_data = stock()
+        economy_news_data = economy_news()
+        realestate_news_data = realestate_news()
+        stock_summary_html = get_stock_summary()
+        weekly_data, monthly_data, realestate_data, realestate_map_data = load_realestate_cache()
     else:
+        # 전체 실행: 주식/뉴스 데이터는 새로 생성, 부동산 데이터는 캐시에서 불러오기
+        ma_graphs_html = make_nasdaq_ma_graphs()
+        stock_data = stock()
+        economy_news_data = economy_news()
+        realestate_news_data = realestate_news()
+        stock_summary_html = get_stock_summary()
         weekly_data, monthly_data, realestate_data, realestate_map_data = load_realestate_cache()
 
     print("실제 데이터 사용")
