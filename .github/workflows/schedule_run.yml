@@ -64,7 +64,9 @@ jobs:
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add public/main.html cache/*.json cache/*.pkl
+          git add public/main.html
+          git add cache/*.json || true
+          git add cache/*.pkl || true
           git diff --cached --quiet || git commit -m "Auto update main.html and realestate cache"
           git push --force
 
