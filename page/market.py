@@ -12,29 +12,40 @@ def kospi():
         data = yf.download("^KS11", period="2d", interval="1d", progress=False, auto_adjust=True)
 
         if data.empty or "Close" not in data.columns or len(data) < 2:
-            return "<tr><td>KOSPI</td><td colspan='2'>데이터 오류 - 데이터가 부족하거나 가져오지 못함.</td></tr>"
+            raise ValueError("yfinance KOSPI 데이터 오류")
 
-        # Close 컬럼이 DataFrame인지 Series인지 확인
         close = data["Close"]
-        
-        # 만약 close가 DataFrame (멀티인덱스 등)이라면 첫 번째 열을 선택
         if hasattr(close, 'ndim') and close.ndim > 1:
             close = close.iloc[:, 0]
-
-        # 오늘과 어제 종가 값 (스칼라)
         today = close.iloc[-1]
         yesterday = close.iloc[-2]
-
         diff = today - yesterday
         percent = (diff / yesterday) * 100 if yesterday != 0 else 0
-
         emoji = "&#9650;" if diff > 0 else "&#9660;" if diff < 0 else "&#8212;"
         diff_class = "up" if diff > 0 else "down" if diff < 0 else "neutral"
-
         return f"<tr><td>KOSPI</td><td>{today:,.2f}</td><td class='{diff_class}'>{emoji} ({percent:+.1f}%, {diff:+.2f})</td></tr>"
-
     except Exception as e:
-        return f"<tr><td>KOSPI</td><td colspan='2'>데이터 오류 - {e}</td></tr>"
+        # Fallback: 네이버 금융에서 크롤링
+        try:
+            import requests
+            from bs4 import BeautifulSoup
+            url = "https://finance.naver.com/sise/sise_index.naver?code=KOSPI"
+            resp = requests.get(url, headers={"User-Agent": "Mozilla/5.0"}, timeout=5)
+            soup = BeautifulSoup(resp.text, "html.parser")
+            price_tag = soup.select_one(".no_today .blind")
+            if not price_tag:
+                raise ValueError("네이버 금융에서 KOSPI 지수 파싱 실패")
+            today = float(price_tag.text.replace(",", ""))
+            # 전일 대비 변동/등락률 파싱
+            diff_tag = soup.select_one(".no_exday .blind")
+            percent_tag = soup.select_one(".no_exday span.blind+span")
+            diff = float(diff_tag.text.replace(",", "")) if diff_tag else 0
+            percent = float(percent_tag.text.replace("%", "").replace(",", "")) if percent_tag else 0
+            emoji = "&#9650;" if diff > 0 else "&#9660;" if diff < 0 else "&#8212;"
+            diff_class = "up" if diff > 0 else "down" if diff < 0 else "neutral"
+            return f"<tr><td>KOSPI</td><td>{today:,.2f}</td><td class='{diff_class}'>{emoji} ({percent:+.1f}%, {diff:+.2f})</td></tr>"
+        except Exception as e2:
+            return f"<tr><td>KOSPI</td><td colspan='2'>데이터 오류 - {e} / 네이버 금융 오류 - {e2}</td></tr>"
 
 def bitcoin():
     try:
