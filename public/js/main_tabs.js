@@ -80,42 +80,42 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('메인 탭 스크립트 로드 완료');
 });
 
-// 스와이프 탭 전환 기능
-let touchStartX = 0;
-let touchEndX = 0;
+// // 스와이프 탭 전환 기능
+// let touchStartX = 0;
+// let touchEndX = 0;
 
-function handleGesture() {
-    if (touchEndX < touchStartX - 50) {
-        // 오른쪽에서 왼쪽으로 스와이프 → 다음 탭
-        document.querySelector('.main-tab-button[data-tab="realestate-map-main-tab"]').click();
-    }
-    if (touchEndX > touchStartX + 50) {
-        // 왼쪽에서 오른쪽으로 스와이프 → 이전 탭
-        document.querySelector('.main-tab-button[data-tab="economy-main-tab"]').click();
-    }
-}
+// function handleGesture() {
+//     if (touchEndX < touchStartX - 50) {
+//         // 오른쪽에서 왼쪽으로 스와이프 → 다음 탭
+//         document.querySelector('.main-tab-button[data-tab="realestate-map-main-tab"]').click();
+//     }
+//     if (touchEndX > touchStartX + 50) {
+//         // 왼쪽에서 오른쪽으로 스와이프 → 이전 탭
+//         document.querySelector('.main-tab-button[data-tab="economy-main-tab"]').click();
+//     }
+// }
 
-document.addEventListener('touchstart', function(e) {
-    touchStartX = e.changedTouches[0].screenX;
-    // 표 내부에서 스와이프 시작 시 플래그 저장
-    let el = e.target;
-    let insideTable = false;
-    while (el) {
-        if (el.tagName === 'TABLE' || el.tagName === 'TD' || el.tagName === 'TH') {
-            insideTable = true;
-            break;
-        }
-        el = el.parentElement;
-    }
-    document._swipeInsideTable = insideTable;
-}, false);
+// document.addEventListener('touchstart', function(e) {
+//     touchStartX = e.changedTouches[0].screenX;
+//     // 표 내부에서 스와이프 시작 시 플래그 저장
+//     let el = e.target;
+//     let insideTable = false;
+//     while (el) {
+//         if (el.tagName === 'TABLE' || el.tagName === 'TD' || el.tagName === 'TH') {
+//             insideTable = true;
+//             break;
+//         }
+//         el = el.parentElement;
+//     }
+//     document._swipeInsideTable = insideTable;
+// }, false);
 
-document.addEventListener('touchend', function(e) {
-    // 표 내부에서 시작된 스와이프는 무시
-    if (document._swipeInsideTable) {
-        document._swipeInsideTable = false;
-        return;
-    }
-    touchEndX = e.changedTouches[0].screenX;
-    handleGesture();
-}, false);
+// document.addEventListener('touchend', function(e) {
+//     // 표 내부에서 시작된 스와이프는 무시
+//     if (document._swipeInsideTable) {
+//         document._swipeInsideTable = false;
+//         return;
+//     }
+//     touchEndX = e.changedTouches[0].screenX;
+//     handleGesture();
+// }, false);
