@@ -30,7 +30,7 @@
         <!-- 기본 주식 정보 -->
         <section id="stock">
             <h2>주식 정보</h2>
-            <div class='stock-table-wrap'><div>주요 미국 주식 종가 변동(2025-10-31 08:37)</div><table class='stock-table'><tr><th>종목</th><th>종가</th><th>변동</th></tr><tr><td>NASDAQ</td><td>23581.14</td><td class='down'>&#9660; (-1.6%, -377.33)</td></tr><tr><td>AAPL</td><td>271.40</td><td class='up'>&#9650; (+0.6%, +1.70)</td></tr><tr><td>MSFT</td><td>525.76</td><td class='down'>&#9660; (-2.9%, -15.79)</td></tr><tr><td>NVDA</td><td>202.89</td><td class='down'>&#9660; (-2.0%, -4.15)</td></tr><tr><td>AMZN</td><td>222.86</td><td class='down'>&#9660; (-3.2%, -7.44)</td></tr><tr><td>META</td><td>666.47</td><td class='down'>&#9660; (-11.3%, -85.20)</td></tr><tr><td>GOOGL</td><td>281.48</td><td class='up'>&#9650; (+2.5%, +6.91)</td></tr><tr><td>TSLA</td><td>440.10</td><td class='down'>&#9660; (-4.6%, -21.41)</td></tr><tr><td>BTC(Upbit)</td><td>164,283,000원</td><td class='down'>&#9660; (-0.2%, -334000)</td></tr><tr><td>KOSPI</td><td>4,086.89</td><td class='up'>&#9650; (+0.1%, +5.74)</td></tr></table></div>
+            <div class='stock-table-wrap'><div>주요 미국 주식 종가 변동(2025-10-31 09:16)</div><table class='stock-table'><tr><th>종목</th><th>종가</th><th>변동</th></tr><tr><td>NASDAQ</td><td>23581.14</td><td class='down'>&#9660; (-1.6%, -377.33)</td></tr><tr><td>AAPL</td><td>271.40</td><td class='up'>&#9650; (+0.6%, +1.70)</td></tr><tr><td>MSFT</td><td>525.76</td><td class='down'>&#9660; (-2.9%, -15.79)</td></tr><tr><td>NVDA</td><td>202.89</td><td class='down'>&#9660; (-2.0%, -4.15)</td></tr><tr><td>AMZN</td><td>222.86</td><td class='down'>&#9660; (-3.2%, -7.44)</td></tr><tr><td>META</td><td>666.47</td><td class='down'>&#9660; (-11.3%, -85.20)</td></tr><tr><td>GOOGL</td><td>281.48</td><td class='up'>&#9650; (+2.5%, +6.91)</td></tr><tr><td>TSLA</td><td>440.10</td><td class='down'>&#9660; (-4.6%, -21.41)</td></tr><tr><td>BTC(Upbit)</td><td>164,534,000원</td><td class='up'>&#9650; (+0.2%, +276000)</td></tr><tr><td>KOSPI</td><td colspan='2'>데이터 오류 - 데이터가 부족하거나 가져오지 못함.</td></tr></table></div>
             <h2>나스닥 이동평균선</h2>
             <div id="ma-graphs">
                 
@@ -55,62 +55,22 @@
         
         <!-- 오늘의 미국 주식 요약 -->
         
-        <section class="stock-summary-section" style="margin-bottom:24px;">
-            <h2 style="font-size:1.1em; margin-bottom:8px;">오늘의 미국 주식 요약</h2>
-            <div style="font-size:0.98em; line-height:1.7; background:#f8fafc; border-radius:8px; padding:16px; border:1px solid #e2e8f0; position:relative;">
-                <button id="copy-summary-btn" title="요약 복사" style="position:absolute; top:10px; right:10px; background:none; border:none; cursor:pointer; padding:2px;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#888" viewBox="0 0 20 20"><rect x="6" y="2" width="9" height="14" rx="2" fill="#e2e8f0" stroke="#888" stroke-width="1"/><rect x="3" y="5" width="9" height="13" rx="2" fill="none" stroke="#888" stroke-width="1"/></svg>
-                </button>
-                <pre id="stock-summary-pre" style="white-space:pre-wrap; font-family:inherit; background:none; border:none; margin:0;">1. 미·중 무역 협상과 펜타닐 관세
-트럼프 대통령은 중국과의 무역 협상에서 펜타닐 관세를 낮출 가능성을 언급하며, 중국의 미국산 대두 구매는 긍정적인 신호로 해석되었습니다. 펜타닐 관세가 20%에서 10%로 낮아질 경우 중국 수입품에 대한 관세가 45%로 떨어질 전망입니다.
-
-2. 엔비디아의 성장 가능성과 AI 시장
-트럼프 대통령의 발언으로 엔비디아 주가는 급등했으며, 젠슨 CEO는 블랙웰 칩과 루빈 칩의 매출이 5000억 달러를 넘을 것으로 예상했습니다. AI 관련 기업의 실적도 호조를 보이며, SK하이닉스와 일본의 어드반테스트 등은 매출과 이익이 급증했습니다.
-
-3. 연방준비제도(Fed)의 금리 인하와 시장 반응
-Fed는 기준금리를 25bp 인하하고 QT 종료를 결정했지만, 파월 의장은 12월 금리 인하가 미리 결정된 것이 아니라고 밝혔습니다. 시장은 이 발언에 반응하며 변동성을 보였고, S&P500 지수는 약보합세로 마감했습니다.</pre>
-                <div style="text-align:left; margin-top:8px;"><a href="https://www.hankyung.com/article/202510301440i" target="_blank" rel="noopener" style="color:#2563eb; text-decoration:underline; font-size:0.8em;">기사 원문 바로가기</a></div>
+        <!-- 월스트리트저널 나우 바로가기 -->
+        <section class="wsj-link-section" style="margin-bottom:24px;">
+            <h2 style="font-size:1.1em; margin-bottom:8px;">월스트리트저널 나우</h2>
+            <div style="font-size:0.98em; line-height:1.7; background:#f8fafc; border-radius:8px; padding:16px; border:1px solid #e2e8f0;">
+                <a href="https://www.hankyung.com/globalmarket/news-wallstreet-now" target="_blank" rel="noopener" style="color:#2563eb; text-decoration:underline; font-size:1em;">
+                    월스트리트 저널 나우 바로가기
+                </a>
             </div>
-            <div id="stock-summary-toast" style="display:none; position:fixed; bottom:40px; left:50%; transform:translateX(-50%); background:#222; color:#fff; padding:10px 22px; border-radius:6px; font-size:1em; z-index:9999; opacity:0.95; box-shadow:0 2px 8px rgba(0,0,0,0.15);">복사 되었습니다.</div>
-            <script>
-            function showToast(msg) {
-                var toast = document.getElementById('stock-summary-toast');
-                if (!toast) return;
-                toast.textContent = msg;
-                toast.style.display = 'block';
-                toast.style.opacity = '0.95';
-                setTimeout(function() { toast.style.opacity = '0'; }, 1200);
-                setTimeout(function() { toast.style.display = 'none'; }, 1600);
-            }
-            document.addEventListener('DOMContentLoaded', function() {
-                var btn = document.getElementById('copy-summary-btn');
-                var handler = function() {
-                    var pre = document.getElementById('stock-summary-pre');
-                    if (pre) {
-                        var text = pre.innerText;
-                        navigator.clipboard.writeText(text).then(function() {
-                            showToast('복사 되었습니다.');
-                            btn.title = '복사됨!';
-                            btn.style.opacity = '0.6';
-                            setTimeout(function() { btn.title = '요약 복사'; btn.style.opacity = '1'; }, 1200);
-                        });
-                    }
-                };
-                if (btn) {
-                    btn.addEventListener('click', handler);
-                    btn.addEventListener('touchstart', handler);
-                }
-            });
-            </script>
         </section>
-            
         
         <section id="economy">
             <h2>경제 뉴스</h2>
             
-    <div class='news-header'>주요 경제 뉴스(2025-10-31 08:37)</div>
+    <div class='news-header'>주요 경제 뉴스(2025-10-31 09:16)</div>
     <ul class='news-list'>
-    <li><a href='https://n.news.naver.com/mnews/article/016/0002550408' target='_blank'>• 美中 불완전 합의·12월 금리인하 불투명에 리플 -6% ‘뚝’…비트코인 11만弗 이탈 [투자360]</a></li><li><a href='https://n.news.naver.com/mnews/article/001/0015714710' target='_blank'>• "관세 불확실성 제거"…증권사들, 현대차 목표가 잇단 상향</a></li><li><a href='https://n.news.naver.com/mnews/article/018/0006152208' target='_blank'>• "ETF 투자는 이렇게"…KB운용, ‘오늘부터 RISE ETF’ 유튜브 예능 '주목'</a></li><li><a href='https://n.news.naver.com/mnews/article/018/0006152207' target='_blank'>• 한화운용 ‘PLUS ETF’, 국내·해외 ETF 수익률 나란히 1위</a></li><li><a href='https://n.news.naver.com/mnews/article/018/0006152206' target='_blank'>• 뉴로메카, 휴머노이드 전용 초경량 하모닉타입 액츄에이터 공개</a></li><li><a href='https://n.news.naver.com/mnews/article/277/0005672501' target='_blank'>• '환골탈태' PLUS ETF, 국내·해외 ETF 수익률 나란히 1위</a></li></ul></div>
+    <li><a href='https://n.news.naver.com/mnews/article/018/0006152272' target='_blank'>• 'AI 깐부' 된 젠슨 황·이재용…美 기술주 폭락에도 삼성전자 신고가[특징주]</a></li><li><a href='https://n.news.naver.com/mnews/article/422/0000796700' target='_blank'>• [속보] 코스피, 어제 최고치…오늘은 하락 출발</a></li><li><a href='https://n.news.naver.com/mnews/article/018/0006152271' target='_blank'>• 코스피, 외인 팔자에 숨고르기…4060선</a></li><li><a href='https://n.news.naver.com/mnews/article/011/0004550179' target='_blank'>• NH아문디운용, 글로벌 책임투자 이니셔티브 PRI와 CEO 간담회 개최</a></li><li><a href='https://n.news.naver.com/mnews/article/366/0001118961' target='_blank'>• [특징주] ‘실적 반등’ LG이노텍, 최근 1년 최고가</a></li><li><a href='https://n.news.naver.com/mnews/article/008/0005271363' target='_blank'>• 3분기 광고 매출 ↑…SOOP 5% '쑥'</a></li></ul></div>
         </section>
 
 
