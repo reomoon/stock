@@ -206,13 +206,28 @@ def generate_static_html(main_only=False, realestate_only=False):
         # stock_summary_html = get_stock_summary()
         weekly_data, monthly_data, realestate_data, realestate_map_data = load_realestate_cache()
     else:
-        # 전체 실행: 주식/뉴스 데이터는 새로 생성, 부동산 데이터는 캐시에서 불러오기
+        # 전체 실행: 주식/뉴스 데이터는 새로 생성, 부동산 데이터는 금/토(한국시간)에는 새로, 그 외에는 캐시에서 불러오기
         ma_graphs_html = make_nasdaq_ma_graphs()
         stock_data = stock()
         economy_news_data = economy_news()
         realestate_news_data = realestate_news()
         # stock_summary_html = get_stock_summary()
-        weekly_data, monthly_data, realestate_data, realestate_map_data = load_realestate_cache()
+        if is_realestate_update_day():
+            weekly_data = get_weekly_real_estate_data()
+            from page.realestate import REGION_CODES
+            monthly_data = [
+                {
+                    "area_code": code,
+                    "area": name,
+                    "monthly_volumes": get_apt2me_transaction_volume(code)
+                }
+                for code, name in REGION_CODES.items()
+            ]
+            realestate_data = realestate()
+            realestate_map_data = generate_realestate_map()
+            save_realestate_cache(weekly_data, monthly_data, realestate_data, realestate_map_data)
+        else:
+            weekly_data, monthly_data, realestate_data, realestate_map_data = load_realestate_cache()
 
     print("실제 데이터 사용")
     print("weekly_data:", weekly_data)
