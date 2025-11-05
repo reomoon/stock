@@ -251,8 +251,12 @@ function createRegionMarker(regionData, coordinate) {
     const markerColor = getMarkerColor(regionData, currentMapType);
     const markerSize = getMarkerSize(regionData, currentMapType);
     
+    // 해당 지역의 대장 단지 가격 정보 가져오기
+    // 부동산 탭의 매매지수 지도는 아파트 가격 데이터를 사용하지 않음
+    // (apartmentData는 부동산맵 탭에서만 사용)
+    
     // 커스텀 마커 HTML 생성
-    const markerContent = createMarkerContent(regionData, currentMapType);
+    const markerContent = createMarkerContent(regionData, currentMapType, null);
     
     // 네이버맵 마커 생성
     const marker = new naver.maps.Marker({
@@ -267,8 +271,8 @@ function createRegionMarker(regionData, coordinate) {
     
     // 마커 클릭 이벤트 - 정보창 표시
     const infoWindow = new naver.maps.InfoWindow({
-        content: createInfoWindowContent(regionData, currentMapType),
-        maxWidth: 300,
+        content: createInfoWindowContent(regionData, currentMapType, null),
+        maxWidth: 400,
         backgroundColor: "#ffffff",
         borderColor: "transparent",
         borderWidth: 0,
@@ -287,43 +291,46 @@ function createRegionMarker(regionData, coordinate) {
 }
 
 // 마커 콘텐츠 생성
-function createMarkerContent(regionData, displayType) {
+function createMarkerContent(regionData, displayType, apartmentData) {
     let mainValue, changeValue, changeClass;
     
-    switch (displayType) {
-        case 'index':
-            mainValue = `${regionData.index.toFixed(1)}`;
-            const rateValue = (regionData.rate || 0);
-            changeValue = `<span style="font-size: 10px;">${rateValue >= 0 ? '+' : ''}${rateValue.toFixed(2)}</span><span style="font-size: 8px;">%</span>`;
-            changeClass = (regionData.rate || 0) >= 0 ? 'up' : 'down';
-            break;
-        case 'weekly_change':
-            // 지난주 대비 (1주전 변동률)
-            const weeklyRate = regionData.rate || 0;
-            mainValue = `<span style="font-size: 10px;">${weeklyRate >= 0 ? '+' : ''}${weeklyRate.toFixed(2)}</span><span style="font-size: 8px;">%</span>`;
-            changeValue = '지난주';
-            changeClass = weeklyRate >= 0 ? 'up' : 'down';
-            break;
-        case 'monthly_change':
-            // 지난달 대비 (2주전 변동률로 월간 대용)
-            const monthlyRate = regionData.rate_2w || 0;
-            mainValue = `<span style="font-size: 10px;">${monthlyRate >= 0 ? '+' : ''}${monthlyRate.toFixed(2)}</span><span style="font-size: 8px;">%</span>`;
-            changeValue = '지난달';
-            changeClass = monthlyRate >= 0 ? 'up' : 'down';
-            break;
-        default:
-            mainValue = `${regionData.index.toFixed(1)}`;
-            const defaultRateValue = (regionData.rate || 0);
-            changeValue = `<span style="font-size: 10px;">${defaultRateValue >= 0 ? '+' : ''}${defaultRateValue.toFixed(2)}</span><span style="font-size: 8px;">%</span>`;
-            changeClass = (regionData.rate || 0) >= 0 ? 'up' : 'down';
+    // 대장 단지 가격이 있으면 가격 표시, 없으면 기존 지수 표시
+    if (apartmentData && apartmentData.sale_price) {
+        // 대장 단지 평균 매매가 표시 (간략화)
+        const priceText = apartmentData.sale_price.avg.replace('억', '').replace('원', '').replace('천만', '.5').trim();
+        mainValue = `<span style="font-size: 9px;">${priceText}억</span>`;
+        changeValue = '<span style="font-size: 7px;">🏢</span>';
+        changeClass = 'neutral';
+    } else {
+        switch (displayType) {
+            case 'index':
+                mainValue = `${regionData.index.toFixed(1)}`;
+                const rateValue = (regionData.rate || 0);
+                changeValue = `<span style="font-size: 10px;">${rateValue >= 0 ? '+' : ''}${rateValue.toFixed(2)}</span><span style="font-size: 8px;">%</span>`;
+                changeClass = (regionData.rate || 0) >= 0 ? 'up' : 'down';
+                break;
+            case 'weekly_change':
+                const weeklyRate = regionData.rate || 0;
+                mainValue = `<span style="font-size: 10px;">${weeklyRate >= 0 ? '+' : ''}${weeklyRate.toFixed(2)}</span><span style="font-size: 8px;">%</span>`;
+                changeValue = '지난주';
+                changeClass = weeklyRate >= 0 ? 'up' : 'down';
+                break;
+            case 'monthly_change':
+                const monthlyRate = regionData.rate_2w || 0;
+                mainValue = `<span style="font-size: 10px;">${monthlyRate >= 0 ? '+' : ''}${monthlyRate.toFixed(2)}</span><span style="font-size: 8px;">%</span>`;
+                changeValue = '지난달';
+                changeClass = monthlyRate >= 0 ? 'up' : 'down';
+                break;
+            default:
+                mainValue = `${regionData.index.toFixed(1)}`;
+                const defaultRateValue = (regionData.rate || 0);
+                changeValue = `<span style="font-size: 10px;">${defaultRateValue >= 0 ? '+' : ''}${defaultRateValue.toFixed(2)}</span><span style="font-size: 8px;">%</span>`;
+                changeClass = (regionData.rate || 0) >= 0 ? 'up' : 'down';
+        }
     }
     
     const backgroundColor = getMarkerColor(regionData, displayType);
     const shortName = regionData.area.replace('서울 ', '').replace('경기 ', '').replace('인천 ', '').replace('시 ', '').substring(0, 4);
-    
-    // 매매지수에서도 변동률 표시
-    const showChangeValue = true; // 모든 경우에 변동률 표시
-    const changeDisplay = showChangeValue ? `<div class="region-change ${changeClass}">${changeValue}</div>` : '';
     
     return `
         <div class="region-marker" style="background-color: ${backgroundColor}; width: 60px; height: 60px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.3); font-family: Arial, sans-serif; position: relative;">
@@ -335,9 +342,81 @@ function createMarkerContent(regionData, displayType) {
 }
 
 // 정보창 콘텐츠 생성
-function createInfoWindowContent(regionData, displayType) {
+function createInfoWindowContent(regionData, displayType, apartmentData) {
     let mainValue, changeValue, changeClass, description;
     
+    // 대장 단지 실거래 시세 정보가 있으면 상세 표시
+    if (apartmentData) {
+        const aptName = apartmentData.apartment_name || '대장 단지';
+        const salePrice = apartmentData.sale_price;
+        const jeonsePrice = apartmentData.jeonse_price;
+        const rentPrice = apartmentData.rent_price;
+        
+        let priceHtml = `
+            <div style="padding: 15px; font-family: 'Noto Sans KR', sans-serif;">
+                <div style="font-size: 16px; font-weight: bold; color: #333; margin-bottom: 10px; border-bottom: 2px solid #007bff; padding-bottom: 5px;">
+                    🏢 ${regionData.area}
+                </div>
+                <div style="font-size: 14px; color: #666; margin-bottom: 15px;">
+                    ${aptName}
+                </div>
+        `;
+        
+        // 매매가
+        if (salePrice) {
+            priceHtml += `
+                <div style="margin-bottom: 12px; background: #f8f9fa; padding: 10px; border-radius: 6px;">
+                    <div style="font-size: 13px; font-weight: bold; color: #dc3545; margin-bottom: 5px;">💰 매매가</div>
+                    <div style="font-size: 12px; color: #333;">평균: <strong>${salePrice.avg}</strong></div>
+                    <div style="font-size: 11px; color: #666;">범위: ${salePrice.min} ~ ${salePrice.max}</div>
+            `;
+            if (salePrice.recent_3months && salePrice.recent_3months.length > 0) {
+                priceHtml += `<div style="font-size: 10px; color: #888; margin-top: 5px;">최근: ${salePrice.recent_3months[0].price} (${salePrice.recent_3months[0].date})</div>`;
+            }
+            priceHtml += `</div>`;
+        }
+        
+        // 전세가
+        if (jeonsePrice) {
+            priceHtml += `
+                <div style="margin-bottom: 12px; background: #f8f9fa; padding: 10px; border-radius: 6px;">
+                    <div style="font-size: 13px; font-weight: bold; color: #28a745; margin-bottom: 5px;">🏠 전세가</div>
+                    <div style="font-size: 12px; color: #333;">평균: <strong>${jeonsePrice.avg}</strong></div>
+                    <div style="font-size: 11px; color: #666;">범위: ${jeonsePrice.min} ~ ${jeonsePrice.max}</div>
+            `;
+            if (jeonsePrice.recent_3months && jeonsePrice.recent_3months.length > 0) {
+                priceHtml += `<div style="font-size: 10px; color: #888; margin-top: 5px;">최근: ${jeonsePrice.recent_3months[0].price} (${jeonsePrice.recent_3months[0].date})</div>`;
+            }
+            priceHtml += `</div>`;
+        }
+        
+        // 월세
+        if (rentPrice) {
+            priceHtml += `
+                <div style="margin-bottom: 12px; background: #f8f9fa; padding: 10px; border-radius: 6px;">
+                    <div style="font-size: 13px; font-weight: bold; color: #007bff; margin-bottom: 5px;">🔑 월세</div>
+                    <div style="font-size: 12px; color: #333;">평균: <strong>${rentPrice.avg}</strong></div>
+            `;
+            if (rentPrice.recent_3months && rentPrice.recent_3months.length > 0) {
+                const recent = rentPrice.recent_3months[0];
+                priceHtml += `<div style="font-size: 10px; color: #888; margin-top: 5px;">최근: 보증금 ${recent.deposit} / 월 ${recent.monthly} (${recent.date})</div>`;
+            }
+            priceHtml += `</div>`;
+        }
+        
+        // 매매지수 추가
+        priceHtml += `
+                <div style="margin-top: 15px; padding-top: 10px; border-top: 1px solid #dee2e6;">
+                    <div style="font-size: 11px; color: #666;">매매지수: ${regionData.index.toFixed(1)} (${(regionData.rate || 0) >= 0 ? '+' : ''}${(regionData.rate || 0).toFixed(2)}%)</div>
+                    <div style="font-size: 10px; color: #999; margin-top: 3px;">2020년 1월 = 100 기준</div>
+                </div>
+            </div>
+        `;
+        
+        return priceHtml;
+    }
+    
+    // 대장 단지 정보가 없으면 기존 정보창 표시
     switch (displayType) {
         case 'index':
             mainValue = `매매지수: ${regionData.index.toFixed(1)}`;
@@ -346,7 +425,6 @@ function createInfoWindowContent(regionData, displayType) {
             description = '';
             break;
         case 'weekly_change':
-            // 지난주 대비 변동률 (1주전 대비)
             const weeklyRate = regionData.rate || 0;
             mainValue = `지난주 대비: ${weeklyRate >= 0 ? '+' : ''}${weeklyRate.toFixed(2)}%`;
             changeValue = '주간 변동';
@@ -354,7 +432,6 @@ function createInfoWindowContent(regionData, displayType) {
             description = '지난주 대비 가격 변동률';
             break;
         case 'monthly_change':
-            // 지난달 대비 변동률 (2주전 대비로 월간 대용)
             const monthlyRate = regionData.rate_2w || 0;
             mainValue = `지난달 대비: ${monthlyRate >= 0 ? '+' : ''}${monthlyRate.toFixed(2)}%`;
             changeValue = '월간 변동';
