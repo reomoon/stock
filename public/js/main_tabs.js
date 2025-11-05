@@ -20,14 +20,26 @@ function initMainTabs() {
                 targetContent.classList.add('active');
             }
             
-            // 부동산맵 탭이 선택되면 지도 초기화
-            if (targetTab === 'realestate-map-main-tab') {
+            // 부동산 탭이 선택되면 매매지수 지도 초기화
+            if (targetTab === 'realestate-main-tab') {
                 setTimeout(() => {
-                    console.log('부동산맵 탭 선택됨, 네이버맵 초기화 시작');
+                    console.log('부동산 탭 선택됨, 매매지수 지도 초기화');
                     if (typeof initNaverMap === 'function') {
                         initNaverMap();
                     } else {
                         console.error('initNaverMap 함수를 찾을 수 없습니다.');
+                    }
+                }, 200);
+            }
+            
+            // 부동산맵 탭이 선택되면 대장 단지 지도 초기화
+            if (targetTab === 'realestate-map-main-tab') {
+                setTimeout(() => {
+                    console.log('부동산맵 탭 선택됨, 대장 단지 지도 초기화');
+                    if (typeof initApartmentPriceMap === 'function') {
+                        initApartmentPriceMap();
+                    } else {
+                        console.error('initApartmentPriceMap 함수를 찾을 수 없습니다.');
                     }
                 }, 200);
             }
