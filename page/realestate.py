@@ -122,6 +122,22 @@ def realestate():
         # 현재 날짜 포맷팅
         current_date = datetime.now().strftime("%Y년 %m월 %d일")
         
+        # 순위 아이콘 생성 함수
+        def get_rank_icon(rank):
+            """1~5위까지 숫자 배지 아이콘 반환"""
+            icons = {
+                1: '<span class="rank-icon rank-1">1</span>',
+                2: '<span class="rank-icon rank-2">2</span>',
+                3: '<span class="rank-icon rank-3">3</span>',
+                4: '<span class="rank-icon rank-4">4</span>',
+                5: '<span class="rank-icon rank-5">5</span>'
+            }
+            return icons.get(rank, '')
+        
+        # 매매 가격지수 변동률 기준 상위 5개 지역 추출
+        price_index_sorted = sorted(latest_data["price_index"], key=lambda x: x["rate"], reverse=True)[:5]
+        price_index_top5 = {data["area"]: idx + 1 for idx, data in enumerate(price_index_sorted)}
+        
         html = f"""
     <div class='news-header'>업데이트: {current_date}</div>
     <div class='realestate-data'>
@@ -148,6 +164,9 @@ def realestate():
             trend_class = 'up' if change > 0 else 'down' if change < 0 else 'same'
             arrow = '▲' if change > 0 else '▼' if change < 0 else '→'
             
+            # 순위 아이콘 추가
+            rank_icon = get_rank_icon(price_index_top5.get(data["area"], 0))
+            
             # 3개월전, 6개월전, 1년전 데이터
             change_3m = data.get("change_3m", 0)
             rate_3m = data.get("rate_3m", 0)
@@ -173,7 +192,7 @@ def realestate():
             
             html += f"""
             <tr>
-                <td>{data["area"]}</td>
+                <td>{data["area"]} {rank_icon}</td>
                 <td class='{index_class}'>{data["index"]:.2f}</td>
                 <td class='{trend_class}'>{arrow} {abs(change):.2f}</td>
                 <td class='{trend_class} {rate_class}'>{rate:+.2f}%</td>
@@ -213,12 +232,22 @@ def realestate():
         
         html += "</tr>"
         
+        # 거래량 기준 상위 5개 지역 추출 (최근월 기준)
+        transaction_sorted = sorted(
+            latest_data.get("transaction_volume", []),
+            key=lambda x: x.get("monthly_volumes", {}).get(month_headers[0], 0),
+            reverse=True
+        )[:5]
+        transaction_top5 = {data["area"]: idx + 1 for idx, data in enumerate(transaction_sorted)}
+        
         # 거래량 데이터 표시 (월별)
         for data in latest_data.get("transaction_volume", []):
             monthly_volumes = data.get("monthly_volumes", {})
+            # 순위 아이콘 추가
+            rank_icon = get_rank_icon(transaction_top5.get(data["area"], 0))
             html += f"""
             <tr>
-                <td>{data["area"]}</td>"""
+                <td>{data["area"]} {rank_icon}</td>"""
             # 현재 월부터 12개월 역순으로 데이터 표시
             for month_header in month_headers:
                 volume = monthly_volumes.get(month_header, 0)
@@ -279,6 +308,10 @@ def realestate():
                     "rate_4w": weekly_rate_4w
                 })
         
+        # 주간별 매매 가격지수 상위 5개 지역 계산
+        weekly_price_sorted = sorted(weekly_data["price_index"], key=lambda x: x.get("rate", 0), reverse=True)[:5]
+        weekly_price_top5 = {data["area"]: idx + 1 for idx, data in enumerate(weekly_price_sorted)}
+        
         html += """
         
         <h3>주간별 매매 가격지수</h3>
@@ -299,6 +332,8 @@ def realestate():
         
         # 주간별 가격지수 데이터 표시
         for data in weekly_data["price_index"]:
+            rank = weekly_price_top5.get(data["area"], 0)
+            rank_icon = get_rank_icon(rank)
             change = data["change"]
             rate = data["rate"]
             trend_class = 'up' if change > 0 else 'down' if change < 0 else 'same'
@@ -322,7 +357,7 @@ def realestate():
             
             html += f"""
             <tr>
-                <td>{data["area"]}</td>
+                <td>{data["area"]} {rank_icon}</td>
                 <td>{data["index"]:.2f}</td>
                 <td class='{trend_class}'>{arrow} {abs(change):.2f}</td>
                 <td class='{trend_class}'>{rate:+.2f}%</td>
@@ -334,10 +369,15 @@ def realestate():
                 <td class='{trend_class_4w}'>{rate_4w:+.2f}%</td>
             </tr>"""
         
-        html += f"""
+        html += """
         </table>
-        </div>
+        </div>"""
         
+        # 전세 가격지수 상위 5개 지역 계산
+        jeonse_sorted = sorted(latest_data.get("jeonse_index", []), key=lambda x: x.get("rate", 0), reverse=True)[:5]
+        jeonse_top5 = {data["area"]: idx + 1 for idx, data in enumerate(jeonse_sorted)}
+        
+        html += """
         <h3>전세 가격지수</h3>
         <div class='table-scroll'>
         <table class='realestate-table'>
@@ -356,6 +396,8 @@ def realestate():
         
         # 전세 가격지수 데이터 표시
         for data in latest_data.get("jeonse_index", []):
+            rank = jeonse_top5.get(data["area"], 0)
+            rank_icon = get_rank_icon(rank)
             change = data["change"]
             rate = data["rate"]
             trend_class = 'up' if change > 0 else 'down' if change < 0 else 'same'
@@ -379,7 +421,7 @@ def realestate():
             
             html += f"""
             <tr>
-                <td>{data["area"]}</td>
+                <td>{data["area"]} {rank_icon}</td>
                 <td>{data["index"]:.2f}</td>
                 <td class='{trend_class}'>{arrow} {abs(change):.2f}</td>
                 <td class='{trend_class}'>{rate:+.2f}%</td>
