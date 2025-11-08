@@ -1321,15 +1321,11 @@ ul {
 
 /* 헤더 네비게이션 스타일 */
 .header-nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
+    position: relative; /* 고정해제 (fixed: 고정) */
     background: #ffffff;
     border-bottom: 1px solid #e2e8f0;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     padding: 8px 12px;
-    z-index: 9999;
 }
 
 .header-nav .main-tab-buttons {
@@ -1344,7 +1340,7 @@ ul {
     border: none;
     padding: 14px 16px;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 14px;
     font-weight: 600;
     color: #64748b;
     border-radius: 8px;
@@ -1365,9 +1361,8 @@ ul {
     border-bottom-color: #c0c6d9 !important;
 }
 
-/* 헤더 높이만큼 body에 패딩 추가 */
+/* 헤더 고정 해제로 body 패딩 제거 */
 body {
-    padding-top: 70px;
     margin: 0;
 }
 

@@ -48,10 +48,10 @@ async def capture_realestate_sections():
         url = "https://reomoon-stock.vercel.app/main"
         print(f"페이지 로딩 중: {url}")
         await page.goto(url, wait_until='networkidle')
-        # 부동산맵 탭 클릭
-        print("부동산맵 탭 클릭...")
-        await page.click('button[data-tab="realestate-map-main-tab"]')
-        await page.wait_for_timeout(3000)  # 3초 대기 (지도 로딩)
+        # 부동산 탭 클릭
+        print("부동산 탭 클릭...")
+        await page.click('button[data-tab="realestate-main-tab"]')
+        await page.wait_for_timeout(3000)  # 3초 대기 (콘텐츠 로딩)
         
         # 매매 가격지수 섹션 시작 Y 좌표를 찾음
         print("월간 데이터 섹션 시작 위치 계산 중...")
