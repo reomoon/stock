@@ -129,9 +129,13 @@ def generate_static_html(main_only=False, realestate_only=False):
     <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId={NAVER_CLIENT_ID}&callback=initNaverMap"></script>
 </head>
 <body>
-    <!-- <header>
-        <h1>오늘의 주가 및 주요 뉴스</h1>
-    </header> -->
+    <header class="header-nav">
+        <div class="main-tab-buttons">
+            <button class="main-tab-button active" data-tab="economy-main-tab">경제</button>
+            <button class="main-tab-button" data-tab="realestate-main-tab">부동산</button>
+            <button class="main-tab-button" data-tab="realestate-map-main-tab">부동산맵</button>
+        </div>
+    </header>
     
     <!-- 경제 메인 탭 (주식 + 경제뉴스) -->
     <div id="economy-main-tab" class="main-tab-content active">
@@ -289,14 +293,6 @@ def generate_static_html(main_only=False, realestate_only=False):
         }});
     </script>
     
-    <!-- 푸터 네비게이션 -->
-    <footer class="footer-nav">
-        <div class="main-tab-buttons">
-            <button class="main-tab-button active" data-tab="economy-main-tab">경제</button>
-            <button class="main-tab-button" data-tab="realestate-main-tab">부동산</button>
-            <button class="main-tab-button" data-tab="realestate-map-main-tab">부동산맵</button>
-        </div>
-    </footer>
 </body>
 </html>
 """)
