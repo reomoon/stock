@@ -202,11 +202,37 @@ function createApartmentMarker(apartmentData, coordinate) {
     }
     
     const markerContent = `
-        <div style="background: white; padding: 6px 10px; border-radius: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); border: 1px solid #ddd; cursor: pointer;">
+        <div style="
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 6px 10px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.4);
+            border: 2px solid white;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        " onmouseover="this.style.transform='scale(1.15)'; this.style.boxShadow='0 4px 15px rgba(102, 126, 234, 0.6)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 3px 10px rgba(102, 126, 234, 0.4)';">
+            <!-- 가격 정보 -->
             <div style="text-align: center; line-height: 1.2;">
-                <div style="font-size: 13px; font-weight: bold; color: #FF6B6B;">${displayPrice}억</div>
-                ${displayArea ? `<div style="font-size: 10px; color: #666; margin-top: 2px;">${displayArea}</div>` : ''}
+                <div style="font-size: 12px; font-weight: 900; color: white; text-shadow: 0 1px 3px rgba(0,0,0,0.3); letter-spacing: -0.3px;">
+                    ${displayPrice}억
+                </div>
+                ${displayArea ? `<div style="font-size: 9px; color: rgba(255,255,255,0.95); margin-top: 1px; font-weight: 600;">${displayArea}</div>` : ''}
             </div>
+            <!-- 하단 삼각형 -->
+            <div style="
+                position: absolute;
+                bottom: -6px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 0;
+                height: 0;
+                border-left: 6px solid transparent;
+                border-right: 6px solid transparent;
+                border-top: 6px solid #764ba2;
+                filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));
+            "></div>
         </div>
     `;
     
@@ -215,9 +241,10 @@ function createApartmentMarker(apartmentData, coordinate) {
         map: apartmentPriceMap,
         icon: {
             content: markerContent,
-            size: new naver.maps.Size(70, 40),
-            anchor: new naver.maps.Point(35, 20)
-        }
+            size: new naver.maps.Size(65, 55),
+            anchor: new naver.maps.Point(32, 55)
+        },
+        zIndex: 100
     });
     
     // 정보창 생성

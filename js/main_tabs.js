@@ -15,9 +15,29 @@ function initMainTabs() {
             
             // 클릭된 탭 활성화
             button.classList.add('active');
+
+            // 모든 main-tab-content 숨기기
+            mainTabContents.forEach(content => {
+                content.classList.remove('active');
+                content.style.display = 'none';
+            });
+
+            // 해당 탭 내부의 섹션들만 보이게 (data-main-tab 속성 기반)
             const targetContent = document.getElementById(targetTab);
             if (targetContent) {
                 targetContent.classList.add('active');
+                targetContent.style.display = 'block';
+
+                // 비슷한 섹션들이 다른 탭에 잘못 렌더링되는 경우를 방지하기 위해
+                // 페이지에 있는 모든 섹션 중 data-main-tab 속성이 있으면 해당 값과
+                // 현재 탭을 비교해 표시/숨김 처리합니다.
+                document.querySelectorAll('section[data-main-tab]').forEach(sec => {
+                    if (sec.getAttribute('data-main-tab') === targetTab.replace('-main-tab','')) {
+                        sec.style.display = '';
+                    } else {
+                        sec.style.display = 'none';
+                    }
+                });
             }
             
             // 부동산 탭이 선택되면 매매지수 지도 초기화
