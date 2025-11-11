@@ -7,7 +7,7 @@ kst = timezone(timedelta(hours=9))
 today = datetime.now(kst).strftime("%Y-%m-%d %H:%M")
 
 def economy_news():
-    url = "https://news.naver.com/breakingnews/section/101/258"
+    url = "https://news.naver.com/breakingnews/section/101/259"
     headers = {"User-Agent": "Mozilla/5.0"}
     response = requests.get(url, headers=headers)
     soup = BeautifulSoup(response.text, "html.parser")
@@ -37,6 +37,29 @@ def realestate_news():
 
     html = f"""
     <div class='news-header'>주요 부동산 뉴스({today})</div>
+    <ul class='news-list'>
+    """
+    count = 0
+    for item in soup.select("ul.sa_list > li"):
+        link_tag = item.select_one("a.sa_text_title")
+        if link_tag:
+            title = link_tag.get_text(strip=True)
+            href = link_tag["href"]
+            html += f"<li><a href='{href}' target='_blank'>• {title}</a></li>"
+            count += 1
+        if count >= 6:
+            break
+    html += "</ul></div>"
+    return html
+
+def global_economy_news():
+    url = "https://news.naver.com/breakingnews/section/101/262"
+    headers = {"User-Agent": "Mozilla/5.0"}
+    response = requests.get(url, headers=headers)
+    soup = BeautifulSoup(response.text, "html.parser")
+
+    html = f"""
+    <div class='news-header'>글로벌 경제 뉴스({today})</div>
     <ul class='news-list'>
     """
     count = 0

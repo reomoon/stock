@@ -9,7 +9,7 @@ import subprocess
 import re
 from page.market import stock
 from page.plot_averages import make_nasdaq_ma_graphs
-from page.news import economy_news, realestate_news
+from page.news import economy_news, realestate_news, global_economy_news
 from page.realestate import realestate, get_weekly_real_estate_data, get_apt2me_transaction_volume, generate_realestate_map
 from page.apartment_price import get_all_apartment_prices
 
@@ -85,6 +85,7 @@ def generate_static_html(main_only=False, realestate_only=False):
         stock_data = stock()
         economy_news_data = economy_news()
         realestate_news_data = realestate_news()
+        global_news_data = global_economy_news()
         # stock_summary_html = get_stock_summary()
         weekly_data, monthly_data, realestate_data, realestate_map_data = load_realestate_cache()
     else:
@@ -93,6 +94,7 @@ def generate_static_html(main_only=False, realestate_only=False):
         stock_data = stock()
         economy_news_data = economy_news()
         realestate_news_data = realestate_news()
+        global_news_data = global_economy_news()
         # stock_summary_html = get_stock_summary()
         if is_realestate_update_day():
             weekly_data = get_weekly_real_estate_data()
@@ -161,11 +163,20 @@ def generate_static_html(main_only=False, realestate_only=False):
             </div>
         </section>
         
+        <section id=\"global\">
+            <h2>글로벌 뉴스</h2>
+            {global_news_data}
+        </section>
+
         <section id=\"economy\">
             <h2>경제 뉴스</h2>
             {economy_news_data}
         </section>
 
+        <section id=\"realestate\">
+            <h2>부동산 뉴스</h2>
+            {realestate_data}
+        </section>
 
     </div>
     
