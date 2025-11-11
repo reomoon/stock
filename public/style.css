@@ -863,12 +863,12 @@ ul {
 }
 
 .main-tab-content {
-    display: none;
+    display: none !important;
     animation: fadeIn 0.3s ease-in;
 }
 
 .main-tab-content.active {
-    display: block;
+    display: block !important;
 }
 
 @keyframes fadeIn {

@@ -140,7 +140,7 @@ def generate_static_html(main_only=False, realestate_only=False):
     </header>
     
     <!-- 경제 메인 탭 (주식 + 경제뉴스) -->
-    <div id="economy-main-tab" class="main-tab-content active">
+    <div id="economy-main-tab" class="main-tab-content active" style="display: block;">
         <!-- 기본 주식 정보 -->
         <section id=\"stock\">
             <h2>주식 정보</h2>
@@ -163,20 +163,15 @@ def generate_static_html(main_only=False, realestate_only=False):
             </div>
         </section>
         
-        <section id=\"global\">
+        <section id=\"global\" data-main-tab="economy">
             <h2>글로벌 뉴스</h2>
             {global_news_data}
         </section>
 
-        <section id=\"economy\">
-            <h2>경제 뉴스</h2>
-            {economy_news_data}
-        </section>
-
-    </div>
+    </div><!-- END: economy-main-tab -->
     
     <!-- 부동산 메인 탭 (매매지수 지도 + 통계) -->
-    <div id="realestate-main-tab" class="main-tab-content">
+    <div id="realestate-main-tab" class="main-tab-content" style="display: none;">
         <!-- 부동산 매매지수 지도 -->
         <section class="map-section" style="padding-right: 5px;padding-left: 5px;padding-top: 5px;">
             <h2>부동산 매매지수 지도</h2>
@@ -241,10 +236,10 @@ def generate_static_html(main_only=False, realestate_only=False):
             <h2>주간 매매지수</h2>
             <div id=\"weekly-index-chart\"></div>
         </section>
-    </div>
+    </div><!-- END: realestate-main-tab -->
     
     <!-- 부동산맵 메인 탭 (대장 단지 실거래 시세) -->
-    <div id="realestate-map-main-tab" class="main-tab-content">
+    <div id="realestate-map-main-tab" class="main-tab-content" style="display: none;">
         <section class="apartment-price-map-section" style="padding-right: 5px;padding-left: 5px;padding-top: 5px;">
             <h2>대장 단지 실거래 시세</h2>
             <div class="naver-map-container">
@@ -258,7 +253,7 @@ def generate_static_html(main_only=False, realestate_only=False):
                 <p>※ 데이터 출처: 공공데이터포털 아파트 실거래가</p>
             </div>
         </section>
-    </div>
+    </div><!-- END: realestate-map-main-tab -->
     
     <!-- JS 및 데이터는 body 끝에서 로드 -->
     <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
@@ -275,6 +270,36 @@ def generate_static_html(main_only=False, realestate_only=False):
     <script src="js/main_tabs.js"></script>
     <script src="js/naver_map.js"></script>
     <script src="js/apartment_price_map.js"></script>
+    
+    <!-- 긴급 탭 전환 스크립트 (디버깅용) -->
+    <script>
+    console.log('탭 초기화 시작');
+    document.querySelectorAll('.main-tab-button').forEach(btn => {{
+        btn.addEventListener('click', function() {{
+            console.log('탭 클릭:', this.dataset.tab);
+            // 버튼 활성화 상태 변경
+            document.querySelectorAll('.main-tab-button').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            
+            // 모든 탭 숨기기
+            document.querySelectorAll('.main-tab-content').forEach(tab => {{
+                tab.classList.remove('active');
+                tab.style.display = 'none';
+            }});
+            
+            // 선택된 탭만 표시
+            const targetTab = document.getElementById(this.dataset.tab);
+            if (targetTab) {{
+                targetTab.classList.add('active');
+                targetTab.style.display = 'block';
+                console.log('활성화된 탭:', this.dataset.tab);
+            }} else {{
+                console.error('탭을 찾을 수 없음:', this.dataset.tab);
+            }}
+        }});
+    }});
+    console.log('탭 초기화 완료');
+    </script>
     
     <!-- 오늘 날짜 표시 -->
     <script>
