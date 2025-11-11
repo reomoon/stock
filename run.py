@@ -173,11 +173,6 @@ def generate_static_html(main_only=False, realestate_only=False):
             {economy_news_data}
         </section>
 
-        <section id=\"realestate\">
-            <h2>부동산 뉴스</h2>
-            {realestate_data}
-        </section>
-
     </div>
     
     <!-- 부동산 메인 탭 (매매지수 지도 + 통계) -->
